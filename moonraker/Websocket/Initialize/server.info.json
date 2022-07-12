@@ -1,0 +1,43 @@
+{
+    "jsonrpc": "2.0",
+    "result": {
+        "klippy_connected": true,
+        "klippy_state": "ready",
+        "components": [
+            "database",
+            "file_manager",
+            "klippy_apis",
+            "machine",
+            "data_store",
+            "shell_command",
+            "proc_stats",
+            "update_manager",
+            "octoprint_compat",
+            "history",
+            "authorization"
+        ],
+        "failed_components": [],
+        "plugins": [
+            "database",
+            "file_manager",
+            "klippy_apis",
+            "machine",
+            "data_store",
+            "shell_command",
+            "proc_stats",
+            "update_manager",
+            "octoprint_compat",
+            "history",
+            "authorization"
+        ],
+        "failed_plugins": [],
+        "registered_directories": [
+            "config",
+            "logs",
+            "config_examples",
+            "docs"
+        ],
+        "warnings": []
+    },
+    "id": 16053
+}

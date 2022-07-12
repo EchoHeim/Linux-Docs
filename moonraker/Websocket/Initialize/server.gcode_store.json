@@ -1,0 +1,18 @@
+{
+    "jsonrpc": "2.0",
+    "result": {
+        "gcode_store": [
+            {
+                "message": "// Klipper state: Ready",
+                "time": 1632825151.9662058,
+                "type": "response"
+            },
+            {
+                "message": "SET_HEATER_TEMPERATURE HEATER=extruder TARGET=25",
+                "time": 1632878112.8346667,
+                "type": "command"
+            }
+        ]
+    },
+    "id": 35898
+}

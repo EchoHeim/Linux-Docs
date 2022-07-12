@@ -1,0 +1,7 @@
+{
+    "topic": "home/test/pub",
+    "payload": "hello",
+    "qos": 0,
+    "retain": false,
+    "timeout": 5
+}

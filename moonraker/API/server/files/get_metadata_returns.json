@@ -1,0 +1,32 @@
+{
+    "print_start_time": null,
+    "job_id": null,
+    "size": 4926481,
+    "modified": 1615077020.2025201,
+    "slicer": "SuperSlicer",
+    "slicer_version": "2.2.52",
+    "layer_height": 0.15,
+    "first_layer_height": 0.2,
+    "object_height": 48.05,
+    "filament_total": 4056.4,
+    "estimated_time": 7569,
+    "thumbnails": [
+        {
+            "width": 32,
+            "height": 32,
+            "size": 2596,
+            "relative_path": ".thumbs/3DBenchy_0.15mm_PLA_MK3S_2h6m-32x32.png"
+        },
+        {
+            "width": 400,
+            "height": 300,
+            "size": 73308,
+            "relative_path": ".thumbs/3DBenchy_0.15mm_PLA_MK3S_2h6m-400x300.png"
+        }
+    ],
+    "first_layer_bed_temp": 60,
+    "first_layer_extr_temp": 215,
+    "gcode_start_byte": 79451,
+    "gcode_end_byte": 4915668,
+    "filename": "3DBenchy_0.15mm_PLA_MK3S_2h6m.gcode"
+}

@@ -1,0 +1,7 @@
+{
+    "item": {
+        "root": "gcodes",
+        "path": "test4/Voron_v2_350_aferburner_Filament Cover_0.2mm_ABS.gcode"
+    },
+    "action": "create_file"
+}

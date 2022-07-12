@@ -1,0 +1,14 @@
+{
+    "profiles": {
+        "_default": {
+            "id": "_default",
+            "name": "Default",
+            "color": "default",
+            "model": "Default",
+            "default": true,
+            "current": true,
+            "heatedBed": true,
+            "heatedChamber": false
+        }
+    }
+}

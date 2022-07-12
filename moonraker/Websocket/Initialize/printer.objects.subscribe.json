@@ -1,0 +1,522 @@
+{
+    "jsonrpc": "2.0",
+    "result": {
+        "status": {
+            "webhooks": {
+                "state": "ready",
+                "state_message": "Printer is ready"
+            },
+            "heaters": {
+                "available_sensors": [
+                    "heater_bed",
+                    "temperature_sensor mcu_temp",
+                    "extruder"
+                ],
+                "available_heaters": [
+                    "heater_bed",
+                    "extruder"
+                ]
+            },
+            "heater_fan fan1": {
+                "speed": 0.0,
+                "rpm": null
+            },
+            "temperature_sensor mcu_temp": {
+                "measured_min_temp": 29.959349593495915,
+                "measured_max_temp": 31.585365853658573,
+                "temperature": 31.09756097560978
+            },
+            "idle_timeout": {
+                "state": "Idle",
+                "printing_time": 0.0
+            },
+            "motion_report": {
+                "live_position": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "steppers": [
+                    "extruder",
+                    "stepper_x",
+                    "stepper_y",
+                    "stepper_z"
+                ],
+                "live_velocity": 0.0,
+                "live_extruder_velocity": 0.0,
+                "trapq": [
+                    "extruder",
+                    "toolhead"
+                ]
+            },
+            "system_stats": {
+                "sysload": 0.41,
+                "memavail": 763820,
+                "cputime": 55.206972
+            },
+            "query_endstops": {
+                "last_query": {}
+            },
+            "fan": {
+                "speed": 0.0,
+                "rpm": null
+            },
+            "configfile": {
+                "settings": {
+                    "force_move": {
+                        "enable_force_move": false
+                    },
+                    "printer": {
+                        "square_corner_velocity": 5.0,
+                        "move_flush_time": 0.05,
+                        "max_accel": 3000.0,
+                        "buffer_time_start": 0.25,
+                        "buffer_time_low": 1.0,
+                        "max_z_accel": 5.0,
+                        "max_velocity": 500.0,
+                        "max_z_velocity": 12.0,
+                        "kinematics": "cartesian",
+                        "buffer_time_high": 2.0,
+                        "max_accel_to_decel": 1500.0
+                    },
+                    "heater_fan fan1": {
+                        "heater": [
+                            "extruder"
+                        ],
+                        "cycle_time": 0.01,
+                        "pin": "PE5",
+                        "off_below": 0.0,
+                        "heater_temp": 50.0,
+                        "shutdown_speed": 1.0,
+                        "fan_speed": 1.0,
+                        "max_power": 1.0,
+                        "kick_start_time": 0.1,
+                        "hardware_pwm": false
+                    },
+                    "board_pins": {
+                        "mcu": [
+                            "mcu"
+                        ],
+                        "aliases": [
+                            [
+                                "EXP1_1",
+                                "PE8"
+                            ],
+                            [
+                                "EXP1_2",
+                                "PE7"
+                            ],
+                            [
+                                "EXP1_3",
+                                "PE9"
+                            ],
+                            [
+                                "EXP1_4",
+                                "PE10"
+                            ],
+                            [
+                                "EXP1_5",
+                                "PE12"
+                            ],
+                            [
+                                "EXP1_6",
+                                "PE13"
+                            ],
+                            [
+                                "EXP1_7",
+                                "PE14"
+                            ],
+                            [
+                                "EXP1_8",
+                                "PE15"
+                            ],
+                            [
+                                "EXP1_9",
+                                "<GND>"
+                            ],
+                            [
+                                "EXP1_10",
+                                "<5V>"
+                            ],
+                            [
+                                "EXP2_1",
+                                "PA6"
+                            ],
+                            [
+                                "EXP2_2",
+                                "PA5"
+                            ],
+                            [
+                                "EXP2_3",
+                                "PB1"
+                            ],
+                            [
+                                "EXP2_4",
+                                "PA4"
+                            ],
+                            [
+                                "EXP2_5",
+                                "PB2"
+                            ],
+                            [
+                                "EXP2_6",
+                                "PA7"
+                            ],
+                            [
+                                "EXP2_7",
+                                "PC15"
+                            ],
+                            [
+                                "EXP2_8",
+                                "<RST>"
+                            ],
+                            [
+                                "EXP2_9",
+                                "<GND>"
+                            ],
+                            [
+                                "EXP2_10",
+                                "<5V>"
+                            ]
+                        ]
+                    },
+                    "verify_heater extruder": {
+                        "max_error": 120.0,
+                        "check_gain_time": 20.0,
+                        "heating_gain": 2.0,
+                        "hysteresis": 5.0
+                    },
+                    "temperature_sensor mcu_temp": {
+                        "min_temp": -273.15,
+                        "sensor_type": "temperature_mcu",
+                        "sensor_mcu": "mcu",
+                        "max_temp": 99999999.9
+                    },
+                    "stepper_z": {
+                        "homing_positive_dir": false,
+                        "homing_retract_dist": 5.0,
+                        "position_endstop": 0.0,
+                        "full_steps_per_rotation": 200,
+                        "endstop_pin": "PG10",
+                        "rotation_distance": 8.0,
+                        "gear_ratio": [],
+                        "second_homing_speed": 1.0,
+                        "step_pin": "PF11",
+                        "position_min": 0.0,
+                        "microsteps": 16,
+                        "homing_speed": 12.0,
+                        "dir_pin": "PG3",
+                        "position_max": 200.0,
+                        "homing_retract_speed": 12.0,
+                        "enable_pin": "!PG5"
+                    },
+                    "stepper_y": {
+                        "homing_positive_dir": false,
+                        "homing_retract_dist": 5.0,
+                        "position_endstop": 0.0,
+                        "full_steps_per_rotation": 200,
+                        "endstop_pin": "PG9",
+                        "rotation_distance": 40.0,
+                        "gear_ratio": [],
+                        "second_homing_speed": 25.0,
+                        "step_pin": "PG0",
+                        "homing_speed": 50.0,
+                        "microsteps": 16,
+                        "position_min": 0.0,
+                        "dir_pin": "PG1",
+                        "position_max": 250.0,
+                        "homing_retract_speed": 50.0,
+                        "enable_pin": "!PF15"
+                    },
+                    "stepper_x": {
+                        "homing_positive_dir": false,
+                        "homing_retract_dist": 5.0,
+                        "position_endstop": 0.0,
+                        "full_steps_per_rotation": 200,
+                        "endstop_pin": "^PG6",
+                        "rotation_distance": 40.0,
+                        "gear_ratio": [],
+                        "second_homing_speed": 25.0,
+                        "step_pin": "PF13",
+                        "position_min": 0.0,
+                        "microsteps": 16,
+                        "homing_speed": 50.0,
+                        "position_max": 250.0,
+                        "dir_pin": "PF12",
+                        "homing_retract_speed": 50.0,
+                        "enable_pin": "!PF14"
+                    },
+                    "idle_timeout": {
+                        "gcode": "\n{% if 'heaters' in printer %}\n   TURN_OFF_HEATERS\n{% endif %}\nM84\n",
+                        "timeout": 600.0
+                    },
+                    "fan": {
+                        "cycle_time": 0.01,
+                        "pin": "PA8",
+                        "off_below": 0.0,
+                        "shutdown_speed": 0.0,
+                        "max_power": 1.0,
+                        "kick_start_time": 0.1,
+                        "hardware_pwm": false
+                    },
+                    "verify_heater heater_bed": {
+                        "heating_gain": 2.0,
+                        "max_error": 120.0,
+                        "check_gain_time": 60.0,
+                        "hysteresis": 5.0
+                    },
+                    "mcu": {
+                        "baud": 250000,
+                        "serial": "/dev/serial/by-id/usb-Klipper_stm32f446xx_3B000F001950534841313020-if00",
+                        "max_stepper_error": 2.5e-05
+                    },
+                    "heater_bed": {
+                        "control": "watermark",
+                        "pullup_resistor": 4700.0,
+                        "sensor_pin": "PF3",
+                        "max_delta": 2.0,
+                        "heater_pin": "PA1",
+                        "max_power": 1.0,
+                        "sensor_type": "EPCOS 100K B57560G104F",
+                        "inline_resistor": 0.0,
+                        "smooth_time": 1.0,
+                        "pwm_cycle_time": 0.1,
+                        "min_temp": 0.0,
+                        "min_extrude_temp": 170.0,
+                        "max_temp": 130.0
+                    },
+                    "extruder": {
+                        "control": "pid",
+                        "pullup_resistor": 4700.0,
+                        "max_extrude_only_velocity": 133.04054018457214,
+                        "gear_ratio": [],
+                        "max_extrude_only_distance": 50.0,
+                        "sensor_type": "EPCOS 100K B57560G104F",
+                        "min_temp": 0.0,
+                        "pid_integral_max": 1.0,
+                        "enable_pin": "!PA0",
+                        "pressure_advance": 0.0,
+                        "max_extrude_cross_section": 0.6400000000000001,
+                        "pwm_cycle_time": 0.1,
+                        "dir_pin": "PC1",
+                        "pid_kp": 22.2,
+                        "instantaneous_corner_velocity": 1.0,
+                        "full_steps_per_rotation": 200,
+                        "heater_pin": "PA2",
+                        "pressure_advance_smooth_time": 0.04,
+                        "smooth_time": 1.0,
+                        "pid_ki": 1.08,
+                        "filament_diameter": 1.75,
+                        "sensor_pin": "PF4",
+                        "nozzle_diameter": 0.4,
+                        "pid_kd": 114.0,
+                        "rotation_distance": 33.5,
+                        "step_pin": "PG4",
+                        "inline_resistor": 0.0,
+                        "max_power": 1.0,
+                        "microsteps": 16,
+                        "min_extrude_temp": 170.0,
+                        "max_extrude_only_accel": 798.2432411074329,
+                        "max_temp": 290.0
+                    }
+                },
+                "config": {
+                    "printer": {
+                        "max_velocity": "500",
+                        "max_z_velocity": "12",
+                        "kinematics": "cartesian",
+                        "max_accel": "3000",
+                        "max_z_accel": "5"
+                    },
+                    "heater_fan fan1": {
+                        "pin": "PE5"
+                    },
+                    "board_pins": {
+                        "aliases": "\nEXP1_1=PE8, EXP1_2=PE7,\nEXP1_3=PE9, EXP1_4=PE10,\nEXP1_5=PE12, EXP1_6=PE13,\nEXP1_7=PE14, EXP1_8=PE15,\nEXP1_9=<GND>, EXP1_10=<5V>,\nEXP2_1=PA6, EXP2_2=PA5,\nEXP2_3=PB1, EXP2_4=PA4,\nEXP2_5=PB2, EXP2_6=PA7,\nEXP2_7=PC15, EXP2_8=<RST>,\nEXP2_9=<GND>, EXP2_10=<5V>"
+                    },
+                    "temperature_sensor mcu_temp": {
+                        "sensor_type": "temperature_mcu"
+                    },
+                    "stepper_z": {
+                        "position_endstop": "0",
+                        "endstop_pin": "PG10",
+                        "rotation_distance": "8",
+                        "second_homing_speed": "1",
+                        "step_pin": "PF11",
+                        "homing_speed": "12",
+                        "microsteps": "16",
+                        "dir_pin": "PG3",
+                        "position_max": "200",
+                        "enable_pin": "!PG5"
+                    },
+                    "stepper_y": {
+                        "position_endstop": "0",
+                        "endstop_pin": "PG9",
+                        "rotation_distance": "40",
+                        "step_pin": "PG0",
+                        "homing_speed": "50",
+                        "microsteps": "16",
+                        "dir_pin": "PG1",
+                        "position_max": "250",
+                        "enable_pin": "!PF15"
+                    },
+                    "stepper_x": {
+                        "position_endstop": "0",
+                        "endstop_pin": "^PG6",
+                        "rotation_distance": "40",
+                        "step_pin": "PF13",
+                        "homing_speed": "50",
+                        "microsteps": "16",
+                        "dir_pin": "PF12",
+                        "position_max": "250",
+                        "enable_pin": "!PF14"
+                    },
+                    "fan": {
+                        "pin": "PA8"
+                    },
+                    "mcu": {
+                        "serial": "/dev/serial/by-id/usb-Klipper_stm32f446xx_3B000F001950534841313020-if00"
+                    },
+                    "heater_bed": {
+                        "control": "watermark",
+                        "sensor_pin": "PF3",
+                        "heater_pin": "PA1",
+                        "sensor_type": "EPCOS 100K B57560G104F",
+                        "min_temp": "0",
+                        "max_temp": "130"
+                    },
+                    "extruder": {
+                        "control": "pid",
+                        "pid_kp": "22.2",
+                        "sensor_type": "EPCOS 100K B57560G104F",
+                        "sensor_pin": "PF4",
+                        "nozzle_diameter": "0.400",
+                        "heater_pin": "PA2",
+                        "rotation_distance": "33.500",
+                        "step_pin": "PG4",
+                        "min_temp": "0",
+                        "pid_kd": "114",
+                        "microsteps": "16",
+                        "pid_ki": "1.08",
+                        "filament_diameter": "1.750",
+                        "dir_pin": "PC1",
+                        "max_temp": "290",
+                        "enable_pin": "!PA0"
+                    }
+                },
+                "save_config_pending": false
+            },
+            "toolhead": {
+                "square_corner_velocity": 5.0,
+                "max_accel": 3000.0,
+                "homed_axes": "",
+                "estimated_print_time": 2336.9497218944443,
+                "max_velocity": 500.0,
+                "print_time": 1187.5915924166666,
+                "max_accel_to_decel": 1500.0,
+                "axis_minimum": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "stalls": 0,
+                "axis_maximum": [
+                    250.0,
+                    250.0,
+                    200.0,
+                    0.0
+                ],
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "extruder": "extruder"
+            },
+            "gcode_move": {
+                "homing_origin": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "speed_factor": 1.0,
+                "gcode_position": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "absolute_extrude": true,
+                "absolute_coordinates": true,
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "speed": 1500.0,
+                "extrude_factor": 1.0
+            },
+            "mcu": {
+                "mcu_build_versions": "gcc: (15:7-2018-q2-6) 7.3.1 20180622 (release) [ARM/embedded-7-branch revision 261907] binutils: (2.31.1-11+rpi1+11) 2.31.1",
+                "mcu_version": "v0.9.1-585-g0c3d8f81",
+                "last_stats": {
+                    "retransmit_seq": 2,
+                    "receive_seq": 2481,
+                    "send_seq": 2481,
+                    "bytes_invalid": 0,
+                    "rto": 0.025,
+                    "srtt": 0.001,
+                    "stalled_bytes": 0,
+                    "bytes_write": 15224,
+                    "freq": 180002603,
+                    "mcu_awake": 0.001,
+                    "mcu_task_avg": 4e-06,
+                    "rttvar": 0.0,
+                    "mcu_task_stddev": 3e-06,
+                    "bytes_read": 385137,
+                    "bytes_retransmit": 9,
+                    "ready_bytes": 0
+                },
+                "mcu_constants": {
+                    "BUS_PINS_i2c1": "PB6,PB7",
+                    "BUS_PINS_i2c2": "PB10,PB11",
+                    "BUS_PINS_spi3a": "PC11,PC12,PC10",
+                    "BUS_PINS_spi2a": "PC2,PC3,PB10",
+                    "BUS_PINS_i2c1a": "PB8,PB9",
+                    "RESERVE_PINS_USB": "PA11,PA12",
+                    "CLOCK_FREQ": 180000000,
+                    "BUS_PINS_spi1a": "PB4,PB5,PB3",
+                    "STATS_SUMSQ_BASE": 256,
+                    "STEP_DELAY": 2,
+                    "ADC_MAX": 4095,
+                    "BUS_PINS_spi4": "PE13,PE14,PE12",
+                    "RESERVE_PINS_crystal": "PH0,PH1",
+                    "BUS_PINS_spi2": "PB14,PB15,PB13",
+                    "BUS_PINS_spi1": "PA6,PA7,PA5",
+                    "BUS_PINS_spi3": "PB4,PB5,PB3",
+                    "MCU": "stm32f446xx"
+                }
+            },
+            "heater_bed": {
+                "temperature": 25.27022707758684,
+                "power": 0.0,
+                "target": 0.0
+            },
+            "extruder": {
+                "pressure_advance": 0.0,
+                "target": 0.0,
+                "power": 0.0,
+                "can_extrude": false,
+                "smooth_time": 0.04,
+                "temperature": 25.66220403900482
+            }
+        },
+        "eventtime": 2340.764557596
+    },
+    "id": 88675
+}

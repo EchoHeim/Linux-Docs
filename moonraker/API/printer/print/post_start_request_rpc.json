@@ -1,0 +1,8 @@
+{
+    "jsonrpc": "2.0",
+    "method": "printer.print.start",
+    "params": {
+        "filename": "test_pring.gcode"
+    },
+    "id": 4654
+}

@@ -1,0 +1,5 @@
+{
+    "topic": "home/test/sub",
+    "qos": 0,
+    "timeout": 5
+}

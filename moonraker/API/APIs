@@ -1,0 +1,92 @@
+GET /printer/info
+POST /printer/emergency_stop
+POST /printer/restart
+POST /printer/firmware_restart
+GET /printer/objects/list
+GET /printer/objects/query?gcode_move&toolhead&extruder=target,temperature
+POST /printer/objects/subscribe?connection_id=123456789&gcode_move&extruder
+GET /printer/query_endstops/status
+
+GET /server/info
+GET /server/config
+GET /server/temperature_store
+GET /server/gcode_store?count=100
+POST /server/restart
+
+POST /printer/gcode/script?script=G28
+GET /printer/gcode/help
+POST /printer/print/start?filename=test_print.gcode
+POST /printer/print/pause
+POST /printer/print/resume
+POST /printer/print/cancel
+
+GET /machine/system_info
+POST /machine/shutdown
+POST /machine/reboot
+POST /machine/services/restart?service={name}
+POST /machine/services/stop?service={name}
+POST /machine/services/start?service={name}
+GET /machine/proc_stats
+
+GET /server/files/list?root={root_folder}
+GET /server/files/metadata?filename={filename}
+GET /server/files/directory?path=gcodes/my_subdir&extended=true
+POST /server/files/directory?path=gcodes/my_new_dir
+DELETE /server/files/directory?path=gcodes/my_subdir&force=false
+POST /server/files/move?source=gcodes/my_file.gcode&dest=gcodes/subdir/my_file.gcode
+POST /server/files/copy?source=gcodes/my_file.gcode&dest=gcodes/subdir/my_file.gcode
+GET /server/files/{root}/{filename}
+POST /server/files/upload
+DELETE /server/files/{root}/{filename}
+GET /server/files/klippy.log
+GET /server/files/moonraker.log
+
+POST /access/login
+POST /access/logout
+GET /access/user
+POST /access/user
+DELETE /access/user
+GET /access/users/list
+POST /access/user/password
+POST /access/refresh_jwt
+GET /access/oneshot_token
+GET /access/api_key
+POST /access/api_key
+
+GET /server/database/list
+GET /server/database/item?namespace={namespace}&key={key}
+POST /server/database/item?namespace={namespace}&key={key}value={value}
+DELETE /server/database/item?namespace={namespace}&key={key}
+
+GET /machine/update/status?refresh=false
+POST /machine/update/full
+POST /machine/update/moonraker
+POST /machine/update/klipper
+POST /machine/update/client?name={client_name}
+POST /machine/update/system
+POST /machine/update/recover?name=moonraker&hard=false
+
+GET /machine/device_power/devices
+GET /machine/device_power/device?device=green_led
+POST /machine/device_power/device?device=green_led&action=on
+GET /machine/device_power/status?dev_one&dev_two
+POST /machine/device_power/on?dev_one&dev_two
+POST /machine/device_power/off?dev_one&dev_two
+
+GET /api/version
+GET /api/server
+GET /api/login
+GET /api/settings
+POST /api/files/local
+GET /api/job
+GET /api/printer
+POST /api/printer/command
+GET /api/printerprofiles
+
+GET /server/history/list?limit=50&start=50&since=1&before=5&order=asc
+GET /server/history/totals
+GET /server/history/job?uid=<id>
+DELETE /server/history/job?uid=<id>
+
+POST /server/mqtt/publish
+POST /server/mqtt/subscribe

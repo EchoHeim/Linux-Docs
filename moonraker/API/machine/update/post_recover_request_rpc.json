@@ -1,0 +1,9 @@
+{
+    "jsonrpc": "2.0",
+    "method": "machine.update.recover",
+    "params": {
+        "name": "moonraker",
+        "hard": false
+    },
+    "id": 4564
+}

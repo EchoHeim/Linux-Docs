@@ -1,0 +1,5 @@
+{
+    "jsonrpc": "2.0",
+    "method": "printer.firmware_restart",
+    "id": 8463
+}

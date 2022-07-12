@@ -1,0 +1,11 @@
+{
+    "jsonrpc": "2.0",
+    "method": "printer.objects.query",
+    "params": {
+        "objects": {
+            "gcode_move": null,
+            "toolhead": ["position", "status"]
+        }
+    },
+    "id": 4654
+}

@@ -1,0 +1,7 @@
+{
+    "item": {
+        "path": "gcodes/testdir",
+        "root": "gcodes"
+    },
+    "action": "delete_dir"
+}

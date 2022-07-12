@@ -1,0 +1,9 @@
+{
+    "jsonrpc": "2.0",
+    "method": "server.database.get_item",
+    "params": {
+        "namespace": "{namespace}",
+        "key": "{key}"
+    },
+    "id": 5644
+}

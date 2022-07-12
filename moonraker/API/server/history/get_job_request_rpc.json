@@ -1,0 +1,6 @@
+{
+    "jsonrpc": "2.0",
+    "method":"server.history.get_job",
+    "params":{"uid": "{uid}"},
+    "id": 4564
+}

@@ -1,0 +1,65 @@
+{
+    "jsonrpc": "2.0",
+    "result": {
+        "config": {
+            "server": {
+                "host": "0.0.0.0",
+                "port": 7125,
+                "ssl_port": 7130,
+                "klippy_uds_address": "/tmp/klippy_uds",
+                "max_upload_size": 1024,
+                "ssl_certificate_path": null,
+                "ssl_key_path": null,
+                "enable_debug_logging": false,
+                "enable_database_debug": false,
+                "database_path": "~/.moonraker_database",
+                "config_path": "~/klipper_config",
+                "log_path": "~/klipper_logs",
+                "temperature_store_size": 600,
+                "gcode_store_size": 1000
+            },
+            "update_manager": {
+                "enable_auto_refresh": true,
+                "channel": "dev",
+                "enable_repo_debug": false,
+                "enable_system_updates": true,
+                "type": "",
+                "client_repo": null,
+                "client_path": null
+            },
+            "update_manager moonraker": {
+                "type": "",
+                "venv_args": "-p python3",
+                "origin": "https://github.com/arksine/moonraker.git",
+                "primary_branch": "master",
+                "enable_node_updates": false,
+                "requirements": "scripts/moonraker-requirements.txt",
+                "install_script": "scripts/install-moonraker.sh"
+            },
+            "update_manager klipper": {
+                "type": "",
+                "venv_args": "-p python2",
+                "origin": "https://github.com/kevinoconnor/klipper.git",
+                "primary_branch": "master",
+                "enable_node_updates": false,
+                "requirements": "scripts/klippy-requirements.txt",
+                "install_script": "scripts/install-octopi.sh"
+            },
+            "update_manager client fluidd": {
+                "type": "web",
+                "repo": "cadriel/fluidd",
+                "path": "~/fluidd",
+                "persistent_files": null
+            },
+            "octoprint_compat": {},
+            "history": {},
+            "authorization": {
+                "login_timeout": 90,
+                "force_logins": true,
+                "cors_domains": "\n*\n*.local\n*.lan\n*://app.fluidd.xyz",
+                "trusted_clients": "\n10.0.0.0/8\n127.0.0.0/8\n169.254.0.0/16\n172.16.0.0/12\n192.168.0.0/16\nFE80::/10\n::1/128"
+            }
+        }
+    },
+    "id": 93716
+}

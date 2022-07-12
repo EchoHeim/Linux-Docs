@@ -1,0 +1,9 @@
+{
+    "jsonrpc": "2.0",
+    "method": "notify_user_created",
+    "params": [
+        {
+            "username": "<username>"
+        }
+    ]
+}

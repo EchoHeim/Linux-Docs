@@ -1,0 +1,99 @@
+{
+    "preheatlist": [
+        {
+            "preheat_name": "ABS",
+            "preheat_hotend": 200,
+            "preheat_heatbed": 80
+        },
+        {
+            "preheat_name": "PLA",
+            "preheat_hotend": 200,
+            "preheat_heatbed": 60
+        },
+        {
+            "preheat_name": "ABS",
+            "preheat_hotend": 200,
+            "preheat_heatbed": 80
+        },
+        {
+            "preheat_name": "PETG",
+            "preheat_hotend": 210,
+            "preheat_heatbed": 80
+        },
+        {
+            "preheat_name": "WOOD",
+            "preheat_hotend": 220,
+            "preheat_heatbed": 100
+        },
+        {
+            "preheat_name": "ABS",
+            "preheat_hotend": 200,
+            "preheat_heatbed": 80
+        },
+        {
+            "preheat_name": "PETG",
+            "preheat_hotend": 210,
+            "preheat_heatbed": 80
+        },
+        {
+            "preheat_name": "WOOD",
+            "preheat_hotend": 220,
+            "preheat_heatbed": 100
+        },
+        {
+            "preheat_name": "PETG",
+            "preheat_hotend": 210,
+            "preheat_heatbed": 80
+        },
+        {
+            "preheat_name": "WOOD",
+            "preheat_hotend": 220,
+            "preheat_heatbed": 100
+        },
+        {
+            "preheat_name": "ABS",
+            "preheat_hotend": 200,
+            "preheat_heatbed": 80
+        },
+        {
+            "preheat_name": "PETG",
+            "preheat_hotend": 210,
+            "preheat_heatbed": 80
+        },
+        {
+            "preheat_name": "WOOD",
+            "preheat_hotend": 220,
+            "preheat_heatbed": 100
+        },
+        {
+            "preheat_name": "ABS",
+            "preheat_hotend": 200,
+            "preheat_heatbed": 80
+        },
+        {
+            "preheat_name": "PETG",
+            "preheat_hotend": 210,
+            "preheat_heatbed": 80
+        },
+        {
+            "preheat_name": "WOOD",
+            "preheat_hotend": 220,
+            "preheat_heatbed": 100
+        },
+        {
+            "preheat_name": "ABS",
+            "preheat_hotend": 200,
+            "preheat_heatbed": 80
+        },
+        {
+            "preheat_name": "PETG",
+            "preheat_hotend": 210,
+            "preheat_heatbed": 80
+        },
+        {
+            "preheat_name": "WOOD",
+            "preheat_hotend": 220,
+            "preheat_heatbed": 100
+        }
+    ]
+}

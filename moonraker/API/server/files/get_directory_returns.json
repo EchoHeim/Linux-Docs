@@ -1,0 +1,41 @@
+{
+    "dirs": [
+        {
+            "modified": 1615768162.0412788,
+            "size": 4096,
+            "dirname": "test"
+        },
+        {
+            "modified": 1613569827.489749,
+            "size": 4096,
+            "dirname": "Cura"
+        },
+        {
+            "modified": 1615767459.6265886,
+            "size": 4096,
+            "dirname": "thumbs"
+        }
+    ],
+    "files": [
+        {
+            "modified": 1615578004.9639666,
+            "size": 7300692,
+            "filename": "Funnel_0.2mm_PLA_Ender2_2h4m.gcode"
+        },
+        {
+            "modified": 1589156863.9726968,
+            "size": 4214831,
+            "filename": "CE2_Pi3_A+_CaseLID.gcode"
+        },
+        {
+            "modified": 1615030592.7722695,
+            "size": 2388774,
+            "filename": "CE2_calicat.gcode"
+        }
+    ],
+    "disk_usage": {
+        "total": 7522213888,
+        "used": 4280369152,
+        "free": 2903625728
+    }
+}

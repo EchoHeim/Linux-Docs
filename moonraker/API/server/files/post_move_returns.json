@@ -1,0 +1,13 @@
+{
+    "result": {
+        "item": {
+            "root": "gcodes",
+            "path": "test4/test3"
+        },
+        "source_item": {
+            "path": "gcodes/test4/test3",
+            "root": "gcodes"
+        },
+        "action": "move_dir"
+    }
+}

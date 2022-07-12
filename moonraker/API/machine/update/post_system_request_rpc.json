@@ -1,0 +1,5 @@
+{
+    "jsonrpc": "2.0",
+    "method": "machine.update.system",
+    "id": 4564
+}

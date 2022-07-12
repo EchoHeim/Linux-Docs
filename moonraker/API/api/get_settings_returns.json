@@ -1,0 +1,25 @@
+{
+    "plugins": {
+        "UltimakerFormatPackage": {
+            "align_inline_thumbnail": false,
+            "inline_thumbnail": false,
+            "inline_thumbnail_align_value": "left",
+            "inline_thumbnail_scale_value": "50",
+            "installed": true,
+            "installed_version": "0.2.2",
+            "scale_inline_thumbnail": false,
+            "state_panel_thumbnail": true
+        }
+    },
+    "feature": {
+        "sdSupport": false,
+        "temperatureGraph": false
+    },
+    "webcam": {
+        "flipH": false,
+        "flipV": false,
+        "rotate90": false,
+        "streamUrl": "/webcam/?action=stream",
+        "webcamEnabled": true
+    }
+}

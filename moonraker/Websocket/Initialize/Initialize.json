@@ -1,0 +1,103 @@
+{
+    "initialize": [
+        {
+            "id": 16053,
+            "method": "server.info",
+            "jsonrpc": "2.0"
+        },
+        {
+            "id": 74597,
+            "method": "printer.info",
+            "jsonrpc": "2.0"
+        },
+        {
+            "id": 93716,
+            "method": "server.config",
+            "jsonrpc": "2.0"
+        },
+        {
+            "id": 32277,
+            "method": "machine.proc_stats",
+            "jsonrpc": "2.0"
+        },
+        {
+            "id": 28943,
+            "method": "machine.system_info",
+            "jsonrpc": "2.0"
+        },
+        {
+            "id": 22195,
+            "method": "machine.update.status",
+            "jsonrpc": "2.0",
+            "params": {
+                "refresh": false
+            }
+        },
+        {
+            "id": 11281,
+            "method": "server.history.list",
+            "jsonrpc": "2.0",
+            "params": {
+                "limit": 50
+            }
+        },
+        {
+            "id": 41317,
+            "method": "server.history.totals",
+            "jsonrpc": "2.0"
+        },
+        {
+            "id": 69078,
+            "method": "printer.objects.list",
+            "jsonrpc": "2.0"
+        },
+        {
+            "id": 88675,
+            "method": "printer.objects.subscribe",
+            "jsonrpc": "2.0",
+            "params": {
+                "objects": {
+                    "webhooks": null,
+                    "configfile": null,
+                    "mcu": null,
+                    "gcode_move": null,
+                    "print_stats": null,
+                    "virtual_sdcard": null,
+                    "display_status": null,
+                    "pause_resume": null,
+                    "filament_switch_sensor runout_sensor": null,
+                    "heaters": null,
+                    "heater_bed": null,
+                    "fan": null,
+                    "heater_fan hotend_fan": null,
+                    "heater_fan controller_fan": null,
+                    "temperature_sensor mcu_temp": null,
+                    "probe": null,
+                    "bed_mesh": null,
+                    "neopixel board_neopixel": null,
+                    "motion_report": null,
+                    "query_endstops": null,
+                    "idle_timeout": null,
+                    "system_stats": null,
+                    "toolhead": null,
+                    "extruder": null
+                }
+            }
+        },
+        {
+            "id": 35898,
+            "method": "server.gcode_store",
+            "jsonrpc": "2.0"
+        },
+        {
+            "id": 31011,
+            "method": "printer.gcode.help",
+            "jsonrpc": "2.0"
+        },
+        {
+            "id": 63365,
+            "method": "server.temperature_store",
+            "jsonrpc": "2.0"
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+{
+    "jsonrpc": "2.0",
+    "method": "machine.services.stop",
+    "params": {
+        "service": "{name}"
+    },
+    "id": 4645
+}

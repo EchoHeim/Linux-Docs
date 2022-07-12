@@ -1,0 +1,9 @@
+{
+    "jsonrpc": "2.0",
+    "method": "server.files.copy",
+    "params": {
+        "source": "gcodes/my_file.gcode",
+        "dest": "gcodes/subdir/my_file.gcode"
+    },
+    "id": 5623
+}

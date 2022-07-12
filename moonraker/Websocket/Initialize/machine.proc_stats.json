@@ -1,0 +1,198 @@
+{
+    "jsonrpc": "2.0",
+    "result": {
+        "moonraker_stats": [
+            {
+                "time": 1632879518.3956301,
+                "cpu_usage": 4.19,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879519.3961291,
+                "cpu_usage": 3.7,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879520.3958898,
+                "cpu_usage": 5.95,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879521.396353,
+                "cpu_usage": 4.13,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879522.3956068,
+                "cpu_usage": 4.05,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879523.3955846,
+                "cpu_usage": 3.83,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879524.3955348,
+                "cpu_usage": 5.08,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879525.395369,
+                "cpu_usage": 4.33,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879526.4042134,
+                "cpu_usage": 4.79,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879527.3955097,
+                "cpu_usage": 5.6,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879528.395373,
+                "cpu_usage": 4.23,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879529.3960786,
+                "cpu_usage": 3.88,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879530.3952432,
+                "cpu_usage": 6.35,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879531.39564,
+                "cpu_usage": 3.87,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879532.39555,
+                "cpu_usage": 3.88,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879533.395477,
+                "cpu_usage": 3.6,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879534.3959777,
+                "cpu_usage": 3.89,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879535.3952024,
+                "cpu_usage": 3.39,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879536.3957508,
+                "cpu_usage": 3.7,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879537.3964286,
+                "cpu_usage": 3.5,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879538.39588,
+                "cpu_usage": 6.3,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879539.3959591,
+                "cpu_usage": 6.11,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879540.3960862,
+                "cpu_usage": 8.24,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879541.3962917,
+                "cpu_usage": 5.17,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879542.3959687,
+                "cpu_usage": 4.27,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879543.395946,
+                "cpu_usage": 3.78,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879544.39684,
+                "cpu_usage": 3.8,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879545.395316,
+                "cpu_usage": 3.85,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879546.3956015,
+                "cpu_usage": 4.11,
+                "memory": 21404,
+                "mem_units": "kB"
+            },
+            {
+                "time": 1632879547.3955226,
+                "cpu_usage": 5.48,
+                "memory": 21404,
+                "mem_units": "kB"
+            }
+        ],
+        "throttled_state": {
+            "bits": 327685,
+            "flags": [
+                "Under-Voltage Detected",
+                "Currently Throttled",
+                "Previously Under-Volted",
+                "Previously Throttled"
+            ]
+        },
+        "cpu_temp": 45.084
+    },
+    "id": 32277
+}

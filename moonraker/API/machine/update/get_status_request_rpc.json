@@ -1,0 +1,8 @@
+{
+    "jsonrpc": "2.0",
+    "method": "machine.update.status",
+    "params": {
+        "refresh": false
+    },
+    "id": 4644
+}

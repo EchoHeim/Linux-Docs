@@ -1,0 +1,8 @@
+{
+    "jsonrpc": "2.0",
+    "method":  "machine.update.client",
+    "params": {
+        "name": "client_name"
+    },
+    "id": 8546
+}

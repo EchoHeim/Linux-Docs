@@ -1,0 +1,5 @@
+{
+    "jsonrpc": "2.0",
+    "method": "server.temperature_store",
+    "id": 2313
+}

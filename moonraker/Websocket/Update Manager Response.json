@@ -1,0 +1,12 @@
+{
+    "jsonrpc": "2.0",
+    "method": "notify_update_response",
+    "params": [
+        {
+            "application": "{app_name}",
+            "proc_id": 446461,
+            "message": "Update Response Message",
+            "complete": false
+        }
+    ]
+}

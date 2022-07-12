@@ -1,0 +1,8 @@
+{
+    "jsonrpc": "2.0",
+    "method": "machine.services.start",
+    "params": {
+        "service": "{name}"
+    },
+    "id": 4645
+}

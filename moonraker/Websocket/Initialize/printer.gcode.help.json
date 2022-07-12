@@ -1,0 +1,32 @@
+{
+    "jsonrpc": "2.0",
+    "result": {
+        "STATUS": "Report the printer status",
+        "TUNING_TOWER": "Tool to adjust a parameter at each Z height",
+        "RESTORE_GCODE_STATE": "Restore a previously saved G-Code state",
+        "PID_CALIBRATE": "Run PID calibration test",
+        "HELP": "Report the list of available extended G-Code commands",
+        "QUERY_ADC": "Report the last value of an analog pin",
+        "FIRMWARE_RESTART": "Restart firmware, host, and reload config",
+        "SAVE_CONFIG": "Overwrite config file and restart",
+        "TEMPERATURE_WAIT": "Wait for a temperature on a sensor",
+        "SAVE_GCODE_STATE": "Save G-Code coordinate state",
+        "SET_PRESSURE_ADVANCE": "Set pressure advance parameters",
+        "SET_GCODE_OFFSET": "Set a virtual offset to g-code positions",
+        "SET_VELOCITY_LIMIT": "Set printer velocity limits",
+        "QUERY_ENDSTOPS": "Report on the status of each endstop",
+        "GET_POSITION": "Return information on the current location of the toolhead",
+        "SET_HEATER_TEMPERATURE": "Sets a heater temperature",
+        "TURN_OFF_HEATERS": "Turn off all heaters",
+        "SET_STEPPER_ENABLE": "Enable/disable individual stepper by name",
+        "SET_EXTRUDER_STEP_DISTANCE": "Set extruder step distance",
+        "Z_ENDSTOP_CALIBRATE": "Calibrate a Z endstop",
+        "STEPPER_BUZZ": "Oscillate a given stepper to help id it",
+        "MANUAL_PROBE": "Start manual probe helper script",
+        "ACTIVATE_EXTRUDER": "Change the active extruder",
+        "SET_IDLE_TIMEOUT": "Set the idle timeout in seconds",
+        "RESTART": "Reload config file and restart host software",
+        "Z_OFFSET_APPLY_ENDSTOP": "Adjust the z endstop_position"
+    },
+    "id": 31011
+}

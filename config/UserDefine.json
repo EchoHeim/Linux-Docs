@@ -1,0 +1,255 @@
+{
+    "ipAddress": "127.0.0.1",
+    "port": 80,
+    "api-key": "",
+    "language": "en_US",
+    "installpath": {
+        "raspberrypi": "/home/pi/BTTScreen"
+    },
+    "terminal": {
+        "raspberrypi": "/bin/sh"
+    },
+    "settings": [
+        {
+            "displayName": {
+                "zh_CN": "语言切换",
+                "en_US": "Language"
+            },
+            "sectionId": "language",
+            "method": {
+                "name": "pageActive",
+                "page": "Page_Language",
+                "page_data": {
+                    "config_path": "",
+                    "language": [
+                        {
+                            "lang_id": "zh_CN",
+                            "displayName": "中文",
+                            "file_name": "BTTScreen_zh_CN"
+                        },
+                        {
+                            "lang_id": "en_US",
+                            "displayName": "English",
+                            "file_name": "BTTScreen_en_US"
+                        }
+                    ]
+                }
+            },
+            "style": {}
+        },
+        {
+            "displayName": {
+                "zh_CN": "重启Klipper",
+                "en_US": "Klipper Restart"
+            },
+            "sectionId": "rst_klipper",
+            "method": {
+                "name": "script",
+                "script": "RESTART"
+            },
+            "style": {}
+        },
+        {
+            "displayName": {
+                "zh_CN": "固件重启",
+                "en_US": "Firmware Restart"
+            },
+            "sectionId": "rst_firmware",
+            "method": {
+                "name": "json",
+                "path": "moonraker/API/printer/post_firmware_restart_request_rpc.json"
+            },
+            "style": {}
+        },
+        {
+            "displayName": {
+                "zh_CN": "重启相机",
+                "en_US": "Camera Restart"
+            },
+            "sectionId": "rst_cam",
+            "method": {
+                "name": "json",
+                "path": "moonraker/API/machine/services/post_restart_request_rpc.json",
+                "params": {
+                    "service": "webcamd"
+                }
+            },
+            "style": {}
+        },
+        {
+            "displayName": {
+                "zh_CN": "重启Moonraker",
+                "en_US": "Moonraker Restart"
+            },
+            "sectionId": "rst_moonraker",
+            "method": {
+                "name": "json",
+                "path": "moonraker/API/server/post_restart_request_rpc.json"
+            },
+            "style": {}
+        },
+        {
+            "displayName": {
+                "zh_CN": "树莓派重启",
+                "en_US": "RaspberryPi Restart"
+            },
+            "sectionId": "rst_rpi",
+            "method": {
+                "name": "json",
+                "path": "moonraker/API/machine/post_reboot_request_rpc.json"
+            },
+            "style": {}
+        },
+        {
+            "displayName": {
+                "zh_CN": "树莓派关机",
+                "en_US": "RaspberryPi Shutdown"
+            },
+            "sectionId": "off_rpi",
+            "method": {
+                "name": "json",
+                "path": "moonraker/API/machine/post_shutdown_request_rpc.json"
+            },
+            "style": {}
+        },
+        {
+            "displayName": {
+                "zh_CN": "打印机重启",
+                "en_US": "Printer Restart"
+            },
+            "sectionId": "rst_printer",
+            "method": {
+                "name": "json",
+                "path": "moonraker/API/printer/post_restart_request_rpc.json"
+            },
+            "style": {}
+        },
+        {
+            "displayName": {
+                "zh_CN": "打印机急停",
+                "en_US": "Printer emergency stop"
+            },
+            "sectionId": "stop_printer",
+            "method": {
+                "name": "json",
+                "path": "moonraker/API/printer/post_emergency_stop_request_rpc.json"
+            },
+            "style": {}
+        },
+        {
+            "displayName": {
+                "zh_CN": "开启相机",
+                "en_US": "Open the camera"
+            },
+            "sectionId": "open_cam",
+            "method": {
+                "name": "json_path",
+                "get": {
+                    "id": 5644,
+                    "method": {
+                        "name": "json",
+                        "path": "moonraker/API/server/database/get_item_request_rpc.json",
+                        "params": {
+                            "namespace": "fluidd",
+                            "key": "cameras.cameras"
+                        }
+                    }
+                },
+                "path": "moonraker/API/server/database/post_item_request_rpc.json",
+                "params": {
+                    "namespace": "fluidd",
+                    "key": "cameras.cameras",
+                    "value": [
+                        {
+                            "enabled": true
+                        }
+                    ]
+                }
+            },
+            "style": {}
+        },
+        {
+            "displayName": {
+                "zh_CN": "关闭相机",
+                "en_US": "Close the camera"
+            },
+            "sectionId": "off_cam",
+            "method": {
+                "name": "json_path",
+                "get": {
+                    "id": 5644,
+                    "method": {
+                        "name": "json",
+                        "path": "moonraker/API/server/database/get_item_request_rpc.json",
+                        "params": {
+                            "namespace": "fluidd",
+                            "key": "cameras.cameras"
+                        }
+                    }
+                },
+                "path": "moonraker/API/server/database/post_item_request_rpc.json",
+                "params": {
+                    "namespace": "fluidd",
+                    "key": "cameras.cameras",
+                    "value": [
+                        {
+                            "enabled": false
+                        }
+                    ]
+                }
+            },
+            "style": {}
+        },
+        {
+            "displayName": {
+                "zh_CN": "测试",
+                "en_US": "Test"
+            },
+            "sectionId": "test",
+            "visable": false,
+            "method": {
+                "name": "test",
+                "params_Combine": {
+                    "namespace": "{namespace}",
+                    "key": "{key}",
+                    "value": [
+                        {
+                            "id": "5c9175ab-5155-469f-b394-bfeb5516c9e4",
+                            "enabled": true,
+                            "name": "Default",
+                            "type": "mjpgstream",
+                            "fpstarget": 25,
+                            "url": "/webcam/?action=stream",
+                            "flipX": false,
+                            "flipY": false,
+                            "value": [
+                                {
+                                    "ic": "1"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "params": {
+                    "namespace": "fluidd",
+                    "key": "cameras.cameras",
+                    "value": [
+                        {
+                            "enabled": false,
+                            "url": "",
+                            "value": [
+                                {
+                                    "ic": "0"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "style": {
+                "type": "Std_Button",
+                "height": 100
+            }
+        }
+    ]
+}

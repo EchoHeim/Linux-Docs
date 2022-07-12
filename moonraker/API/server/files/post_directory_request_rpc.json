@@ -1,0 +1,8 @@
+{
+    "jsonrpc": "2.0",
+    "method": "server.files.post_directory",
+    "params": {
+        "path": "gcodes/my_new_dir"
+    },
+    "id": 6548
+}

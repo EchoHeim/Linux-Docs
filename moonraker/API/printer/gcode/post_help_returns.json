@@ -1,0 +1,13 @@
+{
+    "RESTORE_GCODE_STATE": "Restore a previously saved G-Code state",
+    "PID_CALIBRATE": "Run PID calibration test",
+    "QUERY_ADC": "Report the last value of an analog pin",
+    "TUNING_TOWER": "Tool to adjust a parameter at each Z height",
+    "SAVE_CONFIG": "Overwrite config file and restart",
+    "SET_DISPLAY_GROUP": "Set the active display group",
+    "SAVE_GCODE_STATE": "Save G-Code coordinate state",
+    "SET_PRESSURE_ADVANCE": "Set pressure advance parameters",
+    "SET_GCODE_OFFSET": "Set a virtual offset to g-code positions",
+    "BED_TILT_CALIBRATE": "Bed tilt calibration script",
+    ...
+}

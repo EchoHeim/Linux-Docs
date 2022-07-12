@@ -1,0 +1,13 @@
+{
+    "jsonrpc": "2.0",
+    "method": "notify_proc_stat_update",
+    "params": [{
+        "moonraker_stats": {
+            "time": 1615837812.0894408,
+            "cpu_usage": 1.99,
+            "memory": 23636,
+            "mem_units": "kB"
+        },
+        "cpu_temp": 44.008
+    }]
+}

@@ -1,0 +1,8 @@
+{
+    "jsonrpc": "2.0",
+    "method": "server.files.list",
+    "params": {
+        "root": "{root_folder}"
+    },
+    "id": 4644
+}

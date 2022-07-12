@@ -1,0 +1,23 @@
+{
+    "klippy_connected": true,
+    "klippy_state": "ready",
+    "components": [
+        "database",
+        "file_manager",
+        "klippy_apis",
+        "machine",
+        "data_store",
+        "shell_command",
+        "proc_stats",
+        "history",
+        "octoprint_compat",
+        "update_manager",
+        "power"
+    ],
+    "failed_components": [],
+    "registered_directories": ["config", "gcodes", "config_examples", "docs"],
+    "warnings": [
+        "Invalid config option 'api_key_path' detected in section [authorization]. Remove the option to resolve this issue. In the future this will result in a startup error.",
+        "Unparsed config section [fake_section] detected.  This may be the result of a component that failed to load.  In the future this will result in a startup error."
+    ]
+  }

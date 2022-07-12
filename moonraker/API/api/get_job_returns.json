@@ -1,0 +1,16 @@
+{
+    "job": {
+        "file": {"name": null},
+        "estimatedPrintTime": null,
+        "filament": {"length": null},
+        "user": null
+    },
+    "progress": {
+        "completion": null,
+        "filepos": null,
+        "printTime": null,
+        "printTimeLeft": null,
+        "printTimeOrigin": null
+    },
+    "state": "Offline"
+}

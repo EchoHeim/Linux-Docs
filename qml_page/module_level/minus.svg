@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="102" height="102" viewBox="0 0 102 102">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #65e7ff;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="home_page_temperature_button_1_reduce" class="cls-1" d="M146,315a51,51,0,1,1-51,51A51,51,0,0,1,146,315Zm-26,48h52a3,3,0,0,1,0,6H120A3,3,0,0,1,120,363Z" transform="translate(-95 -315)"/>
+</svg>

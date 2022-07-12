@@ -1,0 +1,15 @@
+{
+    "extruder": {
+        "temperatures": [21.05, 21.12, 21.1, 21.1, 21.1],
+        "targets": [0, 0, 0, 0, 0],
+        "powers": [0, 0, 0, 0, 0]
+    },
+    "temperature_fan my_fan": {
+        "temperatures": [21.05, 21.12, 21.1, 21.1, 21.1],
+        "targets": [0, 0, 0, 0, 0],
+        "speeds": [0, 0, 0, 0, 0],
+    },
+    "temperature_sensor my_sensor": {
+        "temperatures": [21.05, 21.12, 21.1, 21.1, 21.1]
+    }
+}

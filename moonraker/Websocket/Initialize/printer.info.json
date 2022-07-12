@@ -1,0 +1,15 @@
+{
+    "jsonrpc": "2.0",
+    "result": {
+        "state_message": "Printer is ready",
+        "klipper_path": "/home/pi/klipper",
+        "config_file": "/home/pi/klipper_config/printer.cfg",
+        "software_version": "v0.9.1-776-g9d11b18d",
+        "hostname": "fluiddpi",
+        "cpu_info": "4 core ARMv7 Processor rev 4 (v7l)",
+        "state": "ready",
+        "python_path": "/home/pi/klippy-env/bin/python",
+        "log_file": "/home/pi/klipper_logs/klippy.log"
+    },
+    "id": 74597
+}

@@ -1,0 +1,8 @@
+{
+    "namespaces": [
+        "gcode_metadata",
+        "history",
+        "moonraker",
+        "test_namespace"
+    ]
+}

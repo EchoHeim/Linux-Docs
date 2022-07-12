@@ -1,0 +1,16 @@
+{
+    "devices": [
+        {
+            "device": "green_led",
+            "status": "off",
+            "locked_while_printing": true,
+            "type": "gpio"
+        },
+        {
+            "device": "printer",
+            "status": "off",
+            "locked_while_printing": false,
+            "type": "tplink_smartplug"
+        }
+    ]
+}

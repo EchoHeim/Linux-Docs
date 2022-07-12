@@ -1,0 +1,9 @@
+{
+    "jsonrpc": "2.0",
+    "method": "machine.device_power.off",
+    "params": {
+        "dev_one":null,
+        "dev_two": null
+    },
+    "id": 4564
+}

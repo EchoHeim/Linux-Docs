@@ -1,0 +1,9 @@
+{
+    "jsonrpc": "2.0",
+    "method": "server.files.delete_directory",
+    "params": {
+        "path": "gcodes/my_new_dir",
+        "force": false
+    },
+    "id": 6545
+}
