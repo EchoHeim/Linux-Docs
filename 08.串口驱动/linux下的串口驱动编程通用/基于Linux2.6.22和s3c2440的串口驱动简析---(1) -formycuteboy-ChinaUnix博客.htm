@@ -1,0 +1,2160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<script src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/ga.js" async="" type="text/javascript"></script><script>
+var ua = navigator.userAgent.toLowerCase();
+if(ua.match(/MicroMessenger/i)=="micromessenger") {
+    location.href='http://blog.chinaunix.net/article.php?url='+ window.location.href;
+}
+</script>
+        <style>
+    .Blog_nav1_2 a em { display:inline-block; width:16px; height:13px; background:url(/image/v.jpg) no-repeat; overflow:hidden;}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/style.css">
+<link rel="stylesheet" type="text/css" href="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/qqFace.css">
+<link rel="stylesheet" type="text/css" href="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/asyncbox.css">
+<link rel="stylesheet" type="text/css" href="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/pager.css">
+<script type="text/javascript" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/jquery_002.js"></script>
+<script type="text/javascript" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/jquery_003.js"></script>
+<script type="text/javascript" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/AsyncBox.js"></script>
+<title>基于Linux2.6.22和s3c2440的串口驱动简析---(1) -formycuteboy-ChinaUnix博客</title>
+<meta name="description" content="Linux的终端设备这一块，涉及的面还是比较多的。经过几天的分析，有点收获，就写出来和大家分享分享，如果有不对的地方，还希望大家提出来。
+
+s3c2440的串口驱动部分，分为platform/tty/console三部分。 
+
+	
+">
+<script type="text/javascript" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/h600.js"></script>
+
+<script type="text/javascript">
+if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))){
+	try{
+		if(!/iPad/i.test(navigator.userAgent)){
+			var oldurl=window.location.href;
+			var wapUrl= oldurl.replace('blog.chinaunix.net', "m.blog.chinaunix.net") ;
+			window.location.href = wapUrl;
+		}
+	}catch(e){}
+}
+</script>
+
+
+<script language="javascript">
+//用户是否在线
+var isOnLine = '';
+$(document).ready(function(){
+	var blog = {'name': '', 'name_url': '', 'brief': ''};
+	//消息通知显示和隐藏控制
+	$('#show_message_slide_button').hover(
+		function(){
+			$('#message_slide_div').slideDown(100);											   
+		},
+		function(){
+			
+		}
+	);
+
+	$('#message_slide_div').hover(
+		function(){
+			
+		},
+		function(){
+			$('#message_slide_div').slideUp(100);
+		}
+	);
+	
+	//编辑博客名
+	$('#editbna').click(function(){
+		blog.name = $('#bnaspan a').text();
+		var val = '<input id="bnainput" type="text" style="float:left" value="" rel="' +$(this).attr('rel') + '" /><input id="bnasub" type="button" style="float:left" class="btn1"><input id="bnacanl" type="button" style="float:left" class="btn2"><div class="clear"></div>';
+		$('#bnaspan').html(val);
+		$('#bnainput').val(blog.name);
+		$(this).parent().hide();
+	});
+	
+	$('#bnasub').live('click', function(){
+	    var rel = eval('({' + $('#bnainput').attr('rel') + '})');
+		var name = $('#bnainput').val();
+		if(name != blog.name){
+	        $.ajax({
+			    type: "POST",
+			    url: rel.url,	
+			    data: {
+				    'name' : name
+			    },
+			    success:function(data){
+				    if(data == 0){
+						$('#bnaspan').html(blog.name);
+						$('#bnaspan').html('<a href="' + rel.href + '">' + $('#bnaspan').html() + '</a>');
+				    }else{
+						$('#bnaspan').html(data);
+						$('#bnaspan').html('<a href="' + rel.href + '">' + $('#bnaspan').html() + '</a>');
+				    }
+					$('#editbna').parent().show();
+				}
+			});
+		}else{
+		    $('#bnaspan').text(blog.name).html();
+			$('#bnaspan').html('<a href="' + rel.href + '">' + $('#bnaspan').html() + '</a>');
+			$('#editbna').parent().show();
+		}
+	});
+	
+	$('#bnacanl').live('click', function(){
+		var rel = eval('({' + $('#bnainput').attr('rel') + '})');
+		$('#bnaspan').html('<a href="' + rel.href + '">' + blog.name + '</a>');
+		$('#editbna').parent().show();
+	});
+	
+	//编辑签名
+	$('#editbrief').click(function(){
+	    blog.brief = $('#briefem').text();
+		var val = '<input id="brfinput" type="text" style="float:left" value="" rel="' + $(this).attr('rel') + '" /><input id="brfsub" style="float:left"  type="button" class="btn1"><input style="float:left"  id="brfcanl" type="button" class="btn2"><div class="clear"></div>';
+		$('#briefem').html(val);
+		$('#brfinput').val(blog.brief);
+		$(this).parent().hide();
+	});
+	
+	$('#brfsub').live('click', function(){
+	    var url = $('#brfinput').attr('rel');
+		var brief = $('#brfinput').val();
+		if(brief != blog.brief){
+	        $.ajax({
+			    type: "POST",
+			    url: url,	
+			    data: {
+				    'brief' : brief
+			    },
+			    success:function(data){
+				    if(data == 0){
+				        $('#briefem').html(blog.brief);
+				    }else{
+						$('#briefem').html(data);
+				    }
+					$('#editbrief').parent().show();
+				}
+			});
+		}else{
+		    $('#briefem').text(blog.brief).html();
+			$('#editbrief').parent().show();
+		}
+	});
+	
+	$('#brfcanl').live('click', function(){
+		$('#briefem').html(blog.brief);
+		$('#editbrief').parent().show();
+	});
+
+});
+</script>
+<script src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/share.js"></script><link href="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/share_style0_16.css" rel="stylesheet"></head>
+<body>
+<div style="width: 100%; height: 1px; position: absolute; bottom: 0px; left: 0px; right: 0px;"></div><div style="width: 100%; height: 1px; position: absolute; bottom: 0px; left: 0px; right: 0px;"></div><div id="main_Wed May 18 2016"><div style="visibility: hidden; opacity: 0;"><div><div><div id="yxjfd_Wed May 18 2016" style="position: fixed; right: 0px; bottom: 0px; width: 300px; height: 250px;"><script src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/a" charset="utf-8"></script><div style="display: block; box-sizing: border-box; border: 0px none; padding: 0px; margin: 0px; width: 300px; height: 250px; position: fixed; background-color: transparent; bottom: 0px; right: 0px; z-index: 2147483647;" id="d3e1528ecb40edd9ff8a_5f8b11b6af10f26c495d_1463575078268daa9d5cdc_0"><iframe allowtransparency="true" marginheight="0" marginwidth="0" border="0" scrolling="no" seamless="" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/Q5pPPb.htm" style="width:300px;height:250px;background-color:transparent;" frameborder="no" height="250" width="300"></iframe><img style="width: 1px; height: 1px; display: none;" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/Mapping.gif"><img style="width: 1px; height: 1px; display: none;" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/cm.gif"><img style="width: 1px; height: 1px; display: none;" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/verify.txt"><a style="position: absolute; width: 20px; height: 20px; bottom: 0px; right: 18px; color: transparent; display: block; border: 0px none; padding: 0px; margin: 0px; cursor: pointer; z-index: 100; background: transparent url(&quot;http://static.chaoliangyun.com/ad_rt.png&quot;) no-repeat scroll 0% 0%;"></a><div style="width: 20px; height: 20px; display: block; position: absolute; cursor: pointer; z-index: 100; background: transparent url(&quot;http://static.chaoliangyun.com/cl_rt.png&quot;) no-repeat scroll 0% 0%; bottom: 0px; right: 0px;"></div></div><script id="d3e1528ecb40edd9ff8a_5f8b11b6af10f26c495d_1463575078268daa9d5cdc" type="text/javascript">_guanggao_pub= "d3e1528ecb40edd9ff8a";_guanggao_slot= "5f8b11b6af10f26c495d";</script><script src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/d3e1528ecb40edd9ff8a" type="text/javascript"></script></div></div></div></div><div style="visibility: hidden; opacity: 0;"><div><div><div id="zxjgd_Wed May 18 2016" style="position: fixed; bottom: 0px;"><script src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/a_002" charset="utf-8"></script><div style="display: block; box-sizing: border-box; border: 0px none; padding: 0px; margin: 0px; width: 300px; height: 250px; position: relative;" id="d3e1528ecb40edd9ff8a_bd9f002dcde126c52688_1463575079f6da282195be_0"><iframe allowtransparency="true" marginheight="0" marginwidth="0" border="0" scrolling="no" seamless="" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/Q5pPPb_002.htm" style="width:300px;height:250px;background-color:transparent;" frameborder="no" height="250" width="300"></iframe><img style="width: 1px; height: 1px; display: none;" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/Mapping.gif"><img style="width: 1px; height: 1px; display: none;" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/cm.gif"><img style="width: 1px; height: 1px; display: none;" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/verify_002.txt"><a style="position: absolute; width: 20px; height: 20px; bottom: 0px; right: 0px; color: transparent; display: block; border: 0px none; padding: 0px; margin: 0px; cursor: pointer; z-index: 100; background: transparent url(&quot;http://static.chaoliangyun.com/ad_rt.png&quot;) no-repeat scroll 0% 0%;"></a></div><script id="d3e1528ecb40edd9ff8a_bd9f002dcde126c52688_1463575079f6da282195be" type="text/javascript">_guanggao_pub= "d3e1528ecb40edd9ff8a";_guanggao_slot= "bd9f002dcde126c52688";</script><script src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/d3e1528ecb40edd9ff8a" type="text/javascript"></script></div></div></div></div></div><div class="box">
+  <!-- 一级导航 -->
+  <div class="Blog_nav1">
+    <div class="Blog_nav1_2"><a href="http://blog.chinaunix.net/"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/1.png"></a><a href="http://www.chinaunix.net/" class="Blog_a1">Chinaunix首页</a> | <a href="http://bbs.chinaunix.net/" target="_blank">论坛</a> | <a href="http://u.it168.com/vip/"><font color="red">认证专区</font></a> | <a href="http://blog.chinaunix.net/" target="_blank">博客</a><span class="Blog_span1"></span>
+              <a href="http://blog.chinaunix.net/site/login.html" class="Blog_a1" onclick="linkto()">登录</a> | <a href="http://u.it168.com/Register?webid=5&amp;returnUrl=http%3A%2F%2Fblog.chinaunix.net%2Fuid-27041925-id-3999810.html" class="Blog_a1">注册</a>
+          </div>
+	<!--自动提示层-->
+	<style>
+	.bor13221{border:1px #bbb solid;width:206px;position:absolute;top:34px;left:0;background:#fff; z-index:9999;display:none}
+	.bor13221 li{height:26px;line-height:26px;padding-left:6px;color:#555;font-size:14px;cursor:pointer;}
+	.here{background:#f3f3f3;}
+    </style>
+
+	<!--自动提示层-->
+    <div class="Blog_nav1_3" style="position:relative; z-index:9999;">
+	 <div style="display: none;" class="bor13221">
+      <ul>
+      </ul>
+    </div>
+	  <form action="/site/search.html" method="post">
+		<input autocomplete="off" class="Blog_txt1" id="search_input_id" name="keywords" type="text">
+		<select class="Bolg_sel1" name="type" id="search_type_blog">
+		  <option selected="selected" value="blog">博文</option>
+		  <option value="author">博主</option>
+		</select>
+		<input value="" name="submit" class="Blog_btn1" type="submit">
+	 </form>
+    </div>
+    <div class="clear"></div>
+    <div class="Blog_nav1_layer1" id="message_slide_div" style="display:none;">
+	    <ul>
+	    	<li><a href="http://blog.chinaunix.net/message/private.html">私人消息()</a></li>
+	    	<li><a href="http://blog.chinaunix.net/message/system.html">系统消息()</a></li>
+	    	<li><a href="http://blog.chinaunix.net/member/request.html">好友请求()</a></li>
+	    	<li><a href="http://blog.chinaunix.net/member/notification.html">通知管理()</a></li>
+	    </ul>
+    </div>
+  </div>
+   <script type="text/javascript">
+  	$(function(){
+		//点击添加进文本框
+		$(".bor13221 li").live( 'click' , function(e){
+			if ( e && e.stopPropagation )
+			{
+				//因此它支持W3C的stopPropagation()方法
+				e.stopPropagation();
+			}
+			else
+			{
+				//否则，我们需要使用IE的方式来取消事件冒泡
+				window.event.cancelBubble = true; 
+			}
+			$('#search_input_id').val($(this).text());
+			$(".bor13221 ul").html('');
+			$(".bor13221").hide();
+		});
+		$(".bor13221 ul li").live({
+			mouseenter:
+			function()
+			{
+				$(".bor13221 ul li").removeClass("here");
+				$(this).addClass('here');
+			},
+			mouseleave:
+			function()
+			{
+				$(".bor13221 ul li").removeClass("here");
+				$(this).removeClass('here');
+			}
+		});
+		//自动提示
+		$('#search_input_id').keyup(function(event){
+			//取消博主的提示
+			var search_type_blog = $('#search_type_blog').val();
+			if(search_type_blog == 'author') return false;
+
+			var key = $(this).val();
+			//获取键值
+			var keycode = event.which; //38 上 40 下
+			var count = $('.bor13221 ul li').length;
+			if(key != '' && keycode != 38 && keycode != 40)
+			{
+				$.getJSON("http://api.sou.it168.com/autoWenKuCloud?jsoncallback=?",{"ty":"json","offset":"0","limit":"10","q":key}, function(result)
+					{
+						var arr = result.data;
+
+						var html ='';
+						for (i=0;i<arr.length ;i++ )   
+						{   
+							html += '<li>'+arr[i]+'</li>';
+						} 
+						
+						$('.bor13221 ul').html(html);
+						(arr.length > 1) ?  $(".bor13221").show() : $(".bor13221").hide();
+					}
+				);
+			}
+			else if(keycode == 38)
+			{
+				if(count > 0)
+				{
+					//遍历li
+					var curr_li_num;
+					$('.bor13221 ul li').each(function(index , dom){
+						if($(dom).attr('class') == 'here')
+						{
+							curr_li_num = index;
+							return false;
+						}
+					}); 
+					var next_li_num;
+					if(typeof(curr_li_num) == 'undefined')
+					{
+						next_li_num = count - 1;
+					}
+					else
+					{
+						if(curr_li_num == 0)
+						{
+							next_li_num = count - 1;
+						}
+						else
+						{
+							next_li_num = curr_li_num - 1;
+						}
+					}
+					$(".bor13221 ul li").removeClass("here");
+					$(".bor13221 ul li:eq(" + next_li_num + ")").addClass("here");
+					$('#search_input_id').val($(".bor13221 ul li:eq(" + next_li_num + ")").text());
+				}
+			}
+			else if(keycode == 40)
+			{
+				if(count > 0)
+				{
+					//遍历li
+					var curr_li_num;
+					$('.bor13221 ul li').each(function(index , dom){
+						if($(dom).attr('class') == 'here')
+						{
+							curr_li_num = index;
+							return false;
+						}
+					}); 
+					var next_li_num;
+					if(typeof(curr_li_num) == 'undefined')
+					{
+						next_li_num = 0;
+					}
+					else
+					{
+						if(curr_li_num == count - 1)
+						{
+							next_li_num = 0;
+						}
+						else
+						{
+							next_li_num = curr_li_num + 1;
+						}
+					}
+					$(".bor13221 ul li").removeClass("here");
+					$(".bor13221 ul li:eq(" + next_li_num + ")").addClass("here");
+					$('#search_input_id').val($(".bor13221 ul li:eq(" + next_li_num + ")").text());
+				}
+			}
+		});
+		$(document).click(function(e){
+			$(".bor13221").hide();
+		});
+
+	});
+  </script>
+  <!-- 头 -->
+  <!-- 推荐博客-->
+  <div class="Blog_header1">
+	    <div class="Blog_header1_1">
+      <p class="Blog_p1"><em><a href="http://blog.chinaunix.net/uid/27041925.html">For&nbsp;My&nbsp;Cute&nbsp;Boy</a></em><a href="http://formycuteboy.blog.chinaunix.net/">formycuteboy.blog.chinaunix.net</a></p>      <p class="Blog_p2" style="color:#125A94">一切问题都是自己的问题</p>
+    </div>
+        <div class="Blog_header1_2" id="hide_div1">
+    	<span class="Blog_span3"></span>
+    	<div class="float_div1" style="white-space:nowrap;" onmouseover="javascript:isMove=false" onmouseout="javascript:isMove=true">
+	    <ul style="line-height: 25px; margin-top: -25px;" id="noticev2">  
+		    		    <li><a href="http://blog.chinaunix.net/uid-30204791-id-5705047.html" target="_blank">2016中国数据库技术大会门票申请 </a></li>
+		    		    <li><a href="http://blog.chinaunix.net/uid-24789255-id-5568211.html" target="_blank">新注册用户开通“博客写作”功能，需要申请与实名认证 </a></li>
+		    		    <li><a href="http://blog.chinaunix.net/uid-10718265-id-5141960.html" target="_blank"> 互动：数据分析与云计算应用案例 （征集|参与）</a></li>
+		    	    </ul>
+	    </div>
+    </div>
+            <div class="Blog_header1_3"><a href="http://blog.chinaunix.net/uid/27041925.html">首页</a>　| 　<a href="http://blog.chinaunix.net/uid/27041925/abstract/1.html">博文目录</a>　| 　<a href="http://blog.chinaunix.net/member/profile/uid/27041925.html">关于我</a></div>
+  </div>
+    
+  <!-- 内容部分 -->
+  	<script type="text/javascript" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/XRegExp.js"></script> <!-- XRegExp is bundled with the final shCore.js during build -->
+<script type="text/javascript" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/shCore.js"></script>
+<script type="text/javascript" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/shAutoloader.js"></script>
+<link type="text/css" rel="stylesheet" href="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/shCore.css">
+<link type="text/css" rel="Stylesheet" href="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/shThemeDefault.css">
+<link href="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/fck_editorarea.css" rel="stylesheet" type="text/css">
+<style>
+.Blog_p5 em{ display:inline-block; width:16px; height:13px; background:url(/image/v.jpg) no-repeat; overflow:hidden;}
+</style>
+  <div class="Blog_contain"> 
+    <!-- 左 -->
+	<style>
+    .Blog_left1_1 p a em { display:inline-block; width:16px; height:13px; background:url(/image/v.jpg) no-repeat; overflow:hidden;}
+</style>
+
+<script language="javascript">
+$(document).ready(function(){
+	$('#ConcernBtn').bind('click',function(){
+			var cuid = '27041925';
+			var url =  '/member/concern.html';
+			var type = $(this).attr('rel');
+		
+			if(type == 'addConcern'){
+				$.ajax({
+					type : 'get',
+					url  : url,
+					data : {'op' : 'ajaxadd' , 'cuid' : cuid, 'random' : Math.random()},
+					success : function(msg){	
+					   if(msg == -1){
+						   showErrorMsg('参数错误！');
+					   } else if (msg == 0){
+						   showErrorMsg('关注失败，没有该用户！');
+					   } else if (msg == 1){
+						   showErrorMsg('关注失败，您已经关注了该用户！');
+					   } else if (msg == 2){
+						   $('#ConcernBtn').val('已关注');
+						   $('#ConcernBtn').attr('rel','delConcern');
+						   showSucceedMsg('关注成功!');
+					   } else if (msg == 3){
+						   showErrorMsg('未知错误');
+					   }
+					}
+				});	
+			} else if ( type == 'delConcern'){
+				$.ajax({
+					type : 'get',
+					url  : url,
+					data : {'op' : 'ajaxdel' , 'cuid' : cuid, 'random' : Math.random()},
+					success : function(msg){
+					   if(msg == 0){
+						   showErrorMsg('参数错误！','消息提示');
+					   } else if (msg == 1){
+						   showErrorMsg('操作失败，请尝试刷新页面重试！','消息提示');
+					   } else if (msg == 2){
+						   $('#ConcernBtn').val('加关注');
+						   $('#ConcernBtn').attr('rel','addConcern');
+						   showSucceedMsg('成功取消关注！','消息提示');
+					   } else if (msg == 3){
+						   showErrorMsg('未知错误！','消息提示'); 
+					   }
+					}
+				});	
+			}
+	});					   
+});
+
+//加好友
+function addFriend(fuid, url){
+	if(fuid == '' || fuid.length == 0){
+		showErrorMsg('缺少参数！','信息提示');
+		return false;
+	}
+	$.ajax({
+		   type : 'get',
+		   url : url,
+		   data : {'op' : 'add', 'fuid' : fuid , 'random' : Math.random()},
+		   success : function(msg){
+				if(msg == -1){
+					showErrorMsg('参数错误！','消息提示');
+				} else if (msg == -2){
+					showErrorMsg('添加好友失败,没有该用户的信息！','消息提示');
+				} else if (msg == -3){
+					showErrorMsg('添加好友失败,你不能添加自己为好友！','消息提示');
+				} else if (msg == -4){
+					showErrorMsg('添加好友未知错误,该错误已被记录！','消息提示');
+				} else if (msg == -5){
+					showErrorMsg('添加好友失败,你之前已经发送过好友请求,请耐心等待对方同意申请！','消息提示');
+				} else if (msg == -6){
+					showErrorMsg('添加好友失败,你们已经是好友了！','消息提示');
+				} else {
+					$.cover(true);
+					asyncbox.open({
+						id : 'addFriend',
+						title : '添加好友',
+						url : url,
+						data : {'op' : 'add', 'fuid' : fuid , 'random' : Math.random()},
+						width : 490,
+						height : 180,
+						scroll : 'no',
+						callback : function(action) {
+							if (action == 'close'){
+								$.cover(false);
+							}	
+						}
+					});	
+				}
+		   }
+	});	
+	
+}
+
+//发送短消息
+function postMessage(msguid, url){
+	if(msguid == '' || msguid.length == 0){
+		showErrorMsg('缺少参数！','信息提示');
+		return false;
+	}
+	
+	$.ajax({
+		   type : 'post',
+		   url : url,
+		   data : {'op' : 'ajaxpost', 'msguid' : msguid , 'random' : Math.random()},
+		   success : function(msg){
+				if(msg == -1){
+					showErrorMsg('发送失败，缺少收件人对象！','消息提示');
+				} else if(msg == -2){
+					showErrorMsg('发送失败，自己不能给自己发送短消息！','消息提示');
+				} else {
+					$.cover(true);
+					asyncbox.open({
+						id : 'postMessage',
+						title : '发送短消息',
+						url : url,
+						data : {'op' : 'ajaxpost', 'msguid' : msguid , 'random' : Math.random()},
+						width : 510,
+						height : 255,
+						scroll : 'no',
+						callback : function(action) {
+							if (action == 'close'){
+								$.cover(false);
+							}	
+						}
+					});	
+				}
+		   }
+	});	
+}
+
+</script>
+<div class="Blog_left">
+      <div class="Blog_left1 Blog_bg1">
+        <div class="Blog_left1_1">
+			<!-- 专家博客-->
+			<a href="http://blog.chinaunix.net/uid/27041925.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/25_avatar_middle.jpg" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_middle.gif'"></a>
+                        <p><a href="http://blog.chinaunix.net/uid/27041925.html">formycuteboy</a></p>
+                     </div>
+        <ul class="Blog_ul1 Blog_noline1">
+          <li>博客访问： 440314 </li>
+          <li>博文数量： 220 </li>
+          <li>博客积分： 190 </li>
+          <!--<li>专家积分： 180</li>-->
+          <li>博客等级： 入伍新兵 </li>
+		  <li>技术积分： 4352 </li>
+          <li>用  户  组：  普通用户</li>
+          <li>注册时间： 2012-06-06 08:24 </li>
+                            </ul>  
+
+
+        
+                <div class="HT_line3 HT_line3_1"></div>
+        <ul class="Blog_ul2">
+          <li><input value="加关注" id="ConcernBtn" onclick="showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html')" type="button"></li>
+          <li><input value="短消息" id="postMessageBtn" onclick="showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html')" type="button"></li>
+          <li><input value="论坛" onclick="location.href='http://bbs.chinaunix.net'" type="button"></li>
+          <li><input value="加好友" id="addFriendBtn" onclick="showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html')" type="button"></li>
+        </ul>
+              </div>
+            <div class="Blog_left2 Blog_bg1">
+        <div class="Blog_tit1">个人简介</div>
+        <p class="Blog_p3">慢行者</p>
+      </div>
+        
+         
+      <div class="Blog_left2 Blog_bg1">
+        <div class="Blog_tit1">文章分类</div>
+        <div class="Blog_left2_1">
+          <p class="Blog_p4"><a href="http://blog.chinaunix.net/uid/27041925/list/1.html">全部博文</a>（220）</p>
+          <ul id="blogCla">
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-185525-list-1.html" title="串口驱动">串口驱动</a>（5）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-182598-list-1.html" title="进程管理机制">进程管理机制</a>（11）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-182596-list-1.html" title="Linux内存管理">Linux内存管理</a>（31）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-182581-list-1.html" title="DMA机制">DMA机制</a>（14）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-182551-list-1.html" title="中断机制">中断机制</a>（28）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-176908-list-1.html" title="设备驱动">设备驱动</a>（3）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-176823-list-1.html" title="jupiter">jupiter</a>（5）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-176363-list-1.html" title="笔试&amp;面试">笔试&amp;面试</a>（5）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-176310-list-1.html" title="I2C">I2C</a>（39）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-175294-list-1.html" title="SPI">SPI</a>（27）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-175048-list-1.html" title="ubuntu">ubuntu</a>（1）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-174655-list-1.html" title="fs">fs</a>（1）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-174653-list-1.html" title="linux内核">linux内核</a>（13）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-174214-list-1.html" title="ldd">ldd</a>（16）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-173847-list-1.html" title="i.mx287">i.mx287</a>（3）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-172619-list-1.html" title="C语言日积月累">C语言日积月累</a>（6）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-172430-list-1.html" title="交叉编译器">交叉编译器</a>（1）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-170892-list-1.html" title="政策">政策</a>（1）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-170472-list-1.html" title="工作心得">工作心得</a>（6）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid-170400-list-1.html" title="随笔">随笔</a>（3）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/27041925/cid--1-list-1.html" title="未分配的博文">未分配的博文</a>（1）
+                                </li>
+                      </ul>
+        </div>
+      </div>
+      	              <div class="Blog_left2 Blog_bg1">
+        <div class="Blog_tit1">文章存档</div>
+        <div class="Blog_left2_1" id="blogdtr">
+                    <p class="Blog_p4"><span class="Blog_jia1"></span><a href="http://blog.chinaunix.net/uid/27041925/year-2013-list-1.html">2013年</a>（219）</p>
+          <ul style="display:none;" class="Blog_ul3 zk">
+                        <li><a href="http://blog.chinaunix.net/uid/27041925/year-201312-list-1.html">2013年12月</a>（1）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/27041925/year-201311-list-1.html">2013年11月</a>（4）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/27041925/year-201309-list-1.html">2013年09月</a>（107）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/27041925/year-201305-list-1.html">2013年05月</a>（40）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/27041925/year-201304-list-1.html">2013年04月</a>（52）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/27041925/year-201303-list-1.html">2013年03月</a>（9）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/27041925/year-201302-list-1.html">2013年02月</a>（2）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/27041925/year-201301-list-1.html">2013年01月</a>（4）</li>
+                      </ul>
+                    <p class="Blog_p4"><span class="Blog_jia1"></span><a href="http://blog.chinaunix.net/uid/27041925/year-2012-list-1.html">2012年</a>（1）</p>
+          <ul style="display:none;" class="Blog_ul3 zk">
+                        <li><a href="http://blog.chinaunix.net/uid/27041925/year-201212-list-1.html">2012年12月</a>（1）</li>
+                      </ul>
+                  </div>
+      </div>
+      	  	        <div class="Blog_left2 Blog_bg1">
+        <div class="Blog_tit1">我的朋友</div>
+        <ul class="Blog_ul4">
+                    <li><a href="http://blog.chinaunix.net/uid/22174347.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/22174347.html" title="hbhuanggang">hbhuangg</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/23629988.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/88_avatar_small.jpg" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/23629988.html" title="GFree_Wind">GFree_Wi</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/22030783.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/83_avatar_small_002.jpg" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/22030783.html" title="小超hide">小超hide</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/23381466.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/66_avatar_small_002.jpg" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/23381466.html" title="wangchenxicool">wangchen</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/20680966.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/66_avatar_small.jpg" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/20680966.html" title="帅得不敢出门">帅得不敢</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/23769728.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/28_avatar_small.jpg" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/23769728.html" title="MagicBoy2010">MagicBoy</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/26833883.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/83_avatar_small.jpg" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/26833883.html" title="草根老师">草根老师</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/13328506.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/06_avatar_small.jpg" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/13328506.html" title="jobchanceleo">jobchanc</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/20543672.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/72_avatar_small.jpg" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/20543672.html" title="tekkamanninja">tekkaman</a></p>
+          </li>
+                  </ul>
+      </div>
+	  	        <div class="Blog_left2 Blog_bg1">
+        <div class="Blog_tit1">最近访客</div>
+        <ul class="Blog_ul4">
+                    <li><a href="http://blog.chinaunix.net/uid/29401328.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/28_avatar_small_002.jpg" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/29401328.html" title="枫露清愁">枫露清愁</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/31339200.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/31339200.html" title="tiandk">tiandk</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/28838676.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/28838676.html" title="永不放其">永不放其</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/30173982.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/30173982.html" title="sheep116">sheep116</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/31323725.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/31323725.html" title="mokart">mokart</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/15640727.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/15640727.html" title="f22sword">f22sword</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/30155375.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/30155375.html" title="Crazy_Skyer">Crazy_Sk</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/25396627.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/25396627.html" title="von81">von81</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/25776631.html"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/31_avatar_small.jpg" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/25776631.html" title="teaco77">teaco77</a></p>
+          </li>
+                  </ul>
+      </div>
+	           <div class="Blog_left2 Blog_left3 Blog_bg1">
+        <div class="Blog_tit1">微信关注</div>
+        <div class="">
+                <div class="" style="float:left; margin-right:5px;">
+                 <img alt="" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/IT168.jpg" height="90" width="90">
+                 </div><br>
+                <div class="" style="margin-top:10px;">
+                 <p class="">
+                         IT168企业级官微
+                </p>
+                 <p class="">
+
+                 <br><br>
+                 微信号：IT168qiye
+                </p>
+                </div>
+        </div>
+<hr style="clear:both;" size="1">
+        <div class="" style="clear:both;">
+                <div class="" style="float:left; margin-right:5px;">
+                 <img alt="" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/itpub.jpg" height="90" width="90">
+                 </div><br>
+                <div class="" style="margin-top:10px;">
+                 <p class="">
+                         系统架构师大会
+                </p>
+                 <p class="">
+
+                 <br><br>
+                 微信号：SACC2013
+                </p>
+                </div>
+        </div>
+
+</div>
+      <div class="Blog_left2 Blog_bg1">
+        <div class="Blog_tit1">订阅</div>
+        <ul class="Blog_ul5">
+          <li><a href="http://blog.chinaunix.net/blog/rss/uid/27041925.html" class="Blog_a4"></a></li>
+          <li><a href="http://www.google.com/ig/add?feedurl=http%3A%2F%2Fblog.chinaunix.net%2Fuid%2F27041925.html" class="Blog_a5"></a></li>
+        </ul>
+      </div>
+      <div class="Blog_left2 Blog_left3 Blog_bg1">
+        <div class="Blog_tit1">推荐博文</div>
+        <ul class="Blog_ul6">
+				  			<li>·<a href="http://blog.chinaunix.net/uid-25356953-id-5728990.html" title="通过shell脚本进行数据库操作 ">通过shell脚本进行数据库操作...</a></li>
+		  			<li>·<a href="http://blog.chinaunix.net/uid-30646905-id-5728965.html" title="关于LINUX C中函数strtok使用要点">关于LINUX C中函数strtok使用...</a></li>
+		  			<li>·<a href="http://blog.chinaunix.net/uid-30111588-id-5728915.html" title="arm 异常处理">arm 异常处理</a></li>
+		  			<li>·<a href="http://blog.chinaunix.net/uid-23062171-id-5728835.html" title="通过shell脚本进行数据库操作 ">通过shell脚本进行数据库操作...</a></li>
+		  			<li>·<a href="http://blog.chinaunix.net/uid-26168435-id-5728816.html" title="Zabbix_agent部署">Zabbix_agent部署</a></li>
+		  						
+        </ul>
+      </div>
+      <div class="Blog_left2 Blog_left3 Blog_bg1">
+        <div class="Blog_tit1">热词专题</div>
+        <ul class="Blog_ul6">
+                        <li>·<a href="http://blog.chinaunix.net/zt/1041/ffmpegpngyuv_1041305.shtml" target="blank" title="Java调用ffmpeg进行视频转码">Java调用ffmpeg进行视频转码...</a></li>
+                        <li>·<a href="http://blog.chinaunix.net/zt/1010/patchhostsfile_1010507.shtml" target="blank" title="patch命令使用">patch命令使用</a></li>
+                        <li>·<a href="http://blog.chinaunix.net/zt/1013/linuxguifeng_1013683.shtml" target="blank" title="Linux修改用户id和所在的组">Linux修改用户id和所在的组...</a></li>
+                        <li>·<a href="http://blog.chinaunix.net/zt/1015/awkjiehu_1015321.shtml" target="blank" title="linux awk命令详解">linux awk命令详解</a></li>
+                        <li class="no_line1">·<a href="http://blog.chinaunix.net/zt/1042/ubuntu1204ooter_1042497.shtml" target="blank" title="ubuntu linux切换用户到root ">ubuntu linux切换用户到root ...</a></li>
+          <!--              <li>·<a href="http://www.dataguru.cn/zhuanti/hadoop220peizhi.shtml" target='blank' title='配置hadoop2.2.0格式化namenode问题'></a></li>
+              <li>·<a href="http://www.dataguru.cn/zhuanti/hadoopshouce.shtml" target='blank' title='hadoop2.2.0安装手册'></a></li>-->
+        </ul>
+      </div>
+	        <div class="Blog_left2 Blog_left3 Blog_bg1">
+        <div class="Blog_tit1">友情链接</div>
+        <ul class="Blog_ul6">
+                        <li>·<a href="http://www.cnblogs.com/papam/" target="blank" title="在路上">在路上</a></li>
+                        <li>·<a href="http://blog.csdn.net/fudan_abc" target="blank" title="fudan">fudan</a></li>
+                        <li>·<a href="http://blog.csdn.net/sailor_8318" target="blank" title="sailor">sailor</a></li>
+                        <li>·<a href="http://blog.csdn.net/cheny_com" target="blank" title="陈勇">陈勇</a></li>
+                        <li>·<a href="http://blog.chinaunix.net/uid/22030783.html" target="blank" title="小超">小超</a></li>
+                        <li>·<a href="http://blog.csdn.net/ce123" target="blank" title="周卫">周卫</a></li>
+                        <li>·<a href="http://blog.chinaunix.net/uid/11344913.html" target="blank" title="刘歧">刘歧</a></li>
+                        <li>·<a href="http://blog.csdn.net/fudan_abc" target="blank" title="任桥伟">任桥伟</a></li>
+                        <li>·<a href="http://blog.chinaunix.net/uid/22174347.html" target="blank" title="黄刚">黄刚</a></li>
+                        <li class="no_line1">·<a href="http://blog.donews.com/21cnbao/" target="blank" title="宋宝华">宋宝华</a></li>
+                  </ul>
+      </div>
+	  
+
+	</div>
+<script language="javascript">
+$(document).ready(function(){
+    /*目录树JS效果*/
+	$('#blogCla li > span').click(function(){
+		var cla = $(this).attr('class');
+		if(cla == 'Blog_jia1'){
+			//$('#blogCla li > span').removeClass('Blog_jian1').addClass('Blog_jia1');
+			//$('#blogCla li > .zk').css('display', 'none');
+				
+			$(this).removeClass('Blog_jia1').addClass('Blog_jian1');
+            $(this).parent().children('.zk').css('display', 'block');
+		}else{
+			$(this).removeClass('Blog_jian1').addClass('Blog_jia1');
+            $(this).parent().children('.zk').css('display', 'none');
+		}
+	});
+		
+	$('#blogdtr > p > span').click(function(){
+		var cla = $(this).attr('class');
+		if(cla == 'Blog_jia1'){
+			//$('#blogdtr > .Blog_p4 > span').removeClass('Blog_jian1').addClass('Blog_jia1');
+			//$('#blogdtr ul').css('display', 'none');
+				
+			$(this).removeClass('Blog_jia1').addClass('Blog_jian1');
+            $(this).parent().next().css('display', 'block');
+		}else{
+			$(this).removeClass('Blog_jian1').addClass('Blog_jia1');
+            $(this).parent().next().css('display', 'none');
+		}
+	});
+});
+</script>    <!-- 右 -->
+    <div class="Blog_right1">
+      <div class="Blog_right1_1 Blog_right1_11">
+        <div class="Blog_right1_2 ">
+			<!--推荐博文-->
+          <div class="Blog_tit4 Blog_tit5">
+                        <b class="Blog_b2"></b>
+            <a href="http://blog.chinaunix.net/uid-27041925-id-3999810.html">基于Linux2.6.22和s3c2440的串口驱动简析---(1) </a>
+            <em>2013-11-21 15:56:32</em>
+          </div>
+          <div class="Blog_con2">
+            <div class="Blog_con3">
+              <p>分类： <span>LINUX</span></p>
+			                <p></p>
+            </div>
+           <div class="Blog_wz1" style="word-wrap: break-word;">
+						<span style="font-family:" courier="" new";font-size:14px;"="">Linux</span><span style="font-family:" microsoft="" yahei";font-size:14px;"=""><span style="font-family:FangSong_GB2312;">的终端设备这一块，涉及的面还是比较多的。经过几天的分析，有点收获，就写出来和大家分享分享，如果有不对的地方，还希望大家提出来。</span><br>
+</span><span style="font-family:" courier="" new";font-size:14px;"=""><span style="font-family:FangSong_GB2312;"><br>
+</span>s3c2440</span><span style="font-family:FangSong_GB2312;font-size:14px;">的串口驱动部分，分为</span><span style="font-family:" courier="" new";font-size:14px;"="">platform/tty/console</span><span style="font-family:FangSong_GB2312;font-size:14px;">三部分。</span> 
+<p class="p0" style="margin-top:0pt;margin-bottom:0pt;">
+	<br>
+</p>
+<p class="p0" style="margin-top:0pt;margin-bottom:0pt;">
+	<br>
+</p>
+<p class="p0" style="margin-top:0pt;margin-bottom:0pt;">
+	<br>
+</p>
+<p class="p0" style="margin-top:0pt;margin-bottom:0pt;">
+	<span style="font-family:FangSong_GB2312;font-size:14px;">既然是分析</span><span style="font-family:" courier="" new";font-size:14px;"="">s3c2440</span><span style="font-family:FangSong_GB2312;font-size:14px;">的</span><span style="font-family:" courier="" new";font-size:14px;"="">uart</span><span style="font-family:" courier="" new";font-size:14px;"=""><span style="font-family:FangSong_GB2312;">部分</span>，<span style="font-family:FangSong_GB2312;">那么第一个该看的就是</span></span><span style="font-family:" courier="" new";font-size:14px;"="">drivers\serial\s3c2410.c<span style="font-family:FangSong_GB2312;">文件。在此文件中，可以找到下面的代码：</span></span> 
+</p>
+<div>
+	<div class="codeheads">
+		<p>
+			点击(<span style="color:red;cursor:pointer;" onclick="code_hide('code145')">此处</span>)折叠或打开
+		</p>
+	</div>
+	<div class="codeText" id="code145" style="display:block;">
+		<ol class="dp-css" style="margin:0px 1px 0px 0px;padding-left:40px;" start="1">
+			<li>
+				<span style="color:#000000;">module_init<span style="color:#0000CC;">(</span>s3c24xx_serial_modinit<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+</span> 
+			</li>
+			<li>
+				module_exit<span style="color:#0000CC;">(</span>s3c24xx_serial_modexit<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span> 
+			</li>
+		</ol>
+	</div>
+</div>
+<br>
+<p class="p0" style="margin-top:0pt;margin-bottom:0pt;">
+	<span style="font-family:FangSong_GB2312;font-size:14px;">通过上面的两句代码，就很明确的告诉我们，首先需要关注的函数就是：<span style="font-family:Courier New;">s3c24xx_serial_modinit</span></span> 
+</p>
+<div>
+	<div class="codeheads">
+		<p>
+			点击(<span style="color:red;cursor:pointer;" onclick="code_hide('code105')">此处</span>)折叠或打开
+		</p>
+	</div>
+	<div class="codeText" id="code105">
+		<ol class="dp-css" style="margin:0px 1px 0px 0px;padding-left:40px;" start="1">
+			<li>
+				<span style="color:#000000;">static <span style="color:#FF0000;">int</span> __init s3c24xx_serial_modinit<span style="color:#0000CC;">(</span>void<span style="color:#0000CC;">)</span><br>
+</span> 
+			</li>
+			<li>
+				<span style="color:#0000CC;">{</span><br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#FF0000;">int</span> ret<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				<br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;ret <span style="color:#0000CC;">=</span> uart_register_driver<span style="color:#0000CC;">(</span><span style="color:#0000CC;">&amp;</span>s3c24xx_uart_drv<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000FF;">if</span> <span style="color:#0000CC;">(</span>ret <span style="color:#0000CC;">&lt;</span> 0<span style="color:#0000CC;">)</span> <span style="color:#0000CC;">{</span><br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printk<span style="color:#0000CC;">(</span>KERN_ERR <span style="color:#FF00FF;">"failed to register UART driver\n"</span><span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return <span style="color:#0000CC;">-</span>1<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">}</span><br>
+			</li>
+			<li>
+				<br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;s3c2400_serial_init<span style="color:#0000CC;">(</span><span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span> <span style="color:#0000CC;">/</span><span style="color:#0000CC;">/</span>不需要关注<br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;s3c2410_serial_init<span style="color:#0000CC;">(</span><span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span> <span style="color:#0000CC;">/</span><span style="color:#0000CC;">/</span>不需要关注<br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;s3c2412_serial_init<span style="color:#0000CC;">(</span><span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span> <span style="color:#0000CC;">/</span><span style="color:#0000CC;">/</span>不需要关注<br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;s3c2440_serial_init<span style="color:#0000CC;">(</span><span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				<br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;return 0<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				<span style="color:#0000CC;">}</span> 
+			</li>
+		</ol>
+	</div>
+</div>
+<br>
+<span style="font-family:FangSong_GB2312;font-size:14px;">既然分为三部分，那么这次就只说一部分，那就是<span style="font-family:Courier New;">platform</span>这一部分，通过前面博文中对<span style="font-family:Courier New;">platform</span>的分析，可知，会有<span style="font-family:Courier New;">platform_driver</span>和<span style="font-family:Courier New;">platform_device</span>两个结构体会被定义。那么就让我们把他们找出来：<br>
+<br>
+<h4>
+	<span style="font-family:Courier New;">platform_driver</span>部分：
+</h4>
+通过分析<span style="line-height:21px;font-family:" courier="" new";font-size:14px;white-space:normal;"="">s3c24xx_serial_modinit</span></span><span style="font-family:FangSong_GB2312;font-size:14px;">函数，会发现如下的调用关系：</span><span style="font-family:FangSong_GB2312;font-size:14px;"><br>
+<div>
+	<div class="codeheads">
+		<p>
+			点击(<span style="color:red;cursor:pointer;" onclick="code_hide('code26')">此处</span>)折叠或打开
+		</p>
+	</div>
+	<div style="display: none;" class="codeText" id="code26">
+		<ol class="dp-css" style="margin:0px 1px 0px 0px;padding-left:40px;" start="1">
+			<li>
+				<span style="color:#000000;">s3c2410_serial_init<br>
+</span> 
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s3c24xx_serial_init<span style="color:#0000CC;">(</span><span style="color:#0000CC;">&amp;</span>s3c2410_serial_drv<span style="color:#0000CC;">,</span> <span style="color:#0000CC;">&amp;</span>s3c2410_uart_inf<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform_driver_register<span style="color:#0000CC;">(</span>drv<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;driver_register<span style="color:#0000CC;">(</span><span style="color:#0000CC;">&amp;</span>drv<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>driver<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bus_add_driver<span style="color:#0000CC;">(</span>drv<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;driver_attach<span style="color:#0000CC;">(</span>drv<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bus_for_each_dev<span style="color:#0000CC;">(</span>drv<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>bus<span style="color:#0000CC;">,</span> <span style="color:#0000FF;">NULL</span><span style="color:#0000CC;">,</span> drv<span style="color:#0000CC;">,</span> __driver_attach<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fn<span style="color:#0000CC;">(</span>dev<span style="color:#0000CC;">,</span> data<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span> <span style="color:#0000CC;">-</span><span style="color:#0000CC;">-</span><span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span> __driver_attach<span style="color:#0000CC;">(</span>dev<span style="color:#0000CC;">,</span> data<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;driver_probe_device<span style="color:#0000CC;">(</span>drv<span style="color:#0000CC;">,</span> dev<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drv<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>bus<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>match<span style="color:#0000CC;">(</span>dev<span style="color:#0000CC;">,</span> drv<span style="color:#0000CC;">)</span> <span style="color:#0000CC;">-</span><span style="color:#0000CC;">-</span><span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span> platform_match<br>
+			</li>
+			<li>
+				
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">(</span>strncmp<span style="color:#0000CC;">(</span>pdev<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>name<span style="color:#0000CC;">,</span> drv<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>name<span style="color:#0000CC;">,</span> BUS_ID_SIZE<span style="color:#0000CC;">)</span> <span style="color:#0000CC;">=</span><span style="color:#0000CC;">=</span> 0<span style="color:#0000CC;">)</span><br>
+			</li>
+			<li>
+				
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;really_probe<span style="color:#0000CC;">(</span>dev<span style="color:#0000CC;">,</span> drv<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span> 
+			</li>
+		</ol>
+	</div>
+</div>
+也就是说，<span style="line-height:21px;font-family:FangSong_GB2312;font-size:14px;white-space:normal;"></span><span style="line-height:21px;font-family:" courier="" new";font-size:14px;white-space:normal;"="">s3c24xx_serial_modinit</span>将<span style="color:#5C5C5C;line-height:15px;font-family:" courier="" new";white-space:normal;background-color:#ffffff;"="">s3c2410_serial_drv</span>这个实例化的<span style="line-height:21px;font-family:" courier="" new";font-size:14px;white-space:normal;"="">platform_driver</span>结构体注册到了platform总线上。<br>
+<div>
+	<div class="codeheads">
+		<p>
+			点击(<span style="color:red;cursor:pointer;" onclick="code_hide('code802')">此处</span>)折叠或打开
+		</p>
+	</div>
+	<div style="display: none;" class="codeText" id="code802">
+		<ol class="dp-css" style="margin:0px 1px 0px 0px;padding-left:40px;" start="1">
+			<li>
+				<span style="color:#000000;">static struct platform_driver s3c2440_serial_drv <span style="color:#0000CC;">=</span> <span style="color:#0000CC;">{</span><br>
+</span> 
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">.</span>probe&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">=</span> s3c2440_serial_probe<span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">.</span>remove&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">=</span> s3c24xx_serial_remove<span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">.</span>suspend&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">=</span> s3c24xx_serial_suspend<span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">.</span><span style="color:#0000FF;">resume</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">=</span> s3c24xx_serial_resume<span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">.</span>driver&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">=</span> <span style="color:#0000CC;">{</span><br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">.</span>name&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">=</span> <span style="color:#FF00FF;">"s3c2440-uart"</span><span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">.</span>owner&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">=</span> THIS_MODULE<span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">}</span><span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				<span style="color:#0000CC;">}</span><span style="color:#0000CC;">;</span> 
+			</li>
+		</ol>
+	</div>
+</div>
+<br>
+<br>
+<h4>
+	<span style="font-family:" courier="" new";"="">platform_driver</span>部分：
+</h4>
+有<span style="font-family:" courier="" new";"="">platform_driver</span>,自然就有<span style="font-family:" courier="" new";"="">platform_device</span>。我们可以<span style="text-indent:21pt;">在</span><span style="text-indent:21pt;font-family:" courier="" new";"="">arch\arm\plat-s3c24xx\Cpu.c</span><span style="text-indent:21pt;">文件中，找到如下函数：</span> 
+<div>
+	<div class="codeheads">
+		<p>
+			点击(<span style="color:red;cursor:pointer;" onclick="code_hide('code9')">此处</span>)折叠或打开
+		</p>
+	</div>
+	<div style="display: block;" class="codeText" id="code9">
+		<ol class="dp-css" style="margin:0px 1px 0px 0px;padding-left:40px;" start="1">
+			<li>
+				<span style="color:#000000;">　　<br>
+</span> 
+			</li>
+			<li>
+				　　static <span style="color:#FF0000;">int</span> __init s3c_arch_init<span style="color:#0000CC;">(</span>void<span style="color:#0000CC;">)</span><br>
+			</li>
+			<li>
+				　　<span style="color:#0000CC;">{</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#FF0000;">int</span> ret<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　<br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">/</span><span style="color:#0000CC;">/</span> <span style="color:#0000FF;">do</span> the correct init <span style="color:#0000FF;">for</span> cpu<br>
+			</li>
+			<li>
+				　　<br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000FF;">if</span> <span style="color:#0000CC;">(</span>cpu <span style="color:#0000CC;">=</span><span style="color:#0000CC;">=</span> <span style="color:#0000FF;">NULL</span><span style="color:#0000CC;">)</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;panic<span style="color:#0000CC;">(</span><span style="color:#FF00FF;">"s3c_arch_init: NULL cpu\n"</span><span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　<br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;ret <span style="color:#0000CC;">=</span> <span style="color:#0000CC;">(</span>cpu<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>init<span style="color:#0000CC;">)</span><span style="color:#0000CC;">(</span><span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000FF;">if</span> <span style="color:#0000CC;">(</span>ret <span style="color:#0000CC;">!</span><span style="color:#0000CC;">=</span> 0<span style="color:#0000CC;">)</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return ret<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　<br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;ret <span style="color:#0000CC;">=</span> platform_add_devices<span style="color:#0000CC;">(</span>s3c24xx_uart_devs<span style="color:#0000CC;">,</span> nr_uarts<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;return ret<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　<span style="color:#0000CC;">}</span><br>
+			</li>
+			<li>
+				　　<br>
+			</li>
+			<li>
+				　　arch_initcall<span style="color:#0000CC;">(</span>s3c_arch_init<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span> 
+			</li>
+		</ol>
+	</div>
+</div>
+<p class="p0" style="text-indent:21pt;margin-top:0pt;margin-bottom:0pt;">
+	<br>
+在查找<span style="font-family:Courier New;">s3c24xx_uart_devs</span>这个东东时，发现<span style="font-family:Courier New;">arch\arm\plat-s3c24xx\Devs.</span><span style="font-family:Courier New;">c</span><span>中有如下定义<br>
+</span> 
+</p>
+<div>
+	<div class="codeheads">
+		<p>
+			点击(<span style="color:red;cursor:pointer;" onclick="code_hide('code273')">此处</span>)折叠或打开
+		</p>
+	</div>
+	<div class="codeText" id="code273" style="display: none;">
+		<ol class="dp-css" style="margin:0px 1px 0px 0px;padding-left:40px;" start="1">
+			<li>
+				<span style="color:#000000;">struct platform_device <span style="color:#0000CC;">*</span>s3c24xx_uart_devs<span style="color:#0000CC;">[</span>3<span style="color:#0000CC;">]</span> <span style="color:#0000CC;">=</span> <span style="color:#0000CC;">{</span><br>
+</span> 
+			</li>
+			<li>
+				<span style="color:#0000CC;">}</span><span style="color:#0000CC;">;</span> 
+			</li>
+		</ol>
+	</div>
+</div>
+<br>
+</span><span style="line-height:1.5;text-indent:21pt;font-family:FangSong_GB2312;font-size:14px;">也就是它默认定义为指向<span style="font-family:Courier New;">platform_device</span>的指针数组，那细想，自然会有地方会对其进行赋值。</span><span style="line-height:1.5;text-indent:21pt;"><span style="font-family:" courier="" new";font-size:14px;"="">s3c24xx_uart_devs</span><span style="font-family:FangSong_GB2312;font-size:14px;">赋值的地方又在什么地方呢？？在源码中搜索，会发下函数：</span><br>
+<div>
+	<div class="codeheads">
+		<p>
+			点击(<span style="color:red;cursor:pointer;" onclick="code_hide('code314')">此处</span>)折叠或打开
+		</p>
+	</div>
+	<div class="codeText" id="code314">
+		<ol class="dp-css" style="margin:0px 1px 0px 0px;padding-left:40px;" start="1">
+			<li>
+				<span style="color:#000000;">　　void __init s3c24xx_init_uartdevs<span style="color:#0000CC;">(</span>char <span style="color:#0000CC;">*</span>name<span style="color:#0000CC;">,</span><br>
+</span> 
+			</li>
+			<li>
+				
+　
+　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  struct s3c24xx_uart_resources <span style="color:#0000CC;">*</span>res<span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  struct s3c2410_uartcfg <span style="color:#0000CC;">*</span>cfg<span style="color:#0000CC;">,</span> <span style="color:#FF0000;">int</span> no<span style="color:#0000CC;">)</span><br>
+			</li>
+			<li>
+				　　<span style="color:#0000CC;">{</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;struct platform_device <span style="color:#0000CC;">*</span>platdev<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;struct s3c2410_uartcfg <span style="color:#0000CC;">*</span>cfgptr <span style="color:#0000CC;">=</span> uart_cfgs<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;struct s3c24xx_uart_resources <span style="color:#0000CC;">*</span>resp<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#FF0000;">int</span> uart<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　<br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;memcpy<span style="color:#0000CC;">(</span>cfgptr<span style="color:#0000CC;">,</span> cfg<span style="color:#0000CC;">,</span> sizeof<span style="color:#0000CC;">(</span>struct s3c2410_uartcfg<span style="color:#0000CC;">)</span> <span style="color:#0000CC;">*</span> no<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　<br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000FF;">for</span> <span style="color:#0000CC;">(</span>uart <span style="color:#0000CC;">=</span> 0<span style="color:#0000CC;">;</span> uart <span style="color:#0000CC;">&lt;</span> no<span style="color:#0000CC;">;</span> uart<span style="color:#0000CC;">+</span><span style="color:#0000CC;">+</span><span style="color:#0000CC;">,</span> cfg<span style="color:#0000CC;">+</span><span style="color:#0000CC;">+</span><span style="color:#0000CC;">,</span> cfgptr<span style="color:#0000CC;">+</span><span style="color:#0000CC;">+</span><span style="color:#0000CC;">)</span> <span style="color:#0000CC;">{</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platdev <span style="color:#0000CC;">=</span> s3c24xx_uart_src<span style="color:#0000CC;">[</span>cfgptr<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>hwport<span style="color:#0000CC;">]</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　<br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;resp <span style="color:#0000CC;">=</span> res <span style="color:#0000CC;">+</span> cfgptr<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>hwport<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　<br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s3c24xx_uart_devs<span style="color:#0000CC;">[</span>uart<span style="color:#0000CC;">]</span> <span style="color:#0000CC;">=</span> platdev<span style="color:#0000CC;">;</span> <span style="color:#0000CC;">/</span><span style="color:#0000CC;">/</span>给s3c24xx_uart_devs进行赋值<br>
+			</li>
+			<li>
+				　　<br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platdev<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>name <span style="color:#0000CC;">=</span> name<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platdev<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>resource <span style="color:#0000CC;">=</span> resp<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>resources<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platdev<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>num_resources <span style="color:#0000CC;">=</span> resp<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>nr_resources<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　<br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platdev<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>dev<span style="color:#0000CC;">.</span>platform_data <span style="color:#0000CC;">=</span> cfgptr<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">}</span><br>
+			</li>
+			<li>
+				　　<br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;nr_uarts <span style="color:#0000CC;">=</span> no<span style="color:#0000CC;">;</span> <span style="color:#0000CC;">/</span><span style="color:#0000CC;">/</span>给nr_uarts进行赋值<br>
+			</li>
+			<li>
+				　　<span style="color:#0000CC;">}</span> 
+			</li>
+		</ol>
+	</div>
+</div>
+<span style="font-family:FangSong_GB2312;font-size:14px;"><br>
+那么</span></span><span style="line-height:1.5;text-indent:21pt;font-family:" courier="" new";"="">s3c24xx_init_uartdevs<span style="font-family:FangSong_GB2312;font-size:14px;">又是在什么地方被调用的呢？其调用关系如下</span><span style="font-size:14px;"><span style="font-family:FangSong_GB2312;">:<br>
+<div>
+	<div class="codeheads">
+		<p>
+			点击(<span style="color:red;cursor:pointer;" onclick="code_hide('code986')">此处</span>)折叠或打开
+		</p>
+	</div>
+	<div class="codeText" id="code986">
+		<ol class="dp-css" style="margin:0px 1px 0px 0px;padding-left:40px;" start="1">
+			<li>
+				<span style="color:#000000;">　　smdk2440_map_io<br>
+</span> 
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s3c24xx_init_io<span style="color:#0000CC;">(</span>smdk2440_iodesc<span style="color:#0000CC;">,</span> ARRAY_SIZE<span style="color:#0000CC;">(</span>smdk2440_iodesc<span style="color:#0000CC;">)</span><span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu <span style="color:#0000CC;">=</span> s3c_lookup_cpu<span style="color:#0000CC;">(</span>idcode<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				
+　
+　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tab
+ <span style="color:#0000CC;">=</span> cpu_ids<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				
+　
+　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000FF;">for</span> <span style="color:#0000CC;">(</span>count <span style="color:#0000CC;">=</span> 0<span style="color:#0000CC;">;</span> count <span style="color:#0000CC;">&lt;</span> ARRAY_SIZE<span style="color:#0000CC;">(</span>cpu_ids<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span> count<span style="color:#0000CC;">+</span><span style="color:#0000CC;">+</span><span style="color:#0000CC;">,</span> tab<span style="color:#0000CC;">+</span><span style="color:#0000CC;">+</span><span style="color:#0000CC;">)</span> <span style="color:#0000CC;">{</span><br>
+			</li>
+			<li>
+				
+　
+　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000FF;">if</span> <span style="color:#0000CC;">(</span><span style="color:#0000CC;">(</span>idcode <span style="color:#0000CC;">&amp;</span> tab<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>idmask<span style="color:#0000CC;">)</span> <span style="color:#0000CC;">=</span><span style="color:#0000CC;">=</span> tab<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>idcode<span style="color:#0000CC;">)</span><br>
+			</li>
+			<li>
+				
+　
+　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return
+ tab<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				
+　
+　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">}</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">(</span>cpu<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>map_io<span style="color:#0000CC;">)</span><span style="color:#0000CC;">(</span>mach_desc<span style="color:#0000CC;">,</span> size<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span> <span style="color:#0000CC;">-</span><span style="color:#0000CC;">-</span><span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span> s3c244x_map_io<br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s3c24xx_init_clocks<span style="color:#0000CC;">(</span>12000000<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s3c24xx_init_uarts<span style="color:#0000CC;">(</span>smdk2440_uartcfgs<span style="color:#0000CC;">,</span> ARRAY_SIZE<span style="color:#0000CC;">(</span>smdk2440_uartcfgs<span style="color:#0000CC;">)</span><span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">(</span>cpu<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>init_uarts<span style="color:#0000CC;">)</span><span style="color:#0000CC;">(</span>cfg<span style="color:#0000CC;">,</span> no<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span> <span style="color:#0000CC;">-</span><span style="color:#0000CC;">-</span><span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span> s3c244x_init_uarts<br>
+			</li>
+			<li>
+				
+　
+　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s3c24xx_init_uartdevs<span style="color:#0000CC;">(</span><span style="color:#FF00FF;">"s3c2440-uart"</span><span style="color:#0000CC;">,</span> s3c2410_uart_resources<span style="color:#0000CC;">,</span> cfg<span style="color:#0000CC;">,</span> no<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span> <span style="color:#0000CC;">/</span><span style="color:#0000CC;">/</span>初始化struct platform_device <span style="color:#0000CC;">*</span>s3c24xx_uart_devs<span style="color:#0000CC;">[</span>3<span style="color:#0000CC;">]</span> 
+			</li>
+		</ol>
+	</div>
+</div>
+</span><span style="line-height:15px;text-indent:28px;font-family:" courier="" new";white-space:normal;background-color:#ffffff;"=""><br>
+smdk2440_map_io</span><span style="font-family:FangSong_GB2312;">则是在内核启动的第二阶段被调用的：</span></span></span><span style="font-family:宋体;"> </span>
+<div>
+	<div class="codeheads">
+		<p>
+			点击(<span style="color:red;cursor:pointer;" onclick="code_hide('code732')">此处</span>)折叠或打开
+		</p>
+	</div>
+	<div class="codeText" id="code732">
+		<ol class="dp-css" style="margin:0px 1px 0px 0px;padding-left:40px;" start="1">
+			<li>
+				<span style="color:#000000;">　　start_kernel<br>
+</span> 
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setup_arch<span style="color:#0000CC;">(</span><span style="color:#0000CC;">&amp;</span>command_line<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mdesc <span style="color:#0000CC;">=</span> setup_machine<span style="color:#0000CC;">(</span>machine_arch_type<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				
+　
+　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lookup_machine_type<span style="color:#0000CC;">(</span>nr<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;machine_name <span style="color:#0000CC;">=</span> mdesc<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>name<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;paging_init<span style="color:#0000CC;">(</span><span style="color:#0000CC;">&amp;</span>meminfo<span style="color:#0000CC;">,</span> mdesc<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				
+　
+　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;devicemaps_init<span style="color:#0000CC;">(</span>mdesc<span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				
+　
+　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mdesc<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>map_io<span style="color:#0000CC;">(</span><span style="color:#0000CC;">)</span><span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_arch_irq <span style="color:#0000CC;">=</span> mdesc<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>init_irq<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_timer <span style="color:#0000CC;">=</span> mdesc<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>timer<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_machine <span style="color:#0000CC;">=</span> mdesc<span style="color:#0000CC;">-</span><span style="color:#0000CC;">&gt;</span>init_machine<span style="color:#0000CC;">;</span><br>
+			</li>
+			<li>
+				　　<br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+			</li>
+			<li>
+				　　MACHINE_START<span style="color:#0000CC;">(</span>S3C2440<span style="color:#0000CC;">,</span> <span style="color:#FF00FF;">"SMDK2440"</span><span style="color:#0000CC;">)</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">/</span><span style="color:#0000CC;">*</span> Maintainer<span style="color:#0000CC;">:</span> Ben Dooks <span style="color:#0000CC;">&lt;</span>ben@fluff<span style="color:#0000CC;">.</span>org<span style="color:#0000CC;">&gt;</span> <span style="color:#0000CC;">*</span><span style="color:#0000CC;">/</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">.</span>phys_io&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">=</span> S3C2410_PA_UART<span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">.</span>io_pg_offst&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">=</span> <span style="color:#0000CC;">(</span><span style="color:#0000CC;">(</span><span style="color:#0000CC;">(</span>u32<span style="color:#0000CC;">)</span>S3C24XX_VA_UART<span style="color:#0000CC;">)</span> <span style="color:#0000CC;">&gt;</span><span style="color:#0000CC;">&gt;</span> 18<span style="color:#0000CC;">)</span> <span style="color:#0000CC;">&amp;</span> 0xfffc<span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">.</span>boot_params&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">=</span> S3C2410_SDRAM_PA <span style="color:#0000CC;">+</span> 0x100<span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				　　<br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">.</span>init_irq&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">=</span> s3c24xx_init_irq<span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">.</span>map_io&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">=</span> smdk2440_map_io<span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">.</span>init_machine&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">=</span> smdk2440_machine_init<span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				　　&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">.</span>timer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000CC;">=</span> <span style="color:#0000CC;">&amp;</span>s3c24xx_timer<span style="color:#0000CC;">,</span><br>
+			</li>
+			<li>
+				　　MACHINE_END
+			</li>
+		</ol>
+	</div>
+</div>
+<span style="font-family:FangSong_GB2312;font-size:14px;"><br>
+到此，s3c2440的串口的platform部分就说完了，系统在注册</span><span style="text-indent:28px;font-family:" courier="" new";font-size:14px;white-space:normal;"="">s3c24xx_init</span><span style="text-indent:28px;font-family:" courier="" new";white-space:normal;"=""><span style="font-family:" courier="" new";font-size:14px;"="">_uart</span><span style="font-family:" courier="" new";font-size:14px;"="">devs</span><span style="font-family:FangSong_GB2312;font-size:14px;">后</span><span style="font-family:FangSong_GB2312;"><span style="font-size:14px;">，又注册了</span><span style="color:#5C5C5C;line-height:15px;font-family:" courier="" new";font-size:14px;white-space:normal;background-color:#ffffff;"="">s3c241</span><span style="color:#5C5C5C;line-height:15px;font-family:" courier="" new";font-size:14px;white-space:normal;background-color:#ffffff;"="">0_serial_drv，</span></span><span style="font-family:FangSong_GB2312;font-size:14px;">之后就会自动调用</span></span><span style="line-height:1.5;text-indent:28px;font-family:FangSong_GB2312;"><span style="font-size:14px;">s3c2440_serial_probe，其作用将在&nbsp;</span><span style="font-size:14px;">基于</span><span style="font-size:14px;">Linux2.6.22和s3c2440的串口驱动简析---(2）中进行分析。</span><span style="font-size:14px;"></span></span><span style="text-indent:28px;font-family:" courier="" new";white-space:normal;"=""><span style="font-family:FangSong_GB2312;"><br>
+</span></span>                                   </div>
+            <!-- <div class="Blog_con3_1">管理员在2009年8月13日编辑了该文章文章。</div> -->
+            <div class="Blog_con2_1 Blog_con3_2">
+              <div>
+			  <!--<img src="/image/default/tu_8.png">-->
+			  <!-- JiaThis Button BEGIN -->
+				<div data-bd-bind="1463575078677" class="bdsharebuttonbox bdshare-button-style0-16"><a class="bds_more" href="#" data-cmd="more"></a><a class="bds_qzone" title="分享到QQ空间" href="#" data-cmd="qzone"></a><a class="bds_tsina" title="分享到新浪微博" href="#" data-cmd="tsina"></a><a class="bds_tqq" title="分享到腾讯微博" href="#" data-cmd="tqq"></a><a class="bds_renren" title="分享到人人网" href="#" data-cmd="renren"></a><a class="bds_weixin" title="分享到微信" href="#" data-cmd="weixin"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+				<!-- JiaThis Button END -->
+			  </div>
+              阅读(2367) | 评论(0) | 转发(1) |
+			                <div class="HT_line3"></div>
+            </div>
+            <div class="Blog_con3_3">
+              <div><span id="digg_num">0</span><a href="javascript:void(0)" id="digg" bid="3999810" url="/blog/digg.html"></a></div>
+              <p>上一篇：<a href="http://blog.chinaunix.net/uid-27041925-id-3999558.html">Linux串口（serial、uart）驱动程序设计 </a></p>
+              <p>下一篇：<a href="http://blog.chinaunix.net/uid-27041925-id-3999817.html"> 基于Linux2.6.22和s3c2440的串口驱动简析---(2) </a></p>
+            </div>
+          </div>
+          <div class="Blog_con3_4">
+            <div class="Blog_tit2 Blog_tit6">相关热门文章</div>
+			            <ul class="Blog_ul7">
+						  <li><span class="Blog_span7"></span><a href="http://blog.chinaunix.net/uid-10900999-id-2920737.html" title="linux 常见服务端口" target="blank">linux 常见服务端口</a></li>
+						  <li><span class="Blog_span7"></span><a href="http://blog.chinaunix.net/uid-20457694-id-1944680.html" title="xmanager 2.0 for linux配置" target="blank">xmanager 2.0 for linux配置</a></li>
+						  <li><span class="Blog_span7"></span><a href="http://blog.chinaunix.net/uid-21025382-id-168762.html" title="【ROOTFS搭建】busybox的httpd使用CGI脚本(BusyBox httpd CGI scripts)" target="blank">【ROOTFS搭建】busybox的httpd...</a></li>
+						  <li><span class="Blog_span7"></span><a href="http://blog.chinaunix.net/uid-26824563-id-4591418.html" title="openwrt中luci学习笔记" target="blank">openwrt中luci学习笔记</a></li>
+						  <li><span class="Blog_span7"></span><a href="http://blog.chinaunix.net/uid-20378509-id-1956694.html" title="什么是shell" target="blank">什么是shell</a></li>
+			            </ul>
+            <ul class="Blog_ul7">
+						  <li><span class="Blog_span6"></span><a href="http://ask.chinaunix.net/question/785970" title="linux dhcp  peizhi roc" target="blank">linux dhcp  peizhi roc</a></li>
+						  <li><span class="Blog_span6"></span><a href="http://ask.chinaunix.net/question/785964" title="关于Unix文件的软链接" target="blank">关于Unix文件的软链接</a></li>
+						  <li><span class="Blog_span6"></span><a href="http://ask.chinaunix.net/question/785935" title="求教这个命令什么意思，我是新手，刚刚学习solaris" target="blank">求教这个命令什么意思，我是新...</a></li>
+						  <li><span class="Blog_span6"></span><a href="http://ask.chinaunix.net/question/785919" title="sed -e &quot;/grep/d&quot; 是什么意思？谢谢" target="blank">sed -e "/grep/d" 是什么意思...</a></li>
+						  <li><span class="Blog_span6"></span><a href="http://ask.chinaunix.net/question/785702" title="谁能够帮我解决LINUX  2.6  10版本驱动" target="blank">谁能够帮我解决LINUX  2.6  10...</a></li>
+			            </ul>
+            <div class="clear"></div>
+          </div>
+		  <!--
+          <div class="Blog_con3_4 Blog_con3_5">
+            <div class="Blog_tit2 Blog_tit7">热门推荐</div>
+            <ul>
+			              <li><a href="" title="" target='blank' ></a></li>
+			            </ul>
+          </div>
+		  -->
+        </div>
+      </div>
+      <div class="Blog_right1_7" id="replyList">
+		<div class="Blog_tit3">给主人留下些什么吧！~~</div>
+				<!--暂无内容-->
+				<!-- 评论分页-->
+		<div class="Blog_right1_6 Blog_right1_12">
+        		</div>
+		<!-- 评论分页-->
+        <div class="Blog_right1_10">
+          <div class="Blog_tit3">评论热议</div>
+		  		 <!--未登录 -->
+        <div class="Blog_right1_8">
+          <div class="nologin_con1"> 请登录后评论。
+            <p><a href="http://blog.chinaunix.net/site/login.html" onclick="linkto()">登录</a> <a href="http://sso.chinaunix.net/Register?return_url=http%3A%2F%2Ft.cublog.com%2F">注册</a></p>
+          </div>
+        </div>
+        <br>
+        <div>
+            <div style="float:left;margin-left:70px;margin-right:10px;">
+             <script type="text/javascript">
+            var cpro_id = "u1625692";
+            </script>
+            <script src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/c.js" type="text/javascript"></script>
+            </div>
+            <div style="margin-left:10px;">
+            <script type="text/javascript">
+            var cpro_id = "u1625694";
+            </script>
+            <script src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/c.js" type="text/javascript"></script>
+            </div>
+        </div>
+		
+        </div>
+      </div>
+    </div>
+  </div>
+  <input id="report_url" value="/blog/ViewReport.html" type="hidden">
+
+<script type="text/javascript">
+  	//测试字符串的长度 一个汉字算2个字节
+	function mb_strlen(str)
+	{
+		var len=str.length;
+		var totalCount=0;
+		for(var i=0;i<len;i++)
+		{
+			var c = str.charCodeAt(i);
+			if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {
+				totalCount++;
+			}else{
+				totalCount+=2;
+			}
+		}
+		return totalCount;
+	}
+	/*
+	var Util = {};
+	Util.calWbText = function (text, max){
+		if(max === undefined)
+			max = 500;
+		var cLen=0;
+		var matcher = text.match(/[^\x00-\xff]/g),
+			wlen  = (matcher && matcher.length) || 0;
+		//匹配url链接正则 http://***
+		var pattern = /http:\/\/([\w-]+\.)+[\w-]+(\/*[\w-\.\/\?%&=][^\s^\u4e00-\u9fa5]*)?/gi;
+		//匹配的数据存入数组
+		var arrPt = new Array();
+		var i = 0;
+		while((result = pattern.exec(text)) != null){
+			arrPt[i] = result[0];
+			i++;
+		}
+		//替换掉原文本中的链接
+		for(var j = 0;j<arrPt.length;j++){
+			text = text.replace(arrPt[j],"");
+		}
+		//减掉链接所占的长度
+		return Math.floor((max*2 - text.length - wlen)/2 - 12*i);
+	};
+	*/
+	var allowComment = '0';
+	
+	//举报弹出层
+	function showJuBao(url, cid){
+		
+			$.cover(false);
+			asyncbox.open({
+				id  : 'report_thickbox',
+				url : url,
+				title : '举报违规',
+				width : 378,
+				height : 240,
+				scroll : 'no',
+				data : {
+					'cid'	 : cid,
+					'idtype' : 2 ,
+                                        'blogurl' : window.location.href
+				},
+				callback : function(action){
+					if(action == 'close'){
+						$.cover(false);
+					}
+				}
+			});
+	}
+
+	$(function(){
+
+		//创建管理员删除的弹出层
+		$('#admin_article_del').click(function(){
+			$.cover(false);
+			asyncbox.open({
+				id : 'class_thickbox',
+				html : '<div class="HT_layer3_1"><ul><li class="HT_li1">操作原因：<select class="HT_sel7" id="del_type" name="del_type"><option value="广告文章">广告文章</option><option value="违规内容">违规内容</option><option value="标题不明">标题不明</option><option value="文不对题">文不对题</option></select></li><li class="HT_li1" ><input class="HT_btn4" id="admin_delete"  type="button" /></li></ul></div>',
+				title : '选择类型',
+				width : 300,
+				height : 150,
+				scroll : 'no',
+				callback : function(action){
+					if(action == 'close'){
+						$.cover(false);
+					}
+				}
+			});
+		});
+		$('#admin_delete').live('click' , function(){
+			///blog/logicdel/id/3480184/url/%252Fblog%252Findex.html.html
+			var type = $('#del_type').val();
+			var url = '/blog/logicdel/id/3999810/url/%252Fuid%252F27041925.html.html';
+			window.location.href= url + '?type=' + type;
+		});
+
+
+		//顶  js中暂未添加&过滤 
+		$('#digg').live('click' , function(){
+
+			if(isOnLine == '' )
+			{
+				//showErrorMsg('登录之后才能进行此操作' , '消息提示');
+				showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+				return false;
+			}
+
+			var bid = $('#digg').attr('bid');
+			var url = $('#digg').attr('url');
+
+			var digg_str = $.cookie('digg_id');
+			if(digg_str != null)
+			{
+				var arr= new Array(); //定义一数组
+
+				arr = digg_str.split(","); //字符分割     
+				for( i=0 ; i < arr.length ; i++ )   
+				{   
+					if(bid == arr[i])
+					{
+						showErrorMsg('已经赞过该文章', '消息提示'); 
+						return false;
+					}
+				} 
+			}
+			$.ajax({
+				type:"POST",
+				url:url,	
+				data: {
+					'bid' : bid 
+				},
+				dataType: 'json',
+				success:function(msg){
+					if(msg.error == 0)
+					{
+						var num = parseInt($('#digg_num').html(),10);
+						num += 1;
+						$('#digg_num').html(num);
+						$('#digg').die();
+
+						if(digg_str == null)
+						{
+							$.cookie('digg_id', bid, {expires: 30 , path: '/'});
+						}
+						else
+						{
+							$.cookie('digg_id', digg_str + ',' + bid, {expires: 30 , path: '/'});
+						}
+						showSucceedMsg('谢谢' , '消息提示');
+					}
+					else if(msg.error == 1)
+					{
+						//showErrorMsg(msg.error_content , '消息提示'); 
+						showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+					}
+					else if(msg.error == 2)
+					{
+						showErrorMsg(msg.error_content , '消息提示'); 
+					}
+				}
+			});
+		});
+		//举报弹出层
+		/*$('.box_report').live('click' , function(){
+			if(isOnLine == '' )
+			{
+				//showErrorMsg('登录之后才能进行此操作' , '消息提示');
+				showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+				return false;
+			}
+			var url = $('#report_url').val();
+			var cid = $(this).attr('cid');
+			$.cover(false);
+			asyncbox.open({
+				id  : 'report_thickbox',
+				url : url,
+				title : '举报违规',
+				width : 378,
+				height : 240,
+				scroll : 'no',
+				data : {
+					'cid'	 : cid,
+					'idtype' : 2 
+				},
+				callback : function(action){
+					if(action == 'close'){
+						$.cover(false);
+					}
+				}
+			});
+		});*/
+
+
+		//评论相关代码
+		
+		//点击回复显示评论框
+		$('.Blog_a10').live('click' , function(){
+			if(isOnLine == '' )
+			{
+				//showErrorMsg('登录之后才能进行此操作' , '消息提示');
+				showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+				return false;
+			}
+
+			if(allowComment == 1)
+			{
+				showErrorMsg('该博文不允许评论' , '消息提示'); 
+				return false;
+			}
+			var tid = $(this).attr('toid');//留言作者id
+			var bid = $(this).attr('bid');//blogid
+			var cid = $(this).attr('cid');//留言id
+			var tname = $(this).attr('tname');
+                         			var tpl  = '<div class="Blog_right1_9">';
+				tpl +=	 '<div class="div2">';
+				tpl +=     '<textarea name="" cols="" rows="" class="Blog_ar1_1" id="rmsg">文明上网，理性发言...</textarea>';
+				tpl +=	 '</div>';
+				tpl +=   '<div class="div3">';
+				tpl +=		'<div class="div3_2"><a href="javascript:void(0);" class="Blog_a11" id="quota_sbumit" url="/Comment/PostComment.html" tid="'+tid+'" bid="'+bid+'" cid="'+cid+'" tname="'+tname+'" ></a><a href="javascript:void(0)" id="qx_comment" class="Blog_a12"></a></div>';
+				tpl +=		'<div class="div3_1"><a href="javascript:void(0);" id="mface"><span></span>表情</a></div>';
+				tpl +=		'<div class="clear"></div>';
+				tpl +=	 '</div>';
+				tpl +=  '</div>';
+                                 			$('.z_move_comment').html('');
+			$(this).parents('.Blog_right1_8').find('.z_move_comment').html(tpl).show();
+		});
+		//引用的评论提交
+		$('#quota_sbumit').live('click' , function(){
+
+			if(isOnLine == '' )
+			{
+				//showErrorMsg('登录之后才能进行此操作' , '消息提示');
+				showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+				return false;
+			}
+
+			var bid   = $(this).attr('bid');
+			var tid   = $(this).attr('tid');//被引用人的id
+			var qid   = $(this).attr('cid');//引用的id
+			var url = $(this).attr('url');
+			var text = $('#rmsg').val();
+			var tname = $(this).attr('tname');
+			if(text == '' || text=='文明上网，理性发言...')
+			{
+				showErrorMsg('评论内容不能为空！' , '消息提示'); 
+				return false;
+			}
+			else
+			{
+				if(mb_strlen(text) > 1000){
+					showErrorMsg('评论内容不能超过500个汉字' , '消息提示'); 
+					return false;
+				}
+			}
+		    $.ajax({
+		        type: "post",
+			    url: url ,
+			    data: {'bid': bid , 'to' : tid , 'qid' : qid , 'text': text , 'tname' : tname },
+				dataType: 'json',
+			    success: function(data){
+				    if(data.code == 1){
+						var tpl =  '<div class="Blog_right1_8">';
+							tpl+=     '<div class="Blog_right_img1"><a href="' +data.info.url+ '" >' + data.info.header + '</a></div>';
+							tpl+=     '<div class="Blog_right_font1">';
+							tpl+=         '<p class="Blog_p5"><span><a href="' +data.info.url+ '" >' + data.info.username + '</a></span>' + data.info.dateline + '</p>';
+							tpl+=         '<p class="Blog_p7"><a href="' + data.info.quota.url + '">' + data.info.quota.username + '</a>：'+ data.info.quota.content + '</p>';
+							tpl+=         '<p class="Blog_p8">' + data.info.content + '</p><span class="span_text1"><a href="javascript:void(0);" class="Blog_a10" toid=' + data.info.fuid + ' bid=' + data.info.bid + ' cid=' + data.info.cid + '  tname = ' + data.info.username + ' >回复</a> | 　<a class="comment_del_mark" style="cursor:pointer" url="' + data.info.delurl + '" >删除</a>　| 　<a href="javascript:showJuBao(\'/blog/ViewReport.html\','+data.info.cid+')" class="box_report" cid="' + data.info.cid + '" >举报</a></span></div>';
+							tpl+=         '<div class="z_move_comment" style="display:none"></div>';
+							tpl+=	      '<div class="Blog_line1"></div></div>';
+							$('#replyList .Blog_right1_8:first').before(tpl);
+							$('.z_move_comment').html('').hide();
+				    }
+					else if(data.code == -1){
+						//showErrorMsg(data.info , '消息提示'); 
+						showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+			        }
+                },
+			    error: function(){//请求出错处理
+                        
+                }
+			});
+		});
+		//底部发表评论
+		$('#submitmsg').click(function(){
+			if(allowComment == 1)
+			{
+				showErrorMsg('该博文不允许评论' , '消息提示'); 
+				return false;
+			}
+			var bid   = $(this).attr('bid');
+			var toid  = $(this).attr('toid');
+			var text = $('#reply').val();
+			var url = $(this).attr('url');
+			if(text == '' || text=='文明上网，理性发言...')
+			{
+				showErrorMsg('评论内容不能为空！' , '消息提示'); 
+				return false;
+			}
+			else
+			{
+				if(mb_strlen(text) > 1000){
+					showErrorMsg('评论内容不能超过500个汉字' , '消息提示'); 
+					return false;
+				}
+			}
+		    $.ajax({
+		        type: "post",
+			    url: url ,
+			    data: {'bid': bid , 'to' : toid ,'text': text},
+				dataType: 'json',
+			    success: function(data){
+				    if(data.code == 1)
+					{
+						var tpl   = '<div class="Blog_right1_8">';
+							tpl  +=   '<div class="Blog_right_img1"><a href="' +data.info.url+ '" >' + data.info.header + '</a></div>';
+							tpl  +=	  '<div class="Blog_right_font1">';
+							tpl  +=       '<p class="Blog_p5"><span><a href="' +data.info.url+ '" >' + data.info.username + '</a></span>' + data.info.dateline + '</p>';
+							tpl  +=       '<p class="Blog_p6">' + data.info.content + '</p>';
+							tpl  +=		  '<div class="div1"><a href="javascript:void(0);" class="Blog_a10"  toid=' + data.info.fuid + ' bid=' + data.info.bid + ' cid=' + data.info.cid + '>回复</a> | 　<a class="comment_del_mark" style="cursor:pointer" url="' + data.info.delurl + '">删除</a>　| 　<a href="javascript:showJuBao(\'/blog/ViewReport.html\','+data.info.cid+')" class="box_report" cid="' + data.info.cid + '">举报</a></div>';
+							tpl  +=		  '<div class="z_move_comment" style="display:none"></div>';
+							tpl  +=    '</div><div class="Blog_line1"></div></div>';
+							$('.Blog_tit3:first').after(tpl);
+							$('#reply').val('文明上网，理性发言...');
+					}
+					else if(data.code == -1)
+					{
+						showErrorMsg(data.info , '消息提示'); 
+			        }
+                },
+			    error: function(){//请求出错处理
+                        
+                }
+		    });
+			
+		});
+		//底部评论重置
+		$('#reset_comment').click(function(){
+			$('#reply').val('文明上网，理性发言...');
+		});
+		//取消回复
+		$('#qx_comment').live('click' , function(){
+			$('.z_move_comment').html('').hide();
+		});
+
+
+		$('#rmsg, #reply').live({
+		    focus:function(){
+			    if($(this).val() == '文明上网，理性发言...'){
+			        $(this).val('');
+			    }
+			},
+			blur:function(){
+		        if($(this).val() == ''){
+			        $(this).val('文明上网，理性发言...');
+			    }
+			}
+		});
+		//删除留言确认
+		$('.comment_del_mark').live('click' , function(){
+			var url = $(this).attr('url');
+			asyncbox.confirm('删除留言','确认', function(action){
+				if(action == 'ok')
+				{
+					location.href = url;
+				}
+			});
+		});
+		//删除时间确认
+		$('.del_article_id').click(function(){
+			var delurl = $(this).attr('delurl');
+			asyncbox.confirm('删除文章','确认', function(action){
+				if(action == 'ok')
+				{
+					location.href = delurl;
+				}
+			});
+		});
+		/*
+		//字数限制
+		$('#rmsg, #reply').live('keyup', function(){
+			var id = $(this).attr('id');
+			var left = Util.calWbText($(this).val(), 500);
+			var eid = '#errmsg';
+			
+			if(id == 'reply') eid =  '#rerrmsg';
+			if (left >= 0)
+		        $(eid).html('您还可以输入<span>' + left + '</span>字');
+		    else
+		        $(eid).html('<font color="red">您已超出<span>' + Math.abs(left) + '</span>字 </font>');
+		});
+		*/
+		//加载表情
+	    $('#face').qqFace({id : 'facebox1', assign : 'reply', path : '/image/qqface/'});
+	    $('#mface').qqFace({id : 'facebox', assign : 'rmsg', path:'/image/qqface/'});
+	    
+		/*
+		$('#class_one_id').change(function(){
+			alert(123213);
+			var id = parseInt($(this).val() , 10);
+			if(id == 0) return false;
+			$('.hidden_son_class span').each(function( index , dom ){
+				if( dom.attr('cid')  == id )
+				{
+				}
+			});
+		});
+		*/
+		//转载文章
+		var turn_url = "/blog/viewClassPart.html";
+		$('#repost_bar').click(function(){
+			if(isOnLine == '' )
+			{
+				//showErrorMsg('登录之后才能进行此操作' , '消息提示');
+				showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+				return false;
+			}
+			var id = $(this).attr('bid');
+			asyncbox.open({
+				id  : 'turn_class_thickbox',
+				url : turn_url,
+				title : '转载文章',
+				width : 330,
+				height : 131,
+				scroll : 'no',
+				data : {
+					'id'	 : id
+				},
+				callback : function(action){
+					if(action == 'close'){
+						$.cover(false);
+					}
+				}
+			});
+		});
+		/*
+	    //转发文章
+	    $('#repost_bar').live('click' , function(){
+			if(isOnLine == '' )
+			{
+				//showErrorMsg('登录之后才能进行此操作' , '消息提示');
+				showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+				return false;
+			}
+	    	var bid  = $(this).attr('bid');
+	    	var url  = $(this).attr('url');
+	    	asyncbox.confirm('转载文章','确认', function(action){
+	    	  if(action == 'ok'){
+	    	    $.ajax({
+				type:"POST",
+				url:url,	
+				data: {
+					'bid' : bid 
+				},
+				dataType: 'json',
+				success:function(msg){
+				  if(msg.error == 0){
+				    showSucceedMsg('转发成功！', '消息提示');
+				  }else if(msg.error == 1){
+				    //location.href = '/index.php?r=site/login';
+					showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+				  }else{
+				    showErrorMsg(msg.error_content, '消息提示');
+			      }
+				}
+			  });
+	    	  }
+	    	});
+
+		});
+		*/
+
+	});
+</script>
+<!--该部分应该放在输出代码块的后面才起作用 -->
+<script type="text/javascript">
+
+SyntaxHighlighter.autoloader(
+	'applescript			/highlight/scripts/shBrushAppleScript.js',
+	'actionscript3 as3		/highlight/scripts/shBrushAS3.js',
+	'bash shell				/highlight/scripts/shBrushBash.js',
+	'coldfusion cf			/highlight/scripts/shBrushColdFusion.js',
+	'cpp c					/highlight/scripts/shBrushCpp.js',
+	'c# c-sharp csharp		/highlight/scripts/shBrushCSharp.js',
+	'css					/highlight/scripts/shBrushCss.js',
+	'delphi pascal			/highlight/scripts/shBrushDelphi.js',
+	'diff patch pas			/highlight/scripts/shBrushDiff.js',
+	'erl erlang				/highlight/scripts/shBrushErlang.js',
+	'groovy					/highlight/scripts/shBrushGroovy.js',
+	'java					/highlight/scripts/shBrushJava.js',
+	'jfx javafx				/highlight/scripts/shBrushJavaFX.js',
+	'js jscript javascript	/highlight/scripts/shBrushJScript.js',
+	'perl pl				/highlight/scripts/shBrushPerl.js',
+	'php					/highlight/scripts/shBrushPhp.js',
+	'text plain				/highlight/scripts/shBrushPlain.js',
+	'py python				/highlight/scripts/shBrushPython.js',
+	'ruby rails ror rb		/highlight/scripts/shBrushRuby.js',
+	'scala					/highlight/scripts/shBrushScala.js',
+	'sql					/highlight/scripts/shBrushSql.js',
+	'vb vbnet				/highlight/scripts/shBrushVb.js',
+	'xml xhtml xslt html	/highlight/scripts/shBrushXml.js'
+);
+SyntaxHighlighter.all();
+
+
+function code_hide(id){
+	var code = document.getElementById(id).style.display;
+	if(code == 'none'){
+		document.getElementById(id).style.display = 'block';
+	}else{
+		document.getElementById(id).style.display = 'none';
+	}
+}
+</script>
+<!--回顶部js2011.12.30-->
+<script language="javascript">
+ lastScrollY=0;
+ function heartBeat(){
+ var diffY;
+ if (document.documentElement && document.documentElement.scrollTop)
+     diffY = document.documentElement.scrollTop;
+ else if (document.body)
+     diffY = document.body.scrollTop
+ else
+     {/*Netscape stuff*/}
+ percent=.1*(diffY-lastScrollY);
+ if(percent>0)percent=Math.ceil(percent);
+ else percent=Math.floor(percent);
+ document.getElementById("full").style.top=parseInt(document.getElementById("full").style.top)+percent+"px";
+ lastScrollY=lastScrollY+percent;
+ if(lastScrollY<200)
+ {
+ document.getElementById("full").style.display="none";
+ }
+ else
+ {
+ document.getElementById("full").style.display="block";
+ }
+ }
+ var gkuan=document.body.clientWidth;
+ var ks=(gkuan-960)/2-30;
+ suspendcode="<div id=\"full\" style='right:4px;POSITION:absolute;TOP:500px;z-index:100;width:20px; height:50px;cursor:pointer;'><a href=\"javascript:void(0)\" onclick=\"window.scrollTo(0,0);\"><img src=\"\/image\/top.png\" /></a></div>"
+ document.write(suspendcode);
+ window.setInterval("heartBeat()",1);
+ </script><div id="full" style="right: 4px; position: absolute; top: 500px; z-index: 100; width: 20px; height: 50px; cursor: pointer; display: none;"><a href="javascript:void(0)" onclick="window.scrollTo(0,0);"><img src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/top.png"></a></div>  <!-- footer -->
+  <div class="Blog_footer" style="clear:both">
+    <div><a href="http://www.chinaunix.net/about/index.shtml" target="_blank" rel="nofollow">关于我们</a> | <a href="http://www.it168.com/bottomfile/it168.shtml" target="_blank" rel="nofollow">关于IT168</a> | <a href="http://www.chinaunix.net/about/connect.html" target="_blank" rel="nofollow">联系方式</a> | <a href="http://www.chinaunix.net/about/service.html" target="_blank" rel="nofollow">广告合作</a> | <a href="http://www.it168.com//bottomfile/flgw/fl.htm" target="_blank" rel="nofollow">法律声明</a> | <a href="http://sso.chinaunix.net/Register?return_url=http%3A%2F%2Fblog.chinaunix.net%2F" target="_blank" rel="nofollow">免费注册</a>
+      <p>Copyright  2001-2010 ChinaUnix.net All Rights Reserved 北京皓辰网域网络信息技术有限公司. 版权所有 </p>
+      <div>感谢所有关心和支持过ChinaUnix的朋友们
+        <p>京ICP证041476号 京ICP证060528号</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script language="javascript">
+
+//全局错误提示弹出框
+function showErrorMsg(content, title, url){
+	var url = url || '';
+	var title = title || '消息提示';
+	var html = '';
+	html += '<div class="HT_layer3_1 HT_layer3_2"><ul><li><p><span class="login_span1"></span>' + content + '</p></li>';
+	if(url == '' || url.length == 0){
+		html += '<li class="HT_li1"><input type="button" class="HT_btn2"  onclick=\'close_windows("error_msg")\'></li>';	
+	} else {
+		html += '<li class="HT_li1"><input type="button" class="login_btn1" onclick="location.href=\'' + url + '\'"></li>';
+	}
+	html += '</ul></div>';
+	$.cover(true);
+	   asyncbox.open({
+		 id: 'error_msg',
+		 title : title,
+		 html : html,
+		 'callback' : function(action){
+			 if(action == 'close'){
+				 $.cover(false);
+			 }
+		 }
+	});
+}
+
+//全局正确提示
+function showSucceedMsg(content, title , url ){
+	var url = url || '';
+	var title = title || '消息提示';
+	var html = '';
+	html += '<div class="HT_layer3_1 HT_layer3_2"><ul><li><p><span class="login_span2"></span>' + content + '</p></li>';
+	if(url == '' || url.length == 0){
+		html += '<li class="HT_li1"><input type="button" class="HT_btn2"  onclick=\'close_windows("error_msg")\'></li>';	
+	} else {
+		html += '<li class="HT_li1"><input type="button" class="HT_btn2" onclick="location.href=\'' + url + '\'"></li>';
+	}
+	html += '</ul></div>';
+	$.cover(true);
+	asyncbox.open({
+		 id: 'error_msg',
+		 title : title,
+		 html : html,
+		 'callback' : function(action){
+			 if(action == 'close'){
+				 $.cover(false);
+			 }
+		 }
+	});
+}
+
+//关闭指定id的窗口
+function close_windows(id){
+	$.cover(false);
+	$.close(id);
+}
+
+
+//公告
+var tID;
+var tn;                        // 高度
+var nStopTime = 5000;        // 不同行间滚动时间隔的时间，值越小，移动越快
+var nSpeed = 50;            // 滚动时，向上移动一像素间隔的时间，值越小，移动越快
+var isMove = true;
+var nHeight = 25;
+var nS = 0;
+var nNewsCount = 3;
+
+/**
+ * n 用于表示是否为第一次运行
+ **/
+function moveT(n)
+{
+    clearTimeout(tID)
+    var noticev2 = document.getElementById("noticev2")
+    nS = nSpeed;
+    
+    // 只在第一次调用时运行，初始化环境（有没有参数）
+    if (n)
+    {
+        // 设置行高
+        noticev2.style.lineHeight = nHeight + "px";
+        // 初始化显示位置
+        tn = 0;
+        // 刚进入时在第一行停止时间
+        nS = nStopTime;
+    }
+    
+    // 判断鼠标是否指向层
+    if (isMove)
+    {
+        // 向上移动一像素
+        tn--;
+        // 如果移动到最下面一行了，则移到顶行
+        if (Math.abs(tn) == nNewsCount * nHeight)
+        {
+            tn = 0;
+        }
+        // 设置位置
+        noticev2.style.marginTop = tn + "px";
+        // 完整显示一行时，停止一段时间
+        if (tn % nHeight == 0)
+        {
+            nS = nStopTime;
+        }
+    }
+
+    tID = setTimeout("moveT()", nS);
+}
+moveT(1);    // 此处可以传入任何参数
+</script>
+<script language="javascript" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/pv.js"></script>
+<script>
+function sendPV(){
+    var pvTrack = new PvTrack();
+    pvTrack.type = 35; // 频道类别ID
+    pvTrack.channel = 189; // 频道ID
+    pvTrack.pageType = 0;
+    pvTrack.track();
+}
+window.setTimeout("sendPV()", 1000);
+</script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20237423-2']);
+  _gaq.push(['_setDomainName', '.chinaunix.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F0ee5e8cdc4d43389b3d1bfd76e83216b' type='text/javascript'%3E%3C/script%3E"));
+
+function linkto(){
+    setCookie("returnUrl", location.href, 1463661477, "/");
+}
+function linktoOut(){
+    setCookie("returnOutUrl", location.href, 1463661477, "/");
+}
+//JS写COOKIE
+function setCookie(name, value, expires, path, domain){
+	if(!arguments[2]) expires = 3600 * 24;
+	if(!arguments[3]) path = "";
+	if(!arguments[4]) domain = "";
+	var str=name+"="+escape(value);
+	if(expires!=""){
+		var date=new Date();
+		date.setTime(date.getTime()+expires*1000);
+		str+=";expires="+date.toGMTString();
+	}
+	if(path!=""){
+		str+=";path="+path;//指定可访问cookie的目录
+	}
+	if(domain!=""){
+		str+=";domain="+domain;//指定可访问cookie的域
+	}
+	document.cookie = str;
+}
+
+</script><script src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/h.htm" type="text/javascript"></script>
+<script type="text/javascript" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/jquery.js"></script>
+
+
+<div id="asyncbox_cover" unselectable="on" style="opacity:0.1;filter:alpha(opacity=10);background:#000"></div><div id="asyncbox_clone"></div><div id="asyncbox_focus"></div><div id="asyncbox_load"><div><span></span></div></div><img style="display: none;" src="%E5%9F%BA%E4%BA%8ELinux2.6.22%E5%92%8Cs3c2440%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8%E7%AE%80%E6%9E%90---%281%29%20-formycuteboy-ChinaUnix%E5%8D%9A%E5%AE%A2_files/baidu_jgylogo3.gif"></body></html>

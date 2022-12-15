@@ -1,0 +1,379 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0047)http://www.mamicode.com/info-detail-504021.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML lang="zh-cn"><HEAD id="Head1"><META 
+content="IE=11.0000" http-equiv="X-UA-Compatible">
+
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<META name="keywords" content="码迷,mamicode.com,互联网,软件开发,开源,asp,asp.net,android,apple,jsp,php,Windows,数据库,HTML,JS,CSS,技术文章,游戏,创业,手机相关">
+<META name="baidu-site-verification" content="TEj1q15lpz">
+<META name="description" content="作者：彭东林邮箱：pengdonglin137@163.com开发板：tiny4412ADK+S700 4GB Flash主机：Wind7 64位虚拟机：Vmware+Ubuntu12_04u-boot：U-Boot 2010.12Linux内核版本：linux-3.0.31Android版本：an..."><TITLE>
+	tiny4412 串口驱动分析四 --- 修改默认的串口输出 </TITLE><LINK href="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/css.css" 
+rel="stylesheet" type="text/css"> 
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></SCRIPT>
+<LINK href="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/prettify.css" rel="stylesheet" 
+type="text/css">     
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/prettify.js" type="text/javascript" charset="utf-8"></SCRIPT>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.9600.18315"></HEAD> 
+<BODY>
+<DIV class="width100bi height20px divbackgroundcolor">
+<DIV class="width1000px divmargin0auto">
+<DIV class="divfloatleft"></DIV>
+<DIV class="divfloatright">
+<DIV class="paddingtop3" id="logintopdescription"></DIV></DIV>
+<DIV class="divfloatclear"></DIV></DIV></DIV>
+<DIV class="width1000px divmargin0auto margintop20bottom20">
+<DIV class="width120px divfloatleft"><A title="码迷，mamicode.com" href="http://www.mamicode.com/"><IMG 
+width="109" height="60" alt="码迷，mamicode.com" src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/logo.png" 
+border="0">         </A>     </DIV>
+<DIV class="width880px divfloatright">
+<DIV class="menuDiv">
+<UL>
+  <LI class="bottomline width10px">&nbsp;</LI>
+  <LI class="title0" id="default-aspx"><A title="码迷，mamicode.com" href="http://www.mamicode.com/">首页</A></LI>
+  <LI class="title1" id="infolist-2"><A title="Web开发" href="http://www.mamicode.com/info-list-2-1.html">Web开发</A></LI>
+  <LI class="title1" id="infolist-3"><A title="Windows程序" href="http://www.mamicode.com/info-list-3-1.html">Windows程序</A></LI>
+  <LI class="title1" id="infolist-4"><A title="编程语言" href="http://www.mamicode.com/info-list-4-1.html">编程语言</A></LI>
+  <LI class="title1" id="infolist-5"><A title="数据库" href="http://www.mamicode.com/info-list-5-1.html">数据库</A></LI>
+  <LI class="title1" id="infolist-6"><A title="移动开发" href="http://www.mamicode.com/info-list-6-1.html">移动开发</A></LI>
+  <LI class="title1" id="infolist-8"><A title="系统相关" href="http://www.mamicode.com/info-list-8-1.html">系统相关</A></LI>
+  <LI class="title1" id="infolist-9"><A title="微信" href="http://www.mamicode.com/info-list-9-1.html">微信</A></LI>
+  <LI class="title1" id="infolist-11"><A title="其他好文" href="http://www.mamicode.com/info-list-11-1.html">其他好文</A></LI>
+  <LI class="title1" id="memberhtml"><A title="会员" href="http://www.mamicode.com/member.html">会员</A></LI>
+  <LI class="bottomline width10px">&nbsp;</LI></UL></DIV></DIV>
+<DIV class="divfloatclear"></DIV></DIV>
+<DIV class="margintop10bottom10" style="margin: 0px auto; width: 1000px;">
+<SCRIPT type="text/javascript">
+        var cpro_id = "u2192072";
+        (window["cproStyleApi"] = window["cproStyleApi"] || {})[cpro_id] = { at: "3", rsi0: "1000", rsi1: "120", pat: "6", tn: "baiduCustNativeAD", rss1: "#FFFFFF", conBW: "1", adp: "1", ptt: "0", titFF: "%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91", titFS: "14", rss2: "#000000", titSU: "0", ptbg: "90", piw: "0", pih: "0", ptp: "0" }
+    </SCRIPT>
+     
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/c.js" type="text/javascript"></SCRIPT>
+ </DIV>
+<DIV class="divdaohang">
+<DIV class="divtitlefont"><A title="码迷首页" href="http://www.mamicode.com/">首页</A> 
+            <SPAN id="lbltitle">&gt; <A href="http://www.mamicode.com/infolist-11-1.html">其他好文</A> 
+&gt; 详细</SPAN>         </DIV></DIV>
+<DIV class="divmain">
+<DIV class="width70bi divfloatleft" style="min-height: 2000px;">
+<DIV class="marginright20">
+<DIV class="divtextaligncenter">
+<SCRIPT type="text/javascript">
+        var cpro_id = "u2391650";
+        (window["cproStyleApi"] = window["cproStyleApi"] || {})[cpro_id] = { at: "3", rsi0: "680", rsi1: "250", pat: "6", tn: "baiduCustNativeAD", rss1: "#FFFFFF", conBW: "1", adp: "1", ptt: "0", titFF: "%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91", titFS: "14", rss2: "#000000", titSU: "0", ptbg: "90", piw: "0", pih: "0", ptp: "0" }
+    </SCRIPT>
+     
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/c.js" type="text/javascript"></SCRIPT>
+ </DIV>
+<DIV class="detailtitle divtextaligncenter divborderbottomdotted">
+<H1 class="detailtitle" id="Htitle">tiny4412 串口驱动分析四 --- 修改默认的串口输出</H1></DIV>
+<DIV class="detail1 divtextaligncenter">                    时间：<SPAN class="colorlv" 
+id="Label2">2015-03-07 22:31:12</SPAN>                    
+&nbsp;&nbsp;&nbsp;&nbsp;  阅读：<SPAN class="colorCheng" id="Label1">664</SPAN>     
+               &nbsp;&nbsp;&nbsp;&nbsp;  评论：<SPAN class="colorCheng" id="lblcommentcount">0</SPAN> 
+                   &nbsp;&nbsp;&nbsp;&nbsp;  收藏：<SPAN class="colorCheng" id="lblfavorite">0</SPAN> 
+                   &nbsp;&nbsp;&nbsp;&nbsp;  <A class="acursorpointer" id="infofavorite">[点我收藏+]</A> 
+                </DIV>
+<DIV class="detailcontennt"><SPAN id="Label3">
+<P>标签：</P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">作者：彭东林</SPAN></P>
+<P><SPAN style="font-family: courier new,courier; font-size: 18px;">邮箱：<A href="http://www.mamicode.com/cdn-cgi/l/email-protection#a3d3c6cdc4c7cccdc4cfcacd929094e39295908dc0ccce"><SPAN 
+class="__cf_email__" data-cfemail="79091c171e1d16171e151017484a4e39484f4a571a1614">[email&nbsp;protected]</SPAN>
+<SCRIPT type="text/javascript" data-cfhash="f9e31">/* <![CDATA[ */!function(t,e,r,n,c,a,p){try{t=document.currentScript||function(){for(t=document.getElementsByTagName('script'),e=t.length;e--;)if(t[e].getAttribute('data-cfhash'))return t[e]}();if(t&&(c=t.previousSibling)){p=t.parentNode;if(a=c.getAttribute('data-cfemail')){for(e='',r='0x'+a.substr(0,2)|0,n=2;a.length-n;n+=2)e+='%'+('0'+('0x'+a.substr(n,2)^r).toString(16)).slice(-2);p.replaceChild(document.createTextNode(decodeURIComponent(e)),c)}p.removeChild(t)}}catch(u){}}()/* ]]> */</SCRIPT>
+</A></SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">开发板：tiny4412ADK+S700 
+4GB Flash</SPAN></P>
+<P><SPAN style="font-family: courier new,courier; font-size: 18px;">主机：Wind7 
+64位</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">虚拟机：Vmware+Ubuntu12_04</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">u-boot：U-Boot 
+2010.12</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">Linux内核版本：linux-3.0.31</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">Android版本：android-4.1.2</SPAN></P>
+<P>&nbsp;</P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">tiny4412默认是从uart0来输出和读取信息的，而tiny4412上留了两个串口，分别对应的是uart0和uart3，下面我们修改配置，使控制终端从uart0变成uart3</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;</SPAN></P>
+<H1><SPAN 
+style="font-family: courier new,courier; font-size: 18px;"><STRONG>修改u-boot</STRONG><STRONG>配置</STRONG></SPAN></H1>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">在前面分析u-boot串口驱动的时候发现，在tiny4412.h中定义了</SPAN></P>
+<P><SPAN style="font-family: courier new,courier; font-size: 18px;">#define 
+CONFIG_SERIAL0&nbsp; 1</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">然后再初始化串口的时候会根据这个宏找到uart0的控制器基地址，然后配置其波特率等等</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+并且u-boot的printf最终也会通过向uart0的发送数据寄存器写数据来实现数据的发送，综上，对于u-boot，我们只需要修改tiny4412.h，将</SPAN></P>
+<P><SPAN style="font-family: courier new,courier; font-size: 18px;">#define 
+CONFIG_SERIAL0&nbsp; 1</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">修改为：</SPAN></P>
+<P><SPAN style="font-family: courier new,courier; font-size: 18px;">#define 
+CONFIG_SERIAL3&nbsp; 1</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">即可</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;</SPAN></P>
+<H1><SPAN 
+style="font-family: courier new,courier; font-size: 18px;"><STRONG>修改u-boot</STRONG><STRONG>给内核传递的参数bootargs</STRONG></SPAN></H1>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">原来的bootargs是：</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">console=ttySAC0,115200n8 
+androidboot.console=ttySAC0 uhost0=n ctp=2 skipcali=y vmalloc=384m 
+lcd=S70</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">由于改成了uart3，我们需要把bootargs改成：</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">console=ttySAC3,115200n8 
+androidboot.console=ttySAC3 uhost0=n ctp=2 skipcali=y vmalloc=384m 
+lcd=S70</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;</SPAN></P>
+<H1><SPAN 
+style="font-family: courier new,courier; font-size: 18px;"><STRONG>修改内核配置</STRONG></SPAN></H1>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">这里主要是内核在自解压的时候打印信息，在这个时候Linux内核还尚未启动，还是直接操作底层的硬件寄存器，并且不再初始化串口，因为之前u-boot已经将uart3初始化了，这里只需要告诉Linux内核的自解压程序使用uart3输出解压信息即可，通过分析之前的Linux下的串口驱动发现，需要将<EM>CONFIG_S3C_LOWLEVEL_UART_PORT</EM>改成3即可，测试发现，如果不修改这里，内核也无法正常启动，因为在执行putstr时会卡死，此时可以将解压时putstr注释掉即可。</SPAN></P>
+<P align="center"><SPAN style="font-family: courier new,courier; font-size: 18px;"><IMG 
+alt="技术分享" src="">&nbsp;</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;</SPAN></P>
+<P><A title="tiny4412 串口驱动分析四 --- 修改默认的串口输出,mamicode.com" style="color: rgb(255, 255, 255);" 
+href="http://www.mamicode.com/info-detail-504021.html" target="_blank">tiny4412 
+串口驱动分析四 --- 修改默认的串口输出</A></P>
+<P>标签：</P></SPAN>                 </DIV>
+<DIV id="divcomment">
+<DIV>
+<DIV class=" divtextaligncenter">
+<DIV class="detailcai" id="infono">
+<DIV class="detailcai1 colorboldlan">踩</DIV>
+<DIV class="detailcai2 colorboldlan">(<SPAN id="spanNo">0</SPAN>)</DIV></DIV>
+<DIV class="detailzan" id="infoyes">
+<DIV class="detailzan1 colorboldHong">赞</DIV>
+<DIV class="detailzan2 colorboldHong">(<SPAN id="spanYes">0</SPAN>)</DIV></DIV>
+<DIV class="divfloatclear"></DIV></DIV>
+<DIV class="divtextalignright margintop10">
+<DIV class="width100bi paddingleft10right10"><SPAN class="colorboldHong" id="spanYesContent"></SPAN>&nbsp; 
+<SPAN class="colorboldlan" id="spanNoContent"></SPAN>&nbsp; <SPAN class="colorboldHong" 
+id="spanBadContent"></SPAN>                             </DIV></DIV></DIV>
+<DIV class="divtextalignright margintop10"><SPAN class="detailjubao" id="infobad">举报</SPAN> 
+                    </DIV>
+<DIV class="margintop20bottom20">
+<DIV class="divfloatleft">
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/f.txt" async=""></SCRIPT>
+         <!-- mamicode-infodetail-336x280-1 -->         <INS class="adsbygoogle" 
+style="width: 336px; height: 280px; display: inline-block;" data-ad-slot="6851602680" 
+data-ad-client="ca-pub-8616102841876629"></INS>         
+<SCRIPT>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </SCRIPT>
+     </DIV>
+<DIV class="divfloatright">
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/f.txt" async=""></SCRIPT>
+         <!-- mamicode-infodetail-336x280-2 -->         <INS class="adsbygoogle" 
+style="width: 336px; height: 280px; display: inline-block;" data-ad-slot="8328335888" 
+data-ad-client="ca-pub-8616102841876629"></INS>         
+<SCRIPT>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </SCRIPT>
+     </DIV>
+<DIV class="divfloatclear"></DIV></DIV>
+<DIV class="divtextalignleft margintop20" id="comment">
+<DIV class="detailpinglun1"><SPAN class="detailpinglun2 title6">评论</SPAN><SPAN 
+class="detailpinglun3">一句话评论（<SPAN class="colorboldHong" 
+id="commentCount">0</SPAN>）</SPAN></DIV>
+<DIV class="paddingtop20">
+<DIV class="divtextaligncenter margintop20" id="commentlistend" name="commentlistend"><SPAN 
+id="lblpage">共<SPAN class="pagecolorc">0</SPAN>条&nbsp;&nbsp;</SPAN>              
+               </DIV></DIV>
+<DIV class="margintop20">
+<FORM action="/ajaxjs/info_detail_commentadd.aspx" method="post">
+<DIV class="divtextalignleft paddingtop20">
+<DIV class="divbackgroundcolor1" id="commenthf"></DIV>
+<DIV><TEXTAREA name="tbcommentcontent" class="tb" id="tbcommentcontent" style="width: 680px; height: 120px;"></TEXTAREA> 
+                                </DIV></DIV>
+<DIV class="divtextalignright paddingtop10 "><SPAN class="colorboldHong" id="addCommentTishi">登录后才能评论！</SPAN> 
+                                <SPAN id="loginno"><INPUT class="mbtn1" onclick="location.href='http://member.mamicode.com/login.aspx?returnUrl=http://www.mamicode.com/infodetail.aspx?id=504021';" type="button" value="登录"></SPAN> 
+                            </DIV></FORM></DIV></DIV></DIV></DIV></DIV>
+<DIV class="width30bi divfloatright">
+<DIV class="paddingbottom20">
+<SCRIPT type="text/javascript">        (function () { document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E')); var bdcs = document.createElement('script'); bdcs.type = 'text/javascript'; bdcs.async = true; bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=7490613033886828738' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date() / 3600000); var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(bdcs, s); })();</SCRIPT>
+ </DIV>
+<DIV class="paddingbottom10">
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/f.txt" async=""></SCRIPT>
+     <!-- 1-mamicode-right-300x600 -->     <INS class="adsbygoogle" style="width: 300px; height: 600px; display: inline-block;" 
+data-ad-slot="8947049888" data-ad-client="ca-pub-8616102841876629"></INS>     
+<SCRIPT>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </SCRIPT>
+     
+<SCRIPT type="text/javascript">
+        /*mamicode-infodetail-zuoyouxuanfu-120*300 创建于 2015-03-13*/
+        var cpro_id = "u1987286";
+    </SCRIPT>
+     
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/f.js" type="text/javascript"></SCRIPT>
+     
+<SCRIPT>
+        var baiduImagePlus = {
+            noLogo: true,
+            unionId: 'u2416663',
+            formList: [{ formId: 2}]
+        };
+    </SCRIPT>
+     
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/i.js"></SCRIPT>
+ </DIV>
+<DIV class="paddingbottom10">
+<SCRIPT type="text/javascript">
+var sogou_ad_id=547185;
+var sogou_ad_height=250;
+var sogou_ad_width=300;
+</SCRIPT>
+ 
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/c(1).js" type="text/javascript"></SCRIPT>
+ </DIV>
+<DIV class="width100bi divborder">
+<DIV class="divtitle">
+<DIV class="divfloatleft divtitlefont" id="infofile1_div1">分享档案</DIV>
+<DIV class="divfloatright"><A title="分享档案更多" class="colorCheng" href="http://www.mamicode.com/infotimemore.html">更多&gt;</A> 
+        </DIV>
+<DIV class="divfloatclear"></DIV></DIV>
+<DIV class="divtextalignleft paddingleft10right10 margintop10bottom10 heightline30px"><A 
+title="2016年05月16日技术分享文章" class="taga" href="http://www.mamicode.com/info-time-20160516-1.html" 
+target="_blank">2016年05月16日                         (983)</A><BR><A title="2016年05月15日技术分享文章" 
+class="taga" href="http://www.mamicode.com/info-time-20160515-1.html" target="_blank"> 
+                       2016年05月15日                         (1660)</A><BR><A 
+title="2016年05月14日技术分享文章" class="taga" href="http://www.mamicode.com/info-time-20160514-1.html" 
+target="_blank">                        2016年05月14日                         
+(1468)</A><BR><A title="2016年05月13日技术分享文章" class="taga" href="http://www.mamicode.com/info-time-20160513-1.html" 
+target="_blank">                        2016年05月13日                         
+(4938)</A><BR><A title="2016年05月12日技术分享文章" class="taga" href="http://www.mamicode.com/info-time-20160512-1.html" 
+target="_blank">                        2016年05月12日                         
+(4719)</A><BR><A title="2016年05月11日技术分享文章" class="taga" href="http://www.mamicode.com/info-time-20160511-1.html" 
+target="_blank">                        2016年05月11日                         
+(2228)</A><BR><A title="2016年05月10日技术分享文章" class="taga" href="http://www.mamicode.com/info-time-20160510-1.html" 
+target="_blank">                        2016年05月10日                         
+(2009)</A><BR><A title="2016年05月09日技术分享文章" class="taga" href="http://www.mamicode.com/info-time-20160509-1.html" 
+target="_blank">                        2016年05月09日                         
+(1627)</A><BR><A title="2016年05月08日技术分享文章" class="taga" href="http://www.mamicode.com/info-time-20160508-1.html" 
+target="_blank">                        2016年05月08日                         
+(1368)</A><BR><A title="2016年05月07日技术分享文章" class="taga" href="http://www.mamicode.com/info-time-20160507-1.html" 
+target="_blank">                        2016年05月07日                         
+(2988)</A><BR></DIV></DIV>
+<DIV class="width100bi margintop20 divborder">
+<DIV class="divtitle">
+<DIV class="divfloatleft divtitlefont" id="infotop2_divtitle">周排行</DIV>
+<DIV class="divfloatright"><IMG width="14" height="14" alt="mamicode.com排行更多图片" 
+src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/j01.jpg"></DIV>
+<DIV class="divfloatright"><A title="周排行更多" id="infotop2_amore" href="http://www.mamicode.com/info-toplist-11-2-1.html">更多</A></DIV>
+<DIV class="divfloatclear"></DIV></DIV>
+<DIV>
+<UL>
+  <LI class="divullititle heightline25px divtextalignleft"><A title='彻底解决_OBJC_CLASS_$_某文件名", referenced from:问题（转）' 
+  href="http://www.mamicode.com/info-detail-63266.html" target="_blank">         
+                 彻底解决_OBJC_CLASS_$_某文件名", referenced from:问题（转）                  
+         &nbsp;<SPAN class="colorlan">2014-06-15</SPAN> </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="当刷机工具遇到SetupConnection时的解决方法" 
+  href="http://www.mamicode.com/info-detail-149397.html" 
+  target="_blank">当刷机工具遇到SetupConnection时的解决方法                         
+  &nbsp;<SPAN class="colorlan">2014-08-09</SPAN> </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="dubbo管理控制台安装和使用" 
+  href="http://www.mamicode.com/info-detail-168312.html" target="_blank">        
+                  dubbo管理控制台安装和使用                         &nbsp;<SPAN class="colorlan">2014-08-19</SPAN> 
+  </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="mybatis关系映射之一对多和多对一" 
+  href="http://www.mamicode.com/info-detail-188913.html" target="_blank">        
+                  mybatis关系映射之一对多和多对一                         &nbsp;<SPAN class="colorlan">2014-09-01</SPAN> 
+  </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="（七）理解angular中的module和injector，即依赖注入" 
+  href="http://www.mamicode.com/info-detail-247448.html" 
+  target="_blank">（七）理解angular中的module和injector，即依赖注入                         
+  &nbsp;<SPAN class="colorlan">2014-10-10</SPAN> </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="CUDA从入门到精通" 
+  href="http://www.mamicode.com/info-detail-327339.html" target="_blank">        
+                  CUDA从入门到精通                         &nbsp;<SPAN class="colorlan">2014-11-21</SPAN> 
+  </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="Intellij IDEA 14中使用MyBatis-generator 自动生成MyBatis代码" 
+  href="http://www.mamicode.com/info-detail-445217.html" target="_blank">        
+                  Intellij IDEA 14中使用MyBatis-generator 自动生成MyBatis代码             
+              &nbsp;<SPAN class="colorlan">2015-01-27</SPAN> </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="使用第三方框架 Masonry 实现自动布局" 
+  href="http://www.mamicode.com/info-detail-470300.html" target="_blank">使用第三方框架 
+  Masonry 实现自动布局                         &nbsp;<SPAN 
+  class="colorlan">2015-02-10</SPAN> </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="WAMPServer 默认安装启动后，图标显示橙黄色" 
+  href="http://www.mamicode.com/info-detail-507929.html" target="_blank">        
+                  WAMPServer 默认安装启动后，图标显示橙黄色                         &nbsp;<SPAN 
+  class="colorlan">2015-03-10</SPAN> </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="前端构建之gulp与常用插件" 
+  href="http://www.mamicode.com/info-detail-517085.html" 
+  target="_blank">前端构建之gulp与常用插件                         &nbsp;<SPAN class="colorlan">2015-03-14</SPAN> 
+  </A></LI></UL></DIV></DIV>
+<DIV class="width300px" id="xuanting">
+<DIV class="margintop10">
+<SCRIPT type="text/javascript">
+            var cpro_id = "u2208973";
+            (window["cproStyleApi"] = window["cproStyleApi"] || {})[cpro_id] = { at: "3", rsi0: "300", rsi1: "300", pat: "17", tn: "baiduCustNativeAD", rss1: "#FFFFFF", conBW: "1", adp: "1", ptt: "0", titFF: "", titFS: "14", rss2: "#000000", titSU: "0" }
+        </SCRIPT>
+         
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/c.js" type="text/javascript"></SCRIPT>
+     </DIV>
+<DIV class="margintop10">
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/f.txt" async=""></SCRIPT>
+         <!-- mamicode-xuanting-300x250 -->         <INS class="adsbygoogle" 
+style="width: 300px; height: 250px; display: inline-block;" data-ad-slot="3583171088" 
+data-ad-client="ca-pub-8616102841876629"></INS>         
+<SCRIPT>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </SCRIPT>
+     </DIV></DIV></DIV>
+<DIV class="divfloatclear"></DIV></DIV>
+<DIV class="width1000px divmargin0auto paddingtop20bottom20">
+<DIV class="width1000px divborder margintop20">
+<DIV class="youqingtitle"><A title="友情链接">友情链接</A>         </DIV>
+<DIV class="youqingcontent"><A title="互联网产品定制开发专家" href="http://www.lightinit.com/" 
+target="_blank">兰亭集智</A>&nbsp;&nbsp;<A href="http://www.guozhihua.net/" target="_blank">国之画</A>&nbsp;&nbsp;<A 
+href="http://www.bubufx.com/" target="_blank">布布分享</A>&nbsp;&nbsp;<A href="http://tongji.baidu.com/" 
+target="_blank">百度统计</A>&nbsp;&nbsp; <A href="http://www.cnzz.com/" target="_blank">站长统计</A>&nbsp;&nbsp;<A 
+href="http://www.aliyun.com/" target="_blank">阿里云</A>&nbsp;&nbsp;        
+</DIV></DIV></DIV>
+<DIV class="bottomdiv">
+<DIV class="width1000px divmargin0auto paddingtop20">
+<DIV class="height30px divtextalignleft"><A title="mamicode.com关于我们" href="http://www.mamicode.com/about.html">关于我们</A> 
+- <A title="mamicode.com联系我们" 
+href="http://www.mamicode.com/contactus.html">联系我们</A> - <A title="mamicode.com留言反馈" 
+href="http://www.mamicode.com/guest.html">留言反馈</A>         </DIV>
+<DIV class="height30px divtextalignleft">© 2014 <A title="mamicode.com,技术分享" 
+href="http://www.mamicode.com/" target="_blank">mamicode.com</A>             
+版权所有 京ICP备13008772号-2         </DIV>
+<DIV class="divtextalignleft"><SPAN class="colorlan">迷上了代码！</SPAN>         
+</DIV>
+<DIV class="paddingtop20">
+<SCRIPT type="text/javascript">                var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_1254666564'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1254666564%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</SCRIPT>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;             
+<SCRIPT type="text/javascript">
+                var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+                document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fb65e01a9bac157f881c4d8cbac4b6995' type='text/javascript'%3E%3C/script%3E"));
+            </SCRIPT>
+         </DIV><BR><BR><BR></DIV></DIV>
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/mamicodejs.js" type="text/javascript"></SCRIPT>
+     
+<SCRIPT type="text/javascript">        var mid = ''; var id = '504021'; var idm = 'e902ae'; var commentitemcount = '0'; var memberhost = 'http://member.mamicode.com/'; prettyPrint(); </SCRIPT>
+      
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/infodetail.js" type="text/javascript" charset="utf-8"></SCRIPT>
+     
+<SCRIPT src="tiny4412%20串口驱动分析四%20---%20修改默认的串口输出_files/member.js" type="text/javascript" charset="utf-8"></SCRIPT>
+ 
+<SCRIPT type="text/javascript">/* <![CDATA[ */(function(d,s,a,i,j,r,l,m,t){try{l=d.getElementsByTagName('a');t=d.createElement('textarea');for(i=0;l.length-i;i++){try{a=l[i].href;s=a.indexOf('/cdn-cgi/l/email-protection');m=a.length;if(a&&s>-1&&m>28){j=28+s;s='';if(j<m){r='0x'+a.substr(j,2)|0;for(j+=2;j<m&&a.charAt(j)!='X';j+=2)s+='%'+('0'+('0x'+a.substr(j,2)^r).toString(16)).slice(-2);j++;s=decodeURIComponent(s)+a.substr(j,m-j)}t.innerHTML=s.replace(/</g,'&lt;').replace(/>/g,'&gt;');l[i].href='mailto:'+t.value}}catch(e){}}}catch(e){}})(document);/* ]]> */</SCRIPT>
+ </BODY></HTML>

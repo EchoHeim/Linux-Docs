@@ -1,0 +1,1094 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0044)http://www.bubuko.com/infodetail-661151.html -->
+<!DOCTYPE html PUBLIC "" ""><HTML lang="zh-cn"><HEAD id="Head1"><META 
+content="IE=11.0000" http-equiv="X-UA-Compatible">
+
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<META name="keywords" content="布布扣,bubuko.com,互联网,软件开发,开源,电脑硬件,asp,asp.net,Windows,数据库,HTML,JS,CSS,技术文章,游戏,创业,手机相关,android,apple,jsp,php">
+<META name="baidu_union_verify" content="93e2563fa6214cee82f7d045b7c6c845"> 
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/uaredirect.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT type="text/javascript">    uaredirect("http://siteapp.baidu.com/webapp/www.bubuko.com", "http://www.bubuko.com");</SCRIPT>
+ 
+<META name="baidu-site-verification" content="iVK91ZlEcG">
+<META name="description" content="作者：彭东林邮箱：pengdonglin137@163.com开发板：tiny4412ADK+S700 4GB Flash主机：Wind7 64位虚拟机：Vmware+Ubuntu12_04u-boot：U-Boot 2010.12Linux内核版本：linux-3.0.31Android版本：an..."><TITLE>
+	tiny4412 串口驱动分析二 --- printk的实现-布布扣-bubuko.com </TITLE><LINK href="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/style.css" 
+rel="stylesheet" type="text/css"> 
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></SCRIPT>
+<LINK href="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/prettify.css" 
+rel="stylesheet" type="text/css">     
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/prettify.js" type="text/javascript" charset="utf-8"></SCRIPT>
+ 
+<META name="GENERATOR" content="MSHTML 11.00.9600.18315"></HEAD> 
+<BODY>
+<DIV class="width100bi height23px divbackgroundcolor divborderbottomsolid1">
+<DIV class="width1000px divmargin0auto">
+<DIV class="divfloatleft menuDivt">
+<UL>
+  <LI><A class="colorhei" href="http://www.bubuko.com/">[首页]</A></LI>
+  <LI><A class="colorhei" href="http://www.bubuko.com/news/">[新闻]</A></LI>
+  <LI class="backgroundcolorbai"><A class="colorhei" href="http://www.bubuko.com/info.html">[文章]</A></LI></UL></DIV>
+<DIV class="divfloatright">
+<DIV class="paddingtop3" id="logintopdescription"></DIV></DIV></DIV>
+<DIV class="divfloatclear"></DIV></DIV>
+<DIV class="width1000px divmargin0auto paddingtop10bottom10">
+<DIV class="width120px divfloatleft paddingtop10"><A title="布布扣，bubuko.com" id="logo" 
+href="http://www.bubuko.com/"><IMG width="92" height="60" alt="布布扣，bubuko.com" 
+src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/logo.png" border="0"> 
+        </A>     </DIV>
+<DIV class="width880px divfloatright">
+<DIV class="menuDiv">
+<UL>
+  <LI class="bottomline width5px">&nbsp;</LI>
+  <LI class="title0" id="infohtml"><A title="文章首页" href="http://www.bubuko.com/info.html">首页</A></LI>
+  <LI class="title1" id="infolist-2"><A title="Web开发" href="http://www.bubuko.com/infolist-2-1.html">Web开发</A></LI>
+  <LI class="title1" id="infolist-3"><A title="Windows开发" href="http://www.bubuko.com/infolist-3-1.html">Windows开发</A></LI>
+  <LI class="title1" id="infolist-4"><A title="编程语言" href="http://www.bubuko.com/infolist-4-1.html">编程语言</A></LI>
+  <LI class="title1" id="infolist-5"><A title="数据库技术" href="http://www.bubuko.com/infolist-5-1.html">数据库技术</A></LI>
+  <LI class="title1" id="infolist-6"><A title="移动平台" href="http://www.bubuko.com/infolist-6-1.html">移动平台</A></LI>
+  <LI class="title1" id="infolist-8"><A title="系统服务" href="http://www.bubuko.com/infolist-8-1.html">系统服务</A></LI>
+  <LI class="title1" id="infolist-9"><A title="微信" href="http://www.bubuko.com/infolist-9-1.html">微信</A></LI>
+  <LI class="title1" id="infolist-13"><A title="设计" href="http://www.bubuko.com/infolist-13-1.html">设计</A></LI>
+  <LI class="title1" id="infolist-7"><A title="布布扣" href="http://www.bubuko.com/infolist-7-1.html">布布扣</A></LI>
+  <LI class="title1" id="infolist-11"><A title="其他" href="http://www.bubuko.com/infolist-11-1.html">其他</A></LI>
+  <LI class="title1" id="infolist-12"><A title="数据分析" href="http://www.bubuko.com/analysis.html">数据分析</A></LI>
+  <LI class="bottomline width5px">&nbsp;</LI></UL></DIV></DIV>
+<DIV class="divfloatclear"></DIV></DIV>
+<DIV class="divdaohang">
+<DIV class="divtitlefont"><A title="文章首页" 
+href="http://www.bubuko.com/info.html">首页</A>             <SPAN 
+id="lbltitle">&gt; <A href="http://www.bubuko.com/infolist-11-1.html">其他</A> 
+&gt; 详细</SPAN>         </DIV></DIV>
+<DIV class="divmain">
+<DIV class="width70bi divfloatleft">
+<DIV class="marginright20">
+<DIV class="divtextaligncenter">
+<SCRIPT type="text/javascript">
+        var cpro_id = "u2385951";
+        (window["cproStyleApi"] = window["cproStyleApi"] || {})[cpro_id] = { at: "3", rsi0: "680", rsi1: "250", pat: "6", tn: "baiduCustNativeAD", rss1: "#FFFFFF", conBW: "1", adp: "1", ptt: "0", titFF: "%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91", titFS: "14", rss2: "#000000", titSU: "0", ptbg: "90", piw: "0", pih: "0", ptp: "0" }
+    </SCRIPT>
+     
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/c.js" type="text/javascript"></SCRIPT>
+ </DIV>
+<DIV class="detailtitle divtextaligncenter divborderbottomdotted">
+<H1 class="detailtitle" id="Htitle">tiny4412 串口驱动分析二 --- printk的实现</H1></DIV>
+<DIV class="detail1 divtextaligncenter">                    时间：<SPAN class="colorlv" 
+id="Label2">2015-03-07 22:32:19</SPAN>                    
+&nbsp;&nbsp;&nbsp;&nbsp;  阅读：<SPAN class="colorCheng" id="Label1">610</SPAN>     
+               &nbsp;&nbsp;&nbsp;&nbsp;  评论：<SPAN class="colorCheng" id="lblcommentcount">0</SPAN> 
+                   &nbsp;&nbsp;&nbsp;&nbsp;  收藏：<SPAN class="colorCheng" id="lblfavorite">0</SPAN> 
+                   &nbsp;&nbsp;&nbsp;&nbsp;  <A class="acursorpointer" id="infofavorite">[点我收藏+]</A> 
+                </DIV>
+<DIV class="detailcontennt"><SPAN id="Label3">
+<P>标签：<A title="des" 
+href="http://www.bubuko.com/so/1/des">des</A>&nbsp;&nbsp;&nbsp;<A title="android" 
+href="http://www.bubuko.com/so/1/android">android</A>&nbsp;&nbsp;&nbsp;<A title="class" 
+href="http://www.bubuko.com/so/1/class">class</A>&nbsp;&nbsp;&nbsp;<A title="style" 
+href="http://www.bubuko.com/so/1/style">style</A>&nbsp;&nbsp;&nbsp;<A title="代码" 
+href="http://www.bubuko.com/so/1/%e4%bb%a3%e7%a0%81">代码</A>&nbsp;&nbsp;&nbsp;<A 
+title="com" href="http://www.bubuko.com/so/1/com">com</A>&nbsp;&nbsp;&nbsp;<A 
+title="log" href="http://www.bubuko.com/so/1/log">log</A>&nbsp;&nbsp;&nbsp;<A 
+title="使用" 
+href="http://www.bubuko.com/so/1/%e4%bd%bf%e7%94%a8">使用</A>&nbsp;&nbsp;&nbsp;<A 
+title="文件" 
+href="http://www.bubuko.com/so/1/%e6%96%87%e4%bb%b6">文件</A>&nbsp;&nbsp;&nbsp;</P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">作者：彭东林</SPAN></P>
+<P><SPAN style="font-family: courier new,courier; font-size: 18px;">邮箱：<A href="http://www.bubuko.com/cdn-cgi/l/email-protection#0d7d68636a6962636a6164633c3e3a4d3c3b3e236e6260"><SPAN 
+class="__cf_email__" data-cfemail="0d7d68636a6962636a6164633c3e3a4d3c3b3e236e6260">[email&nbsp;protected]</SPAN>
+<SCRIPT type="text/javascript" data-cfhash="f9e31">/* <![CDATA[ */!function(t,e,r,n,c,a,p){try{t=document.currentScript||function(){for(t=document.getElementsByTagName('script'),e=t.length;e--;)if(t[e].getAttribute('data-cfhash'))return t[e]}();if(t&&(c=t.previousSibling)){p=t.parentNode;if(a=c.getAttribute('data-cfemail')){for(e='',r='0x'+a.substr(0,2)|0,n=2;a.length-n;n+=2)e+='%'+('0'+('0x'+a.substr(n,2)^r).toString(16)).slice(-2);p.replaceChild(document.createTextNode(decodeURIComponent(e)),c)}p.removeChild(t)}}catch(u){}}()/* ]]> */</SCRIPT>
+</A></SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">开发板：tiny4412ADK+S700 
+4GB Flash</SPAN></P>
+<P><SPAN style="font-family: courier new,courier; font-size: 18px;">主机：Wind7 
+64位</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">虚拟机：Vmware+Ubuntu12_04</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">u-boot：U-Boot 
+2010.12</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">Linux内核版本：linux-3.0.31</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">Android版本：android-4.1.2</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">源码：kernel/printk.c</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;">asmlinkage <SPAN style="color: rgb(0, 0, 255);">int</SPAN> printk(<SPAN style="color: rgb(0, 0, 255);">const</SPAN> <SPAN style="color: rgb(0, 0, 255);">char</SPAN> *<SPAN style="color: rgb(0, 0, 0);">fmt, ...)
+{
+         va_list args;
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">int</SPAN><SPAN style="color: rgb(0, 0, 0);"> r;<BR>
+         va_start(args, fmt);
+         r </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> vprintk(fmt, args);
+         va_end(args);
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">return</SPAN><SPAN style="color: rgb(0, 0, 0);"> r;
+}</SPAN></SPAN></PRE></DIV>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;">asmlinkage <SPAN style="color: rgb(0, 0, 255);">int</SPAN> vprintk(<SPAN style="color: rgb(0, 0, 255);">const</SPAN> <SPAN style="color: rgb(0, 0, 255);">char</SPAN> *<SPAN style="color: rgb(0, 0, 0);">fmt, va_list args)
+{
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">int</SPAN> printed_len = <SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">int</SPAN> current_log_level =<SPAN style="color: rgb(0, 0, 0);"> default_message_loglevel;
+
+</SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+在include/linux/printk.h中：
+#define default_message_loglevel (console_printk[1])
+在kernel/printk.c中：
+int console_printk[4] = {
+         DEFAULT_CONSOLE_LOGLEVEL,      // console_loglevel 
+         DEFAULT_MESSAGE_LOGLEVEL,      // default_message_loglevel
+         MINIMUM_CONSOLE_LOGLEVEL,    // minimum_console_loglevel
+         DEFAULT_CONSOLE_LOGLEVEL,     // default_console_loglevel
+};
+
+#define DEFAULT_MESSAGE_LOGLEVEL CONFIG_DEFAULT_MESSAGE_LOGLEVEL
+
+在.config中：
+#define CONFIG_DEFAULT_MESSAGE_LOGLEVEL 4
+</SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+
+         unsigned </SPAN><SPAN style="color: rgb(0, 0, 255);">long</SPAN><SPAN style="color: rgb(0, 0, 0);"> flags;
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">int</SPAN><SPAN style="color: rgb(0, 0, 0);"> this_cpu;
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">char</SPAN> *<SPAN style="color: rgb(0, 0, 0);">p;
+         size_t plen;
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">char</SPAN><SPAN style="color: rgb(0, 0, 0);"> special;
+
+</SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+ 由于没有定义宏CONFIG_BOOT_PRINTK_DELAY，所以boot_delay_msec是空函数
+</SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+         boot_delay_msec();
+</SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+printk_delay这个函数中判断变量printk_delay_msec的值，它的初始值是0
+static inline void printk_delay(void)
+{
+         if (unlikely(printk_delay_msec)) {
+                   int m = printk_delay_msec;
+
+                   while (m--) {
+                            mdelay(1);
+                            touch_nmi_watchdog();
+                   }
+         }
+}
+
+那么在什么地方设置这个值呢？通过分析代码发现，是通过写文件/proc/sys/kernel/printk_delay实现的，可以执行如echo “44” &gt; /proc/sys/kernel/printk_delay 来改变这个变量的值
+在文件kernel/sysctl.c中：
+static struct ctl_table kern_table[] = {
+……
+         {
+                   .procname        = "printk_delay",
+                   .data                  = &amp;printk_delay_msec,
+                   .maxlen             = sizeof(int),
+                   .mode                = 0644,
+                   .proc_handler  = proc_dointvec_minmax,
+                   .extra1              = &amp;zero,
+                   .extra2              = &amp;ten_thousand,
+         },
+……
+}
+
+当向文件/proc/sys/kernel/printk_delay中写入数据，函数proc_dointvec_minmax会调用，然后将这个数字赋值给printk_delay_msec
+
+static struct ctl_table root_table[] = {
+         {
+                   .procname        = "kernel",
+                   .mode                = 0555,
+                   .child                  = kern_table,
+         },
+……
+}
+
+内核在启动时会同一处理root_table，然后再/proc下生成相应的文件，方便内核调试
+</SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+         printk_delay();
+         preempt_disable(); </SPAN><SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 关抢占</SPAN>
+
+         <SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> This stops the holder of console_sem just where we want him </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+         raw_local_irq_save(flags);
+         this_cpu </SPAN>= smp_processor_id();  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);">读取当前cpu核的id号</SPAN>
+         <SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+          * Ouch, printk recursed into itself! 处理printk中再次调用printk的情况
+          </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN>
+         <SPAN style="color: rgb(0, 0, 255);">if</SPAN> (unlikely(printk_cpu ==<SPAN style="color: rgb(0, 0, 0);"> this_cpu)) {
+                  </SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+                    * If a crash is occurring during printk() on this CPU,
+                    * then try to get the crash message out but make sure
+                    * we can‘t deadlock. Otherwise just return to avoid the
+                    * recursion and return - but flag the recursion so that
+                    * it can be printed at the next appropriate moment:
+                    </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN>
+
+                   <SPAN style="color: rgb(0, 0, 255);">if</SPAN> (!<SPAN style="color: rgb(0, 0, 0);">oops_in_progress) {
+                            recursion_bug </SPAN>= <SPAN style="color: rgb(128, 0, 128);">1</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+                            </SPAN><SPAN style="color: rgb(0, 0, 255);">goto</SPAN><SPAN style="color: rgb(0, 0, 0);"> out_restore_irqs;
+                   }
+                  zap_locks();
+         }
+
+         lockdep_off();
+         spin_lock(</SPAN>&amp;<SPAN style="color: rgb(0, 0, 0);">logbuf_lock);
+         printk_cpu </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> this_cpu;
+
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN><SPAN style="color: rgb(0, 0, 0);"> (recursion_bug) {
+                   recursion_bug </SPAN>= <SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+</SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+static const char recursion_bug_msg [] =
+                   KERN_CRIT "BUG: recent printk recursion!\n";
+如果在printk中继续调用printk，上面这句就会不断出现，可以试试
+</SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                   strcpy(printk_buf, recursion_bug_msg);  </SPAN><SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 缓存入printk_buf，待下面处理</SPAN>
+                   printed_len =<SPAN style="color: rgb(0, 0, 0);"> strlen(recursion_bug_msg);
+         }
+         </SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> Emit the output into the temporary buffer
+先将要打印的字符串缓存入printk_buf中
+</SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+         printed_len </SPAN>+= vscnprintf(printk_buf +<SPAN style="color: rgb(0, 0, 0);"> printed_len,
+                                       </SPAN><SPAN style="color: rgb(0, 0, 255);">sizeof</SPAN>(printk_buf) -<SPAN style="color: rgb(0, 0, 0);"> printed_len, fmt, args);
+
+</SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+         如果配置和宏CONFIG_DEBUG_LL的话，
+         这个以后分析，printascii是一个用汇编实现的函数，在文件arch/arm/kernel/debug.S中
+他会直接将传入的printk_buf参数中的内容打印出来
+</SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+#ifdef        CONFIG_DEBUG_LL
+        printascii(printk_buf);
+</SPAN><SPAN style="color: rgb(0, 0, 255);">#endif</SPAN><SPAN style="color: rgb(0, 0, 0);">
+         p </SPAN>= printk_buf;  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 将临时缓冲区的首地址赋给指针p</SPAN>
+
+<SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+Read log level and handle special printk prefix
+这个函数会解析printk_buf的前三个字符，因为一般我们在驱动中使用printk的时候会加一个前缀如 printk(KERN_DEBUG “hello world\n”); 其中KERN_DEBUG宏展开后就是 “&lt;7&gt;”
+这个函数的目的就是解析这里的 ”&lt;7&gt;”，会把解析出来的数字7赋值给current_log_level
+如果是”&lt;c&gt;”或者”&lt;d&gt;”，这把字符c或者d赋值给special
+上面两种情况下，返回值是3，也就是字符串”&lt;x&gt;”的长度，赋值返回0，同时也不给current_log_level和special赋值
+</SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+
+         plen </SPAN>= log_prefix(p, &amp;current_log_level, &amp;<SPAN style="color: rgb(0, 0, 0);">special);
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (plen) {  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 如果是类似printk(“hello world”);则plen是0，这个if条件不成立</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                   p </SPAN>+= plen;  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 跳过printk_buf开头的 “&lt;x&gt;”</SPAN>
+                   <SPAN style="color: rgb(0, 0, 255);">switch</SPAN> (special) {  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 一般不会是 ‘c’ 或者 ‘d’</SPAN>
+                   <SPAN style="color: rgb(0, 0, 255);">case</SPAN> <SPAN style="color: rgb(128, 0, 0);">‘</SPAN><SPAN style="color: rgb(128, 0, 0);">c</SPAN><SPAN style="color: rgb(128, 0, 0);">‘</SPAN>: <SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> Strip &lt;c&gt; KERN_CONT, continue line </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                            plen </SPAN>= <SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+                            </SPAN><SPAN style="color: rgb(0, 0, 255);">break</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">case</SPAN> <SPAN style="color: rgb(128, 0, 0);">‘</SPAN><SPAN style="color: rgb(128, 0, 0);">d</SPAN><SPAN style="color: rgb(128, 0, 0);">‘</SPAN>: <SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> Strip &lt;d&gt; KERN_DEFAULT, start new line </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                            plen </SPAN>= <SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">default</SPAN><SPAN style="color: rgb(0, 0, 0);">:
+                            </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (!new_text_line) {  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 这个变量初始值是1</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                                     emit_log_char(</SPAN><SPAN style="color: rgb(128, 0, 0);">‘</SPAN><SPAN style="color: rgb(128, 0, 0);">\n</SPAN><SPAN style="color: rgb(128, 0, 0);">‘</SPAN><SPAN style="color: rgb(0, 0, 0);">);
+
+</SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+#define CONFIG_LOG_BUF_SHIFT 17   在make menuconfig的时候可以修改
+#define __LOG_BUF_LEN         (1 &lt;&lt; CONFIG_LOG_BUF_SHIFT)
+static char __log_buf[__LOG_BUF_LEN] __nosavedata; // 定义了128KB的log缓冲区
+static int log_buf_len = __LOG_BUF_LEN;  // 128K
+static char *log_buf = __log_buf;
+#define LOG_BUF_MASK (log_buf_len-1)
+#define LOG_BUF(idx) (log_buf[(idx) &amp; LOG_BUF_MASK])  // 获得log_buf中第idx个字符，这个技巧保证了log_buf中的内容可以以环形缓冲区的形式存放，不至于溢出
+static void emit_log_char(char c) // 将c表示的字符存入log_buf中，并调整相关索引值
+{
+         LOG_BUF(log_end) = c; // 存入 log_buf[log_end&amp;(128k-1)]
+         log_end++;
+         if (log_end - log_start &gt; log_buf_len)
+                   log_start = log_end - log_buf_len;
+         if (log_end - con_start &gt; log_buf_len)
+                   con_start = log_end - log_buf_len;
+         if (logged_chars &lt; log_buf_len)
+                   logged_chars++;
+}
+</SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                                     new_text_line </SPAN>= <SPAN style="color: rgb(128, 0, 128);">1</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+                            }
+                   }
+         }
+
+         </SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+          * Copy the output into log_buf. If the caller didn‘t provide
+          * the appropriate log prefix, we insert them here
+          </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN>
+         <SPAN style="color: rgb(0, 0, 255);">for</SPAN> (; *p; p++<SPAN style="color: rgb(0, 0, 0);">) {
+
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN><SPAN style="color: rgb(0, 0, 0);"> (new_text_line) {
+</SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+这个if语句是根据用户配置在每条内核log前面加上优先级、时间戳以及cpu_id
+</SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                            new_text_line </SPAN>= <SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+            </SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+                从下面这个if判断可以看出，如果使用的是类似printk(“Hello world\n”);，
+                在处理时自动加入前缀，使用的等级是current_log_level的初始值，也就是4
+             </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN>
+                            <SPAN style="color: rgb(0, 0, 255);">if</SPAN><SPAN style="color: rgb(0, 0, 0);"> (plen) {
+                                     </SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> Copy original log prefix </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN>
+                                     <SPAN style="color: rgb(0, 0, 255);">int</SPAN><SPAN style="color: rgb(0, 0, 0);"> i;
+                                     </SPAN><SPAN style="color: rgb(0, 0, 255);">for</SPAN> (i = <SPAN style="color: rgb(128, 0, 128);">0</SPAN>; i &lt; plen; i++<SPAN style="color: rgb(0, 0, 0);">)
+                                               emit_log_char(printk_buf[i]);
+                                     printed_len </SPAN>+=<SPAN style="color: rgb(0, 0, 0);"> plen;
+                            } </SPAN><SPAN style="color: rgb(0, 0, 255);">else</SPAN><SPAN style="color: rgb(0, 0, 0);"> {
+                                     </SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> Add log prefix </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                                     emit_log_char(</SPAN><SPAN style="color: rgb(128, 0, 0);">‘</SPAN><SPAN style="color: rgb(128, 0, 0);">&lt;</SPAN><SPAN style="color: rgb(128, 0, 0);">‘</SPAN><SPAN style="color: rgb(0, 0, 0);">);
+                                     emit_log_char(current_log_level </SPAN>+ <SPAN style="color: rgb(128, 0, 0);">‘</SPAN><SPAN style="color: rgb(128, 0, 0);">0</SPAN><SPAN style="color: rgb(128, 0, 0);">‘</SPAN><SPAN style="color: rgb(0, 0, 0);">);
+                                     emit_log_char(</SPAN><SPAN style="color: rgb(128, 0, 0);">‘</SPAN><SPAN style="color: rgb(128, 0, 0);">&gt;</SPAN><SPAN style="color: rgb(128, 0, 0);">‘</SPAN><SPAN style="color: rgb(0, 0, 0);">);
+                                     printed_len </SPAN>+= <SPAN style="color: rgb(128, 0, 128);">3</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+                            }<BR>
+                            </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (printk_time) {  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);">判断是否在每条log的前面加上时间戳</SPAN>
+                                     <SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> Add the current time stamp </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN>
+                                     <SPAN style="color: rgb(0, 0, 255);">char</SPAN> tbuf[<SPAN style="color: rgb(128, 0, 128);">50</SPAN>], *<SPAN style="color: rgb(0, 0, 0);">tp;
+                                     unsigned tlen;
+                                     unsigned </SPAN><SPAN style="color: rgb(0, 0, 255);">long</SPAN> <SPAN style="color: rgb(0, 0, 255);">long</SPAN><SPAN style="color: rgb(0, 0, 0);"> t;
+                                     unsigned </SPAN><SPAN style="color: rgb(0, 0, 255);">long</SPAN><SPAN style="color: rgb(0, 0, 0);"> nanosec_rem;
+
+                                     t </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> cpu_clock(printk_cpu);
+                                     nanosec_rem </SPAN>= do_div(t, <SPAN style="color: rgb(128, 0, 128);">1000000000</SPAN><SPAN style="color: rgb(0, 0, 0);">);
+                                     tlen </SPAN>= sprintf(tbuf, <SPAN style="color: rgb(128, 0, 0);">"</SPAN><SPAN style="color: rgb(128, 0, 0);">[%5lu.%06lu] </SPAN><SPAN style="color: rgb(128, 0, 0);">"</SPAN><SPAN style="color: rgb(0, 0, 0);">,
+                                                        (unsigned </SPAN><SPAN style="color: rgb(0, 0, 255);">long</SPAN><SPAN style="color: rgb(0, 0, 0);">) t,
+                                                        nanosec_rem </SPAN>/ <SPAN style="color: rgb(128, 0, 128);">1000</SPAN><SPAN style="color: rgb(0, 0, 0);">);
+                                     </SPAN><SPAN style="color: rgb(0, 0, 255);">for</SPAN> (tp = tbuf; tp &lt; tbuf + tlen; tp++<SPAN style="color: rgb(0, 0, 0);">)
+                                               emit_log_char(</SPAN>*<SPAN style="color: rgb(0, 0, 0);">tp);
+                                     printed_len </SPAN>+=<SPAN style="color: rgb(0, 0, 0);"> tlen;
+                            }<BR>
+                            </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (printk_cpu_id) {  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 判断是否加入打印这条log的cpu_id</SPAN>
+                                     <SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> Add the cpu id </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN>
+                                     <SPAN style="color: rgb(0, 0, 255);">char</SPAN> tbuf[<SPAN style="color: rgb(128, 0, 128);">10</SPAN>], *<SPAN style="color: rgb(0, 0, 0);">tp;
+                                     unsigned tlen;
+                                     tlen </SPAN>= sprintf(tbuf, <SPAN style="color: rgb(128, 0, 0);">"</SPAN><SPAN style="color: rgb(128, 0, 0);">c%u </SPAN><SPAN style="color: rgb(128, 0, 0);">"</SPAN><SPAN style="color: rgb(0, 0, 0);">, printk_cpu);
+                                     </SPAN><SPAN style="color: rgb(0, 0, 255);">for</SPAN> (tp = tbuf; tp &lt; tbuf + tlen; tp++<SPAN style="color: rgb(0, 0, 0);">)
+                                               emit_log_char(</SPAN>*<SPAN style="color: rgb(0, 0, 0);">tp);
+                                     printed_len </SPAN>+=<SPAN style="color: rgb(0, 0, 0);"> tlen;
+                            }<BR>
+                            </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (printk_pid) {  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 判断是否加入当前进程的pid</SPAN>
+                                     <SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> Add the current process id </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN>
+                                     <SPAN style="color: rgb(0, 0, 255);">char</SPAN> tbuf[<SPAN style="color: rgb(128, 0, 128);">10</SPAN>], *<SPAN style="color: rgb(0, 0, 0);">tp;
+                                     unsigned tlen;<BR>
+                                     tlen </SPAN>= sprintf(tbuf, <SPAN style="color: rgb(128, 0, 0);">"</SPAN><SPAN style="color: rgb(128, 0, 0);">%6u </SPAN><SPAN style="color: rgb(128, 0, 0);">"</SPAN>, current-&gt;<SPAN style="color: rgb(0, 0, 0);">pid);
+                                     </SPAN><SPAN style="color: rgb(0, 0, 255);">for</SPAN> (tp = tbuf; tp &lt; tbuf + tlen; tp++<SPAN style="color: rgb(0, 0, 0);">)
+                                               emit_log_char(</SPAN>*<SPAN style="color: rgb(0, 0, 0);">tp);
+                                     printed_len </SPAN>+=<SPAN style="color: rgb(0, 0, 0);"> tlen;
+                            }
+
+                            </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (!*<SPAN style="color: rgb(0, 0, 0);">p)
+                                     </SPAN><SPAN style="color: rgb(0, 0, 255);">break</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+                   }
+                   emit_log_char(</SPAN>*<SPAN style="color: rgb(0, 0, 0);">p);
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (*p == <SPAN style="color: rgb(128, 0, 0);">‘</SPAN><SPAN style="color: rgb(128, 0, 0);">\n</SPAN><SPAN style="color: rgb(128, 0, 0);">‘</SPAN>)  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 当是’\n’时，表示下一条log的开始，上面的if条件又成立了</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                            new_text_line </SPAN>= <SPAN style="color: rgb(128, 0, 128);">1</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+         }
+
+         </SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+          * Try to acquire and then immediately release the
+          * console semaphore. The release will do all the
+          * actual magic (print out buffers, wake up klogd,
+          * etc).
+          *
+          * The console_trylock_for_printk() function
+          * will release ‘logbuf_lock‘ regardless of whether it
+          * actually gets the semaphore or not.
+          </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN>
+
+         <SPAN style="color: rgb(0, 0, 255);">if</SPAN><SPAN style="color: rgb(0, 0, 0);"> (console_trylock_for_printk(this_cpu))
+                  <STRONG> console_unlock();</STRONG>
+         lockdep_on();
+out_restore_irqs:
+         raw_local_irq_restore(flags);
+         preempt_enable();  </SPAN><SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 开抢占</SPAN>
+         <SPAN style="color: rgb(0, 0, 255);">return</SPAN> printed_len;  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 返回出入的字符串的长度</SPAN><SPAN style="color: rgb(0, 0, 0);">
+}</SPAN></SPAN></PRE></DIV>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;<STRONG><SPAN 
+style="color: rgb(0, 0, 0);"><STRONG>console_unlock()</STRONG></SPAN></STRONG></SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;"><SPAN style="color: rgb(0, 0, 255);">void</SPAN> console_unlock(<SPAN style="color: rgb(0, 0, 255);">void</SPAN><SPAN style="color: rgb(0, 0, 0);">)
+{
+         unsigned </SPAN><SPAN style="color: rgb(0, 0, 255);">long</SPAN><SPAN style="color: rgb(0, 0, 0);"> flags;
+         unsigned _con_start, _log_end;
+         unsigned wake_klogd </SPAN>= <SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN><SPAN style="color: rgb(0, 0, 0);"> (console_suspended) {
+                   up(</SPAN>&amp;<SPAN style="color: rgb(0, 0, 0);">console_sem);
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">return</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+         }
+
+         console_may_schedule </SPAN>= <SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">for</SPAN><SPAN style="color: rgb(0, 0, 0);"> ( ; ; ) {
+                   spin_lock_irqsave(</SPAN>&amp;<SPAN style="color: rgb(0, 0, 0);">logbuf_lock, flags);
+                   wake_klogd </SPAN>|= log_start - log_end;  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 控制判断是否唤醒syslogd的标志位</SPAN>
+                   <SPAN style="color: rgb(0, 0, 255);">if</SPAN> (con_start == log_end)  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 没有要打印的东西</SPAN>
+                            <SPAN style="color: rgb(0, 0, 255);">break</SPAN>;                         <SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> Nothing to print </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                   _con_start </SPAN>= con_start;     <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 这几句是计算本次log_buf中打印输出索引的范围</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                   _log_end </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> log_end;
+                   con_start </SPAN>= log_end;                 <SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> Flush  就是下一次log_buf输出的起始点</SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                   spin_unlock(</SPAN>&amp;<SPAN style="color: rgb(0, 0, 0);">logbuf_lock);
+                   stop_critical_timings();    </SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> don‘t trace print latency </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                   call_console_drivers(_con_start, _log_end);  </SPAN><SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 将log_buf中从_con_start到_log_end之间的内容输出</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                   start_critical_timings();
+                   local_irq_restore(flags);
+         }
+         console_locked </SPAN>= <SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+         </SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> Release the exclusive_console once it is used </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN>
+         <SPAN style="color: rgb(0, 0, 255);">if</SPAN><SPAN style="color: rgb(0, 0, 0);"> (unlikely(exclusive_console))
+                   exclusive_console </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> NULL;
+         up(</SPAN>&amp;<SPAN style="color: rgb(0, 0, 0);">console_sem);
+         spin_unlock_irqrestore(</SPAN>&amp;<SPAN style="color: rgb(0, 0, 0);">logbuf_lock, flags);
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN><SPAN style="color: rgb(0, 0, 0);"> (wake_klogd)
+                   wake_up_klogd();   </SPAN><SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 唤醒sys_logd进程</SPAN><SPAN style="color: rgb(0, 0, 0);">
+}</SPAN></SPAN></PRE></DIV>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">我们先看一下wake_up_klogd干了什么：</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;"><SPAN style="color: rgb(0, 0, 255);">void</SPAN> wake_up_klogd(<SPAN style="color: rgb(0, 0, 255);">void</SPAN><SPAN style="color: rgb(0, 0, 0);">)
+{
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (waitqueue_active(&amp;<SPAN style="color: rgb(0, 0, 0);">log_wait))
+                   this_cpu_write(printk_pending, </SPAN><SPAN style="color: rgb(128, 0, 128);">1</SPAN><SPAN style="color: rgb(0, 0, 0);">);
+}</SPAN></SPAN></PRE></DIV>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">然后，在printk_tick函数中会读取printk_pending，如果是1则唤醒log_wait等待队列：</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;"><SPAN style="color: rgb(0, 0, 255);">void</SPAN> printk_tick(<SPAN style="color: rgb(0, 0, 255);">void</SPAN><SPAN style="color: rgb(0, 0, 0);">)
+{
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN><SPAN style="color: rgb(0, 0, 0);"> (__this_cpu_read(printk_pending)) {
+                   __this_cpu_write(printk_pending, </SPAN><SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">);
+                   wake_up_interruptible(</SPAN>&amp;<SPAN style="color: rgb(0, 0, 0);">log_wait);
+         }
+}</SPAN></SPAN></PRE></DIV>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">那么谁会在这个log_wait等待队列上睡眠呢？系统调用sys_syslog</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;"><SPAN style="color: rgb(0, 0, 255);">int</SPAN> do_syslog(<SPAN style="color: rgb(0, 0, 255);">int</SPAN> type, <SPAN style="color: rgb(0, 0, 255);">char</SPAN> __user *buf, <SPAN style="color: rgb(0, 0, 255);">int</SPAN> len, <SPAN style="color: rgb(0, 0, 255);">bool</SPAN><SPAN style="color: rgb(0, 0, 0);"> from_file)
+{
+         unsigned i, j, limit, count;
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">int</SPAN> do_clear = <SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">char</SPAN><SPAN style="color: rgb(0, 0, 0);"> c;
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">int</SPAN><SPAN style="color: rgb(0, 0, 0);"> error;
+
+         error </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> check_syslog_permissions(type, from_file);
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN><SPAN style="color: rgb(0, 0, 0);"> (error)
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">goto</SPAN> <SPAN style="color: rgb(0, 0, 255);">out</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+
+         error </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> security_syslog(type);
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN><SPAN style="color: rgb(0, 0, 0);"> (error)
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">return</SPAN><SPAN style="color: rgb(0, 0, 0);"> error;
+
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">switch</SPAN><SPAN style="color: rgb(0, 0, 0);"> (type) {
+…
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">case</SPAN> SYSLOG_ACTION_READ:          <SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> Read from log </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                   error </SPAN>= -<SPAN style="color: rgb(0, 0, 0);">EINVAL;
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (!buf || len &lt; <SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">)
+                            </SPAN><SPAN style="color: rgb(0, 0, 255);">goto</SPAN> <SPAN style="color: rgb(0, 0, 255);">out</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+
+                   error </SPAN>= <SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (!<SPAN style="color: rgb(0, 0, 0);">len)
+                            </SPAN><SPAN style="color: rgb(0, 0, 255);">goto</SPAN> <SPAN style="color: rgb(0, 0, 255);">out</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (!<SPAN style="color: rgb(0, 0, 0);">access_ok(VERIFY_WRITE, buf, len)) {
+                            error </SPAN>= -<SPAN style="color: rgb(0, 0, 0);">EFAULT;
+                            </SPAN><SPAN style="color: rgb(0, 0, 255);">goto</SPAN> <SPAN style="color: rgb(0, 0, 255);">out</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+                   }
+
+                   error </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> wait_event_interruptible(log_wait,
+                                                                 (log_start </SPAN>-<SPAN style="color: rgb(0, 0, 0);"> log_end));
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN><SPAN style="color: rgb(0, 0, 0);"> (error)
+                            </SPAN><SPAN style="color: rgb(0, 0, 255);">goto</SPAN> <SPAN style="color: rgb(0, 0, 255);">out</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+
+                   i </SPAN>= <SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+                   spin_lock_irq(</SPAN>&amp;<SPAN style="color: rgb(0, 0, 0);">logbuf_lock);
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">while</SPAN> (!error &amp;&amp; (log_start != log_end) &amp;&amp; i &lt;<SPAN style="color: rgb(0, 0, 0);"> len) {
+                            c </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> LOG_BUF(log_start);
+                            log_start</SPAN>++<SPAN style="color: rgb(0, 0, 0);">;
+                            spin_unlock_irq(</SPAN>&amp;<SPAN style="color: rgb(0, 0, 0);">logbuf_lock);
+                            error </SPAN>= __put_user(c,buf);  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 读取log内容到用户空间</SPAN>
+                            buf++<SPAN style="color: rgb(0, 0, 0);">;
+                            i</SPAN>++<SPAN style="color: rgb(0, 0, 0);">;
+                            cond_resched();
+                            spin_lock_irq(</SPAN>&amp;<SPAN style="color: rgb(0, 0, 0);">logbuf_lock);
+                   }
+
+                   spin_unlock_irq(</SPAN>&amp;<SPAN style="color: rgb(0, 0, 0);">logbuf_lock);
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (!<SPAN style="color: rgb(0, 0, 0);">error)
+                            error </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> i;
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">break</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+         ……
+         }
+</SPAN><SPAN style="color: rgb(0, 0, 255);">out</SPAN><SPAN style="color: rgb(0, 0, 0);">:
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">return</SPAN><SPAN style="color: rgb(0, 0, 0);"> error;
+}
+ 
+SYSCALL_DEFINE3(syslog, </SPAN><SPAN style="color: rgb(0, 0, 255);">int</SPAN>, type, <SPAN style="color: rgb(0, 0, 255);">char</SPAN> __user *, buf, <SPAN style="color: rgb(0, 0, 255);">int</SPAN><SPAN style="color: rgb(0, 0, 0);">, len)
+{
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">return</SPAN><SPAN style="color: rgb(0, 0, 0);"> do_syslog(type, buf, len, SYSLOG_FROM_CALL);
+}</SPAN></SPAN></PRE></DIV>
+<P><SPAN style="font-family: courier new,courier; font-size: 18px;">也就是，当执行 
+cat&nbsp; /proc/kmsg 时会调用这个函数do_syslog</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">关于/proc/kmsg的生成，请分析fs/proc/kmsg.c，这个文件会在/proc/下生成kmsg文件，已经跟这个kmsg相关的操作函数。</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">关于dmesg的实现是通过调用glibc的函数klogctl获取log_buf的，最终也会调用内核中的do_syslog</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">那么printk_tick在什么时候调用呢？是在每次发生系统嘀嗒时调用</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">exynos4_mct_comp_isr&nbsp;&nbsp;&nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 这个函数是tiny4412 注册的系统时钟中断处理函数</SPAN></P>
+<P><SPAN style="font-family: courier new,courier; font-size: 18px;">&nbsp;------ 
+tick_handle_periodic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+从这里开始，下面的都是内核通用的</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+------ tick_periodic</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+------&nbsp; update_process_times</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ------- &nbsp; 
+printk_tick</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">那系统嘀嗒中断发生时为什么会调用exynos4_mct_comp_isr呢？</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">start_kernel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+-----&nbsp; init/main.c</SPAN></P>
+<P><SPAN style="font-family: courier new,courier; font-size: 18px;">&nbsp;&nbsp; 
+------ tick_init&nbsp;&nbsp; ------&nbsp; kernel/time/tick-common.c</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;"><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+void __init tick_init(void)
+{
+         clockevents_register_notifier(&amp;tick_notifier);
+}
+
+static struct notifier_block tick_notifier = {
+         .notifier_call = tick_notify,
+};
+
+static int tick_notify(struct notifier_block *nb, unsigned long reason,
+                                   void *dev)
+{
+         switch (reason) {
+         ......
+         case CLOCK_EVT_NOTIFY_ADD:
+                   return tick_check_new_device(dev);
+         ......
+         }
+         return NOTIFY_OK;
+}
+</SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN></SPAN></PRE></DIV>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">tick_check_new_device</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp; 
+----&nbsp; tick_setup_device</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+---- tick_setup_periodic</SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+---- tick_set_periodic_handler</SPAN></P>
+<P><SPAN style="font-family: courier new,courier; font-size: 18px;">&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--- 
+dev-&gt;event_handler = <STRONG>tick_handle_periodic</STRONG></SPAN></P>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;"><STRONG>&nbsp;</STRONG></SPAN></P>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">系统时钟初始化在kernel启动过程中：</SPAN></P>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">start_kernel</SPAN></P>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;&nbsp; --- 
+time_init&nbsp;&nbsp; （arch/arm/kernel/time.c）</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;"><SPAN style="color: rgb(0, 0, 255);">void</SPAN> __init time_init(<SPAN style="color: rgb(0, 0, 255);">void</SPAN><SPAN style="color: rgb(0, 0, 0);">)
+{
+         system_timer </SPAN>= machine_desc-&gt;<SPAN style="color: rgb(0, 0, 0);">timer;
+         system_timer</SPAN>-&gt;<SPAN style="color: rgb(0, 0, 0);">init();
+}</SPAN></SPAN></PRE></DIV>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">在mach-tiny4412.c中</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;">MACHINE_START(TINY4412, <SPAN style="color: rgb(128, 0, 0);">"</SPAN><SPAN style="color: rgb(128, 0, 0);">TINY4412</SPAN><SPAN style="color: rgb(128, 0, 0);">"</SPAN><SPAN style="color: rgb(0, 0, 0);">)
+         </SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> Maintainer: FriendlyARM (www.arm9.net) </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+         .boot_params </SPAN>= S5P_PA_SDRAM + <SPAN style="color: rgb(128, 0, 128);">0x100</SPAN><SPAN style="color: rgb(0, 0, 0);">,
+         .init_irq    </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> exynos4_init_irq,
+         .map_io             </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> smdk4x12_map_io,
+         .init_machine  </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> smdk4x12_machine_init,
+         .timer                </SPAN>= &amp;<SPAN style="color: rgb(0, 0, 0);">exynos4_timer,
+         .reserve   </SPAN>= &amp;<SPAN style="color: rgb(0, 0, 0);">exynos4_reserve,
+MACHINE_END</SPAN></SPAN></PRE></DIV>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;"><STRONG>tiny4412</STRONG><STRONG>的系统时钟初始化是在arch/arm/mach-exynos/mct.c:</STRONG></SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;"><SPAN style="color: rgb(0, 0, 255);">struct</SPAN> sys_timer exynos4_timer =<SPAN style="color: rgb(0, 0, 0);"> {
+         .init           </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> exynos4_timer_init,
+};
+
+</SPAN><SPAN style="color: rgb(0, 0, 255);">static</SPAN> <SPAN style="color: rgb(0, 0, 255);">void</SPAN> __init exynos4_timer_init(<SPAN style="color: rgb(0, 0, 255);">void</SPAN><SPAN style="color: rgb(0, 0, 0);">)
+{
+        …
+         exynos4_timer_resources();  </SPAN><SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 获得时钟源的时钟频率 24MHz</SPAN>
+         exynos4_clocksource_init();  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 注册时钟源</SPAN>
+         exynos4_clockevent_init();   <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 注册中断</SPAN>
+<SPAN style="color: rgb(0, 0, 0);">}
+
+</SPAN><SPAN style="color: rgb(0, 0, 255);">static</SPAN> <SPAN style="color: rgb(0, 0, 255);">void</SPAN> exynos4_clockevent_init(<SPAN style="color: rgb(0, 0, 255);">void</SPAN><SPAN style="color: rgb(0, 0, 0);">)
+{
+         clk_cnt_per_tick </SPAN>= clk_rate /<SPAN style="color: rgb(0, 0, 0);"> HZ;
+         …
+         clockevents_register_device(</SPAN>&amp;<SPAN style="color: rgb(0, 0, 0);">mct_comp_device);
+         setup_irq(IRQ_MCT_G0, </SPAN>&amp;<SPAN style="color: rgb(0, 0, 0);">mct_comp_event_irq);
+}</SPAN></SPAN></PRE></DIV>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">先看一下函数clockevents_register_device的实现</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;"><SPAN style="color: rgb(0, 0, 255);">void</SPAN> clockevents_register_device(<SPAN style="color: rgb(0, 0, 255);">struct</SPAN> clock_event_device *<SPAN style="color: rgb(0, 0, 0);">dev)
+{
+…
+         clockevents_do_notify(CLOCK_EVT_NOTIFY_ADD, dev);
+…
+}</SPAN></SPAN></PRE></DIV>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">此时上面的tick_notify会获得执行，最终mct_comp_device的event_handler会被赋值为tick_handle_periodic。</SPAN></P>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">setup_irq会注册向IRQ_MCT_G0中断线注册中断<STRONG>mct_comp_event_irq</STRONG></SPAN></P>
+<P align="center"><SPAN style="font-family: courier new,courier; font-size: 18px;">#define 
+IRQ_MCT_G0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+IRQ_SPI(57)</SPAN></P>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">57是Exynos4412的G0_IRQ的中断号，关于这部分可以阅读Exynos4412芯片手册的;</SPAN></P>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">第9章&nbsp; Interrupt 
+Controller</SPAN></P>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">第25章 Multi Core Timer 
+(MCT)</SPAN></P>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">此外：</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;"><SPAN style="color: rgb(0, 0, 255);">static</SPAN> <SPAN style="color: rgb(0, 0, 255);">struct</SPAN> irqaction mct_comp_event_irq =<SPAN style="color: rgb(0, 0, 0);"> {
+         .name                </SPAN>= <SPAN style="color: rgb(128, 0, 0);">"</SPAN><SPAN style="color: rgb(128, 0, 0);">mct_comp_irq</SPAN><SPAN style="color: rgb(128, 0, 0);">"</SPAN><SPAN style="color: rgb(0, 0, 0);">,
+         .flags                  </SPAN>= IRQF_TIMER |<SPAN style="color: rgb(0, 0, 0);"> IRQF_IRQPOLL,
+         .handler       </SPAN>= exynos4_mct_comp_isr, <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 这个就是中断处理函数</SPAN>
+         .dev_id              = &amp;<SPAN style="color: rgb(0, 0, 0);">mct_comp_device,
+};</SPAN></SPAN></PRE></DIV>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">在这个中断处理函数中的dev_id就是上面结构体中的mct_comp_device</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;"><SPAN style="color: rgb(0, 0, 255);">static</SPAN> irqreturn_t exynos4_mct_comp_isr(<SPAN style="color: rgb(0, 0, 255);">int</SPAN> irq, <SPAN style="color: rgb(0, 0, 255);">void</SPAN> *<SPAN style="color: rgb(0, 0, 0);">dev_id)
+{
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">struct</SPAN> clock_event_device *evt =<SPAN style="color: rgb(0, 0, 0);"> dev_id;
+
+         exynos4_mct_write(</SPAN><SPAN style="color: rgb(128, 0, 128);">0x1</SPAN><SPAN style="color: rgb(0, 0, 0);">, EXYNOS4_MCT_G_INT_CSTAT);
+         evt</SPAN>-&gt;<SPAN style="color: rgb(0, 0, 0);">event_handler(evt);
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">return</SPAN><SPAN style="color: rgb(0, 0, 0);"> IRQ_HANDLED;
+}</SPAN></SPAN></PRE></DIV>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">好了，接着上面的console_unlock分析</SPAN></P>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">call_console_drivers(_con_start, 
+_log_end); </SPAN></P>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">// 
+将log_buf中从_con_start到_log_end之间的内容输出</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;"><SPAN style="color: rgb(0, 0, 255);">static</SPAN> <SPAN style="color: rgb(0, 0, 255);">void</SPAN><SPAN style="color: rgb(0, 0, 0);"> call_console_drivers(unsigned start, unsigned end)
+{
+         unsigned cur_index, start_print;
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">static</SPAN> <SPAN style="color: rgb(0, 0, 255);">int</SPAN> msg_level = -<SPAN style="color: rgb(128, 0, 128);">1</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+
+         BUG_ON(((</SPAN><SPAN style="color: rgb(0, 0, 255);">int</SPAN>)(start - end)) &gt; <SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">);
+
+         cur_index </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> start;
+         start_print </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> start;
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">while</SPAN> (cur_index !=<SPAN style="color: rgb(0, 0, 0);"> end) {
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (msg_level &lt; <SPAN style="color: rgb(128, 0, 128);">0</SPAN> &amp;&amp; ((end - cur_index) &gt; <SPAN style="color: rgb(128, 0, 128);">2</SPAN><SPAN style="color: rgb(0, 0, 0);">)) {
+                            </SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> strip log prefix </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN>
+            <SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+              上面已经分析过log_prefix的作用，请参考上面的分析，此外，对于不规范的printk（如: printk(“Hello world\n”);），上面也进行了处理，加上了默认的等级4
+              这里的目的是：过滤掉字符串”&lt;x&gt;”，不输出到终端上
+             </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                            cur_index </SPAN>+= log_prefix(&amp;LOG_BUF(cur_index), &amp;<SPAN style="color: rgb(0, 0, 0);">msg_level, NULL);
+                            start_print </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> cur_index;
+                   }
+
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">while</SPAN> (cur_index !=<SPAN style="color: rgb(0, 0, 0);"> end) {
+                            </SPAN><SPAN style="color: rgb(0, 0, 255);">char</SPAN> c =<SPAN style="color: rgb(0, 0, 0);"> LOG_BUF(cur_index);
+             </SPAN><SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 获得log_buf中索引号为((cur_index) &amp; LOG_BUF_MASK)的元素</SPAN>
+                           cur_index++<SPAN style="color: rgb(0, 0, 0);">;
+                            </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (c == <SPAN style="color: rgb(128, 0, 0);">‘</SPAN><SPAN style="color: rgb(128, 0, 0);">\n</SPAN><SPAN style="color: rgb(128, 0, 0);">‘</SPAN>) {  <SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 表示本条log结束</SPAN>
+                                     <SPAN style="color: rgb(0, 0, 255);">if</SPAN> (msg_level &lt; <SPAN style="color: rgb(128, 0, 128);">0</SPAN><SPAN style="color: rgb(0, 0, 0);">) {
+                                               </SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);">
+                                                * printk() has already given us loglevel tags in
+                                                * the buffer.  This code is here in case the
+                                                * log buffer has wrapped right round and scribbled
+                                                * on those tags
+                                                </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                                               msg_level </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> default_message_loglevel;
+                                     }
+
+                </SPAN><SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 获得本条log在log_buf中的索引范围，从start_print到cur_index</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                                     _call_console_drivers(start_print, cur_index, msg_level);
+                                     msg_level </SPAN>= -<SPAN style="color: rgb(128, 0, 128);">1</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+                                     start_print </SPAN>=<SPAN style="color: rgb(0, 0, 0);"> cur_index;
+                                     </SPAN><SPAN style="color: rgb(0, 0, 255);">break</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+                            }
+                   }
+         }
+         _call_console_drivers(start_print, end, msg_level);
+}</SPAN></SPAN></PRE></DIV>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;"><SPAN style="color: rgb(0, 0, 255);">static</SPAN> <SPAN style="color: rgb(0, 0, 255);">void</SPAN><SPAN style="color: rgb(0, 0, 0);"> _call_console_drivers(unsigned start,
+                                     unsigned end, </SPAN><SPAN style="color: rgb(0, 0, 255);">int</SPAN><SPAN style="color: rgb(0, 0, 0);"> msg_log_level)
+{
+</SPAN><SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 这里的console_loglevel是个宏，也就是console_printk[0]，为7</SPAN>
+         <SPAN style="color: rgb(0, 0, 255);">if</SPAN> ((msg_log_level &lt; console_loglevel || ignore_loglevel) &amp;&amp;<SPAN style="color: rgb(0, 0, 0);">
+                            console_drivers </SPAN>&amp;&amp; start !=<SPAN style="color: rgb(0, 0, 0);"> end) {
+</SPAN><SPAN style="color: rgb(0, 128, 0);">//</SPAN><SPAN style="color: rgb(0, 128, 0);"> 由于对log_buf当成一个环形缓冲区处理，所以这个需判断是否发生了wrapped</SPAN>
+                   <SPAN style="color: rgb(0, 0, 255);">if</SPAN> ((start &amp; LOG_BUF_MASK) &gt; (end &amp;<SPAN style="color: rgb(0, 0, 0);"> LOG_BUF_MASK)) {
+                            </SPAN><SPAN style="color: rgb(0, 128, 0);">/*</SPAN><SPAN style="color: rgb(0, 128, 0);"> wrapped write </SPAN><SPAN style="color: rgb(0, 128, 0);">*/</SPAN><SPAN style="color: rgb(0, 0, 0);">
+                            __call_console_drivers(start </SPAN>&amp;<SPAN style="color: rgb(0, 0, 0);"> LOG_BUF_MASK,
+                                                        log_buf_len);
+                            __call_console_drivers(</SPAN><SPAN style="color: rgb(128, 0, 128);">0</SPAN>, end &amp;<SPAN style="color: rgb(0, 0, 0);"> LOG_BUF_MASK);
+                   } </SPAN><SPAN style="color: rgb(0, 0, 255);">else</SPAN><SPAN style="color: rgb(0, 0, 0);"> {
+                            __call_console_drivers(start, end);
+                   }
+         }
+}</SPAN></SPAN></PRE></DIV>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">&nbsp;</SPAN></P>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">// 
+输出log_buf中索引号从start到end范围内容</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;"><SPAN style="color: rgb(0, 0, 255);">static</SPAN> <SPAN style="color: rgb(0, 0, 255);">void</SPAN><SPAN style="color: rgb(0, 0, 0);"> __call_console_drivers(unsigned start, unsigned end)
+{
+         </SPAN><SPAN style="color: rgb(0, 0, 255);">struct</SPAN> console *<SPAN style="color: rgb(0, 0, 0);">con;
+
+         for_each_console(con) {
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> (exclusive_console &amp;&amp; con !=<SPAN style="color: rgb(0, 0, 0);"> exclusive_console)
+                            </SPAN><SPAN style="color: rgb(0, 0, 255);">continue</SPAN><SPAN style="color: rgb(0, 0, 0);">;
+                   </SPAN><SPAN style="color: rgb(0, 0, 255);">if</SPAN> ((con-&gt;flags &amp; CON_ENABLED) &amp;&amp; con-&gt;write &amp;&amp;<SPAN style="color: rgb(0, 0, 0);">
+                                     (cpu_online(smp_processor_id()) </SPAN>||<SPAN style="color: rgb(0, 0, 0);">
+                                     (con</SPAN>-&gt;flags &amp;<SPAN style="color: rgb(0, 0, 0);"> CON_ANYTIME)))
+                            con</SPAN>-&gt;write(con, &amp;LOG_BUF(start), end -<SPAN style="color: rgb(0, 0, 0);"> start);
+         }
+}</SPAN></SPAN></PRE></DIV>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">这里就会调用最终驱动中的硬件接口，通过uart打印到终端上。</SPAN></P>
+<P align="left"><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">其中在include/linux/console.h中：</SPAN></P>
+<DIV class="cnblogs_code">
+<PRE><SPAN style="font-family: courier new,courier; font-size: 18px;"><SPAN style="color: rgb(0, 0, 255);">#define</SPAN> for_each_console(con)          <SPAN style="color: rgb(0, 0, 255);">for</SPAN> (con = console_drivers; con != NULL; con = con-&gt;next)</SPAN></PRE></DIV>
+<P><SPAN 
+style="font-family: courier new,courier; font-size: 18px;">其中console_drivers是一个全局变量，会在register_console中设置，所以就要看是谁调用了register_console。</SPAN></P>
+<P><A title="tiny4412 串口驱动分析二 --- printk的实现,bubuko.com" style="color: rgb(255, 255, 255);" 
+href="http://www.bubuko.com/infodetail-661151.html">tiny4412 串口驱动分析二 --- 
+printk的实现</A></P>
+<P>标签：<A title="des" 
+href="http://www.bubuko.com/so/1/des">des</A>&nbsp;&nbsp;&nbsp;<A title="android" 
+href="http://www.bubuko.com/so/1/android">android</A>&nbsp;&nbsp;&nbsp;<A title="class" 
+href="http://www.bubuko.com/so/1/class">class</A>&nbsp;&nbsp;&nbsp;<A title="style" 
+href="http://www.bubuko.com/so/1/style">style</A>&nbsp;&nbsp;&nbsp;<A title="代码" 
+href="http://www.bubuko.com/so/1/%e4%bb%a3%e7%a0%81">代码</A>&nbsp;&nbsp;&nbsp;<A 
+title="com" href="http://www.bubuko.com/so/1/com">com</A>&nbsp;&nbsp;&nbsp;<A 
+title="log" href="http://www.bubuko.com/so/1/log">log</A>&nbsp;&nbsp;&nbsp;<A 
+title="使用" 
+href="http://www.bubuko.com/so/1/%e4%bd%bf%e7%94%a8">使用</A>&nbsp;&nbsp;&nbsp;<A 
+title="文件" 
+href="http://www.bubuko.com/so/1/%e6%96%87%e4%bb%b6">文件</A>&nbsp;&nbsp;&nbsp;</P>
+<P>原文：http://www.cnblogs.com/pengdonglin137/p/4320965.html</P></SPAN>            
+     </DIV>
+<DIV id="divcomment">
+<DIV>
+<DIV class=" divtextaligncenter">
+<DIV class="detailcai" id="infono">
+<DIV class="detailcai1 colorboldlv">踩</DIV>
+<DIV class="detailcai2 colorboldlv">(<SPAN id="spanNo">0</SPAN>)</DIV></DIV>
+<DIV class="detailzan" id="infoyes">
+<DIV class="detailzan1 colorboldCheng">赞</DIV>
+<DIV class="detailzan2 colorboldCheng">(<SPAN id="spanYes">0</SPAN>)</DIV></DIV>
+<DIV class="divfloatclear"></DIV></DIV>
+<DIV class="divtextalignright margintop10">
+<DIV class="width100bi paddingleft10right10"><SPAN class="colorboldCheng" id="spanYesContent"></SPAN>&nbsp; 
+<SPAN class="colorboldlv" id="spanNoContent"></SPAN>&nbsp; <SPAN class="colorboldCheng" 
+id="spanBadContent"></SPAN>                             </DIV></DIV></DIV>
+<DIV class="divtextalignright margintop10"><SPAN class="detailjubao" id="infobad">举报</SPAN> 
+                    </DIV>
+<DIV class="margintop20">
+<DIV class="divfloatleft">
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/f.txt" async=""></SCRIPT>
+         <!-- bubuko-infodetail-336x280-1 -->         <INS class="adsbygoogle" 
+style="width: 336px; height: 280px; display: inline-block;" data-ad-slot="8276669881" 
+data-ad-client="ca-pub-8616102841876629"></INS>         
+<SCRIPT>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </SCRIPT>
+     </DIV>
+<DIV class="divfloatright">
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/f.txt" async=""></SCRIPT>
+         <!-- bubuko-infodetail-336x280-2 -->         <INS class="adsbygoogle" 
+style="width: 336px; height: 280px; display: inline-block;" data-ad-slot="9753403083" 
+data-ad-client="ca-pub-8616102841876629"></INS>         
+<SCRIPT>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </SCRIPT>
+     </DIV>
+<DIV class="divfloatclear"></DIV></DIV>
+<DIV class="divtextalignleft margintop20" id="comment">
+<DIV class="detailpinglun1"><SPAN class="detailpinglun2 title6">评论</SPAN><SPAN 
+class="detailpinglun3">一句话评论（<SPAN class="colorboldCheng" 
+id="commentCount">0</SPAN>）</SPAN></DIV>
+<DIV class="paddingtop20">
+<DIV class="divtextaligncenter margintop20" id="commentlistend" name="commentlistend"><SPAN 
+id="lblpage">共<SPAN class="pagecolorc">0</SPAN>条&nbsp;&nbsp;</SPAN>              
+               </DIV></DIV>
+<DIV class="margintop20">
+<FORM action="/ajaxjs/info_detail_commentadd.aspx" method="post">
+<DIV class="divtextalignleft paddingtop20">
+<DIV class="divbackgroundcolor1" id="commenthf"></DIV>
+<DIV><TEXTAREA name="tbcommentcontent" class="tb" id="tbcommentcontent" style="width: 680px; height: 120px;"></TEXTAREA> 
+                                </DIV></DIV>
+<DIV class="divtextalignright paddingtop10 "><SPAN class="colorboldCheng" id="addCommentTishi">登录后才能评论！</SPAN> 
+                                <SPAN id="loginno"><INPUT class="mbtn1" onclick="location.href='http://member.bubuko.com/login.aspx?returnUrl=http://www.bubuko.com/infodetail.aspx?id=661151';" type="button" value="登录"></SPAN> 
+                            </DIV></FORM></DIV></DIV></DIV></DIV></DIV>
+<DIV class="width30bi divfloatright">
+<DIV class="paddingbottom20">
+<SCRIPT type="text/javascript">        document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E%3Cscript charset="utf-8" src="http://znsv.baidu.com/customer_search/api/js?sid=10743263978424259100') + '&plate_url=' + (encodeURIComponent(window.location.href)) + '&t=' + (Math.ceil(new Date() / 3600000)) + unescape('"%3E%3C/script%3E'));</SCRIPT>
+ </DIV>
+<DIV class="paddingbottom20">
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/f.txt" async=""></SCRIPT>
+     <!-- bubuko-right-300x600 -->     <INS class="adsbygoogle" style="width: 300px; height: 600px; display: inline-block;" 
+data-ad-slot="1530302281" data-ad-client="ca-pub-8616102841876629"></INS>     
+<SCRIPT>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </SCRIPT>
+ </DIV>
+<DIV class="width100bi divborder">
+<DIV class="divtitle">
+<DIV class="divfloatleft divtitlefont" id="infofile1_div1">分享档案</DIV>
+<DIV class="divfloatright"><A title="分享档案更多" class="colorCheng" href="http://www.bubuko.com/infotimemore.html">更多&gt;</A> 
+        </DIV>
+<DIV class="divfloatclear"></DIV></DIV>
+<DIV class="divtextalignleft paddingleft10right10 margintop10bottom10 heightline30px"><A 
+title="2016年05月16日技术分享文章" class="taga" href="http://www.bubuko.com/infotime-20160516-1.html">2016年05月16日 
+                    (980)</A><BR><A title="2016年05月15日技术分享文章" class="taga" href="http://www.bubuko.com/infotime-20160515-1.html"> 
+                   2016年05月15日                     (1684)</A><BR><A title="2016年05月14日技术分享文章" 
+class="taga" href="http://www.bubuko.com/infotime-20160514-1.html">              
+      2016年05月14日                     (1476)</A><BR><A title="2016年05月13日技术分享文章" 
+class="taga" href="http://www.bubuko.com/infotime-20160513-1.html">              
+      2016年05月13日                     (4937)</A><BR><A title="2016年05月12日技术分享文章" 
+class="taga" href="http://www.bubuko.com/infotime-20160512-1.html">              
+      2016年05月12日                     (4729)</A><BR><A title="2016年05月11日技术分享文章" 
+class="taga" href="http://www.bubuko.com/infotime-20160511-1.html">              
+      2016年05月11日                     (2239)</A><BR><A title="2016年05月10日技术分享文章" 
+class="taga" href="http://www.bubuko.com/infotime-20160510-1.html">              
+      2016年05月10日                     (2034)</A><BR><A title="2016年05月09日技术分享文章" 
+class="taga" href="http://www.bubuko.com/infotime-20160509-1.html">              
+      2016年05月09日                     (1644)</A><BR><A title="2016年05月08日技术分享文章" 
+class="taga" href="http://www.bubuko.com/infotime-20160508-1.html">              
+      2016年05月08日                     (1375)</A><BR><A title="2016年05月07日技术分享文章" 
+class="taga" href="http://www.bubuko.com/infotime-20160507-1.html">              
+      2016年05月07日                     (2995)</A><BR></DIV></DIV>
+<DIV class="width100bi margintop20 divborder">
+<DIV class="divtitle">
+<DIV class="divfloatleft divtitlefont" id="infotop2_divtitle">文章周排行</DIV>
+<DIV class="divfloatright"><A title="文章周排行更多>" class="colorCheng" id="infotop2_amore" 
+href="http://www.bubuko.com/infotoplist-11-2-1.html">更多&gt;</A></DIV>
+<DIV class="divfloatclear"></DIV></DIV>
+<DIV>
+<UL>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="利用Wireshark截取数据包，并对数据包进行解析" 
+  href="http://www.bubuko.com/infodetail-173739.html" 
+  _self="">利用Wireshark截取数据包，并对数据包进行解析                         &nbsp;<SPAN class="colorlv">2014-05-10</SPAN> 
+  </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="汉字-拼音转换类" 
+  href="http://www.bubuko.com/infodetail-208453.html" _self="">汉字-拼音转换类          
+                 &nbsp;<SPAN class="colorlv">2014-06-11</SPAN> </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="史上最详细的CocoaPods安装教程" 
+  href="http://www.bubuko.com/infodetail-425274.html" 
+  _self="">史上最详细的CocoaPods安装教程                         &nbsp;<SPAN class="colorlv">2014-10-23</SPAN> 
+  </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="solr的schema官方介绍" 
+  href="http://www.bubuko.com/infodetail-427762.html" _self="">                  
+        solr的schema官方介绍                         &nbsp;<SPAN 
+  class="colorlv">2014-10-24</SPAN> </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="MyBatis架构设计及源代码分析系列(一):MyBatis架构" 
+  href="http://www.bubuko.com/infodetail-549184.html" _self="">                  
+        MyBatis架构设计及源代码分析系列(一):MyBatis架构                         &nbsp;<SPAN 
+  class="colorlv">2014-12-28</SPAN> </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="zepto的tap事件的点透问题的几种解决方案" 
+  href="http://www.bubuko.com/infodetail-649496.html" _self="">                  
+        zepto的tap事件的点透问题的几种解决方案                         &nbsp;<SPAN class="colorlv">2015-03-02</SPAN> 
+  </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="Androd Toolbar 的简单使用（转）" 
+  href="http://www.bubuko.com/infodetail-652481.html" _self="">                  
+        Androd Toolbar 的简单使用（转）                         &nbsp;<SPAN class="colorlv">2015-03-03</SPAN> 
+  </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="HC-05 蓝牙模块的调试与使用" 
+  href="http://www.bubuko.com/infodetail-653603.html" _self="">                  
+        HC-05 蓝牙模块的调试与使用                         &nbsp;<SPAN 
+  class="colorlv">2015-03-04</SPAN> </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="Bootstarp学习（二十三）模态弹出框（Modals）" 
+  href="http://www.bubuko.com/infodetail-653787.html" _self="">                  
+        Bootstarp学习（二十三）模态弹出框（Modals）                         &nbsp;<SPAN class="colorlv">2015-03-04</SPAN> 
+  </A></LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="Robotium自动化测试框架实用教程（图）" 
+  href="http://www.bubuko.com/infodetail-674900.html" _self="">                  
+        Robotium自动化测试框架实用教程（图）                         &nbsp;<SPAN class="colorlv">2015-03-14</SPAN> 
+  </A></LI></UL></DIV></DIV>
+<DIV class="width100bi divborder margintop20">
+<DIV class="divtitle">
+<DIV class="divfloatleft divtitlefont" id="newsnew1_divtitle">最新新闻</DIV>
+<DIV class="divfloatright"><A title="最新新闻更多>" class="colorCheng" id="newsnew1_amore" 
+href="http://www.bubuko.com/news/">更多</A></DIV>
+<DIV class="divfloatclear"></DIV></DIV>
+<DIV>
+<UL>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="据科技网站CNET报道，Amazon@Penn可能与你去过的任何店面都不相同，这个明亮的空间中没有货架、没有库存、也没有收款台。实际上，它是否能&#10;被称为店面都值得商榷。然而，这个占地300多平方米的空间，正是亚马逊在美国宾夕法尼亚大学新开的实体书，它成为亚马逊进化的又一例证。亚马逊已经是世&#10;界上最大的电子商务公司，它正开始建立更多实体店，以便接近和吸引数以百万计的用户。" 
+  href="http://www.bubuko.com/news/detail-82692.html" _self="">                  
+        亚马逊在宾州大学开实体店 里面却没有书                         &nbsp;<SPAN 
+  class="colorlv">2016-05-16</SPAN></A>                     </LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="据英国《每日邮报》5月13日报道，近日，一组拳王迈克?泰森1995年在拉斯维加斯比赛的照片在网上疯传，照片中，前排一位观众用酷似今天智能手机的设站在拍摄比赛。有人玩笑猜测，手机的持有者不是时间旅行者，就是来地球度假的外星人。1995年的这场比赛是泰森出狱首赛，对手彼得?麦克内利(Peter McNeeley)第一回合就宣布退出，让这场比赛成为泰森职业生涯中最火爆的比赛之一。" 
+  href="http://www.bubuko.com/news/detail-82691.html" 
+  _self="">拳王泰森95年比赛视频惊现智能手机引热议                         &nbsp;<SPAN class="colorlv">2016-05-16</SPAN></A> 
+                      </LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="5月16日消息，据华尔街日报中文网官方微博，知情人士称，腾讯正把计划中的20亿美元银行贷款规模扩大至30亿-40亿美元。上月中旬，外媒援引知情人士消息称，腾讯正在就20亿美元贷款与银行展开谈判。腾讯正寻求筹集资金用于更多收购、以及在金融服务等新领域扩张。" 
+  href="http://www.bubuko.com/news/detail-82690.html" _self="">腾讯拟扩大贷款规模最高至40亿美元 
+  用于收购扩张                         &nbsp;<SPAN 
+  class="colorlv">2016-05-16</SPAN></A>                     </LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="日前，4名专车司机因恶意刷单、涉嫌诈骗罪被提起公诉，分别被判处8个月至1年有期徒刑，并各自缴纳罚金1000元。据悉，2015年9月，这几名专车司机（王某、董某等）因恶意刷单、非法套取补贴获利，被上海市公安局普陀分局刑事拘留。此前，北京海淀检方也对利用“滴滴打车”进行刷单套现诈骗的常某提起公诉，按刑法有关诈骗罪的规定，常某被判处有期徒刑8个月，并处四千元罚金，全部非法所得发还被害单位北京嘀嘀无限科技发展有限公司。" 
+  href="http://www.bubuko.com/news/detail-82689.html" _self="">滴滴专车司机刷单被判诈骗罪 
+  最高获刑1年                         &nbsp;<SPAN 
+  class="colorlv">2016-05-16</SPAN></A>                     </LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="据英国《每日邮报》5月13日报道，近日，科学家利用哈勃望远镜，观测到了距地球6600万光年的NGC6814螺旋星系。科学家怀疑NGC6814螺旋星系存在着巨大黑洞，质量约为太阳黑洞的1800万倍。在所有不规则星系中，螺旋星系占到总数的50%以上，且每一个星系都不尽相同。" 
+  href="http://www.bubuko.com/news/detail-82688.html" _self="">科学家观测到遥远螺旋星系 
+  内藏巨大黑洞                         &nbsp;<SPAN 
+  class="colorlv">2016-05-16</SPAN></A>                     </LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="就像看电影大片一样。你可能很难想象：距离中国广州市区40多公里的钟落潭镇，一间略显破旧的厂房内，两条生产线正在运转。在这里生产的“LV”产品，很&#10;快就会出现在几千公里之外、奢华的迪拜。 &#10;几个由造假老手组成的团伙，在广州隐秘地布置生产线，在迪拜悄悄地安排仓储和销售窝点，创造着数以亿计的“产值”。正是这样的团伙，让假冒品牌在线上线下&#10;泛滥成灾。" 
+  href="http://www.bubuko.com/news/detail-82687.html" _self="">阿里联手LV跨国打假 
+  迪拜查获6万余件假货                         &nbsp;<SPAN 
+  class="colorlv">2016-05-16</SPAN></A>                     </LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="库克又来中国了，这是苹果CEO任期内的第八次访问中国。就在他来的前几天，滴滴宣布获得苹果10亿美元的投资，在今天的活动上陪同库克做主持的也是滴滴&#10;总裁柳青。在王府井的苹果零售店中，库克与中国的部分开发者进行了交流，开发者希望苹果能够在App &#10;Store中增加评论的互动功能，让开发者可以直接和用户进行互动交流。除了今天的活动外，库克此行的重头戏是继续与中国的宣传部门和广电总局等机构进行&#10;沟通。" 
+  href="http://www.bubuko.com/news/detail-82686.html" 
+  _self="">库克再次访华的背后：iPhone销量下滑 投资人清仓                         &nbsp;<SPAN class="colorlv">2016-05-16</SPAN></A> 
+                      </LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="距离Moto G4和G4 Plus的发布已经没剩几天，近日又有两款未知型号的摩托罗拉设备通过了FCC的认证，因而第4代Moto G应该还将很快上市。鉴于厂商已经发布了将于5月17号召开发布会的预告，大家普遍猜测这两款设备就是Moto G4和G4 Plus。FCC网站上公布的设备代号分别为XT1622和XT1642，作为参考，美版第三代Moto G的代号为XT1540。" 
+  href="http://www.bubuko.com/news/detail-82685.html" _self="">                  
+        Moto G4和G4 Plus或已通过FCC认证：5月17号见分晓                         &nbsp;<SPAN 
+  class="colorlv">2016-05-16</SPAN></A>                     </LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="又到一年5.17，电信日里会有很多的业务促销活动，三家电信运营商也适应社会形势推出了继续提速降费方案，还有更多的电商企业将这一天变成了新的购物节。只是，对于一百多万通信运营商来讲，可能不能带来哪怕一点点高兴。公司继续的提速降费，可能意味着公司的收入与利润继续被挤压，而这些经营硬指标的下降很可能带来员工收入的进一步降低。" 
+  href="http://www.bubuko.com/news/detail-82684.html" _self="">                  
+        [评论]这么点可怜的收入 运营商还想留住谁？                         &nbsp;<SPAN class="colorlv">2016-05-16</SPAN></A> 
+                      </LI>
+  <LI class="divullititle heightline25px divtextalignleft"><A title="今年5月13日上午，从主城开车回老家万州的男子曾岫，行至渝北两路时遇到一桩魂飞魄散的事，他开车不看路标迷恋导航，结果开上一条断头路，险些坠下20多米高的悬崖。20多岁的男子曾岫是万州人，现住渝北黄泥塝某小区。13日早上7：30左右，他从黄泥塝家里出发准备回万州老家办事，因担心路上堵车，他便开启手机导航，选定一条“避开拥堵”的路线。" 
+  href="http://www.bubuko.com/news/detail-82683.html" _self="">开车不看路标迷恋导航 
+  男子开上断头路险坠崖                         &nbsp;<SPAN 
+  class="colorlv">2016-05-16</SPAN></A>                     </LI></UL></DIV></DIV>
+<DIV class="width300px" id="xuanting">
+<DIV class="margintop10">
+<SCRIPT type="text/javascript">
+            var cpro_id = "u2437949";
+            (window["cproStyleApi"] = window["cproStyleApi"] || {})[cpro_id] = { at: "3", rsi0: "300", rsi1: "300", pat: "17", tn: "baiduCustNativeAD", rss1: "#FFFFFF", conBW: "1", adp: "1", ptt: "0", titFF: "%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91", titFS: "14", rss2: "#000000", titSU: "0" }
+        </SCRIPT>
+         
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/c.js" type="text/javascript"></SCRIPT>
+         
+<SCRIPT>
+            var baiduImagePlus = {
+                noLogo: true,
+                unionId: 'u2416327',
+                formList: [{ formId: 2}]
+            };
+        </SCRIPT>
+         
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/i.js"></SCRIPT>
+     </DIV>
+<DIV class="margintop10">
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/f.txt" async=""></SCRIPT>
+         <!-- bubuko-infodetail-right-zidingyixuanting-300x250 -->         <INS 
+class="adsbygoogle" style="width: 300px; height: 250px; display: inline-block;" 
+data-ad-slot="1268864286" data-ad-client="ca-pub-8616102841876629"></INS>        
+ 
+<SCRIPT>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </SCRIPT>
+     </DIV></DIV></DIV>
+<DIV class="divfloatclear"></DIV></DIV>
+<DIV class="width1000px divmargin0auto paddingtop20bottom20">
+<DIV class="width1000px divborder margintop20">
+<DIV class="youqingtitle"><A title="友情链接">友情链接</A>         </DIV>
+<DIV class="youqingcontent"><A title="互联网产品定制开发专家" href="http://www.lightinit.com/" 
+target="_blank">兰亭集智</A>&nbsp;&nbsp;<A href="http://www.guozhihua.net/" target="_blank">国之画</A>&nbsp;&nbsp;<A 
+href="http://www.cnbeta.com/" target="_blank">cnbeta</A>&nbsp;&nbsp; <A href="http://www.csdn.net/" 
+target="_blank">                        CSDN</A>&nbsp;&nbsp;<A href="http://www.cnblogs.com/" 
+target="_blank">博客园             </A>&nbsp;&nbsp;<A href="http://tongji.baidu.com/" 
+target="_blank">百度统计</A>&nbsp;&nbsp;            <A href="http://www.cnzz.com/" 
+target="_blank">站长统计</A>&nbsp;&nbsp;            <BR><A href="http://www.mobile-open.com/" 
+target="_blank">阳和移动开发</A>&nbsp;&nbsp; <A title="汇智网在线编程学习" href="http://www.hubwiz.com/" 
+target="_blank">汇智网 </A>&nbsp;&nbsp;<A title="易捷博客网" href="http://www.ycyjkj.com/" 
+target="_blank">易捷博客网 </A>&nbsp;&nbsp;<A title="布布分享" href="http://www.bubufx.com/" 
+target="_blank">布布分享 </A>&nbsp;&nbsp;<A title="天码营" href="http://tianmaying.com/" 
+target="_blank">天码营 </A>&nbsp;&nbsp;<A title="HarriesBlog" href="http://www.liuhaihua.cn/" 
+target="_blank">HarriesBlog </A>&nbsp;&nbsp;<A title="程序员客栈" href="http://www.proginn.com/" 
+target="_blank">程序员客栈 </A>&nbsp;&nbsp;<A title="情怀" href="http://www.cnfeelings.com/" 
+target="_blank">情怀 </A>&nbsp;&nbsp;<A title="科学看世界" href="http://91stw.net/" 
+target="_blank">科学看世界 </A>&nbsp;&nbsp;<A title="吾吾织梦" href="http://www.55zm.com/" 
+target="_blank">吾吾织梦 </A>&nbsp;&nbsp;<A title="专注PHP程序员一站式免费学习站点" href="http://www.5ibc.net/" 
+target="_blank">PHP教程 </A>&nbsp;&nbsp;        </DIV></DIV></DIV>
+<DIV class="bottomdiv">
+<DIV class="width1000px divmargin0auto paddingtop20">
+<DIV class="divfloatleft width500px">
+<DIV class="height30px"><A title="bubuko.com关于我们" href="http://www.bubuko.com/about.html">关于我们</A> 
+- <A title="bubuko.com联系我们" href="http://www.bubuko.com/contactus.html">联系我们</A> 
+- <A title="bubuko.com留言反馈" href="http://www.bubuko.com/guest.html">留言反馈</A>     
+        </DIV>
+<DIV class="height30px">© 2014 <A title="bubuko.com技术分享" href="http://www.bubuko.com/">bubuko.com</A> 
+版权所有                鲁ICP备09046678号-4             </DIV>
+<DIV><SPAN class="colorlv">打开技术之扣，分享程序人生！</SPAN>             </DIV>
+<DIV class="paddingtop20 paddingbottom20">
+<SCRIPT type="text/javascript">                    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_1258727054'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1258727054%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</SCRIPT>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                 
+<SCRIPT type="text/javascript">
+                    var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+                    document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fb85be54ed045cab3f2e448f2126e3884' type='text/javascript'%3E%3C/script%3E"));
+                </SCRIPT>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <A style="height: 20px; line-height: 20px; text-decoration: none; display: inline-block;" 
+href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=37021202000002"><IMG 
+style="float: left;" src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/ghs.png" 
+border="0">
+<P style="margin: 0px 0px 0px 5px; height: 20px; color: rgb(147, 147, 147); line-height: 20px; float: left;"> 
+                        鲁公网安备 37021202000002号</P></A>             </DIV></DIV>
+<DIV class="divfloatright width500px"></DIV>
+<DIV class="divfloatclear"></DIV></DIV></DIV>
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/bubukojs.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT type="text/javascript">
+    /*bubuko-zuoyouxuanfu--120*300 创建于 2014-10-14*/
+    var cpro_id = "u1757709";
+</SCRIPT>
+ 
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/f.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT type="text/javascript">
+    /*bubuko-infodetail--neiwen--2014-11-30*/
+    var cpro_id = "u1836545";
+</SCRIPT>
+ 
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/cnw.js" type="text/javascript"></SCRIPT>
+     
+<SCRIPT type="text/javascript">        var mid = ''; var id = '661151'; var idm = 'd9c05d'; var commentitemcount = '0'; var memberhost = 'http://member.bubuko.com/'; prettyPrint();
+    </SCRIPT>
+     
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/infodetail.js" type="text/javascript" charset="utf-8"></SCRIPT>
+     
+<SCRIPT src="tiny4412%20串口驱动分析二%20---%20printk的实现-布布扣-bubuko_com_files/member.js" type="text/javascript" charset="utf-8"></SCRIPT>
+ 
+<SCRIPT type="text/javascript">/* <![CDATA[ */(function(d,s,a,i,j,r,l,m,t){try{l=d.getElementsByTagName('a');t=d.createElement('textarea');for(i=0;l.length-i;i++){try{a=l[i].href;s=a.indexOf('/cdn-cgi/l/email-protection');m=a.length;if(a&&s>-1&&m>28){j=28+s;s='';if(j<m){r='0x'+a.substr(j,2)|0;for(j+=2;j<m&&a.charAt(j)!='X';j+=2)s+='%'+('0'+('0x'+a.substr(j,2)^r).toString(16)).slice(-2);j++;s=decodeURIComponent(s)+a.substr(j,m-j)}t.innerHTML=s.replace(/</g,'&lt;').replace(/>/g,'&gt;');l[i].href='mailto:'+t.value}}catch(e){}}}catch(e){}})(document);/* ]]> */</SCRIPT>
+ </BODY></HTML>

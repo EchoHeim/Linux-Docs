@@ -1,0 +1,48 @@
+html, body {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
+#adContent {
+  background-color: #fff;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+#bgImage {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+#logoImage {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.product {
+  background: white;
+  float: left;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px grey;
+}
+
+.productShadowed {
+  box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
+}
+
+.product:hover {
+  box-shadow: 0 0 0 1px red;
+}
+
+.productImage {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}

@@ -1,0 +1,9 @@
+Symbol: TOUCHSCREEN_FT5X0X [=m]                                                                         ©¦  
+  ©¦ Type  : tristate                                                                                        ©¦  
+  ©¦ Prompt: FocalTech ft5x0x TouchScreen driver                                                             ©¦  
+  ©¦   Defined at drivers/input/touchscreen/Kconfig:312                                                      ©¦  
+  ©¦   Depends on: !S390 && !UML && INPUT [=y] && INPUT_TOUCHSCREEN [=y] && MACH_TINY4412 [=y]               ©¦  
+  ©¦   Location:                                                                                             ©¦  
+  ©¦     -> Device Drivers                                                                                   ©¦  
+  ©¦       -> Input device support                                                                           ©¦                   
+  ©¦           -> Touchscreens (INPUT_TOUCHSCREEN [=y])                                  

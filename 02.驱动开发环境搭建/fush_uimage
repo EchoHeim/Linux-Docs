@@ -1,0 +1,1 @@
+dd iflag=dsync oflag=dsync if=./zImage of=/dev/sdb  seek=1057
