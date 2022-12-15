@@ -1,9 +1,0 @@
-{
-    "jsonrpc": "2.0",
-    "method": "machine.device_power.post_device",
-    "params": {
-        "device": "green_led",
-        "action": "on"
-    },
-    "id": 4564
-}

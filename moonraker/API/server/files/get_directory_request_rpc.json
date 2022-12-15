@@ -1,9 +1,0 @@
-{
-    "jsonrpc": "2.0",
-    "method": "server.files.get_directory",
-    "params": {
-        "path": "gcodes/my_subdir",
-        "extended": true
-    },
-    "id": 5644
-}

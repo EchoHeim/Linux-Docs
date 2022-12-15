@@ -1,6 +1,0 @@
-{
-    "username": "my_user",
-    "token": "eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3MiOiAiTW9vbnJha2VyIiwgImlhdCI6IDE2MTg4NzY3ODMuODkxNjE5LCAiZXhwIjogMTYxODg4MDM4My44OTE2MTksICJ1c2VybmFtZSI6ICJteV91c2VyIiwgInRva2VuX3R5cGUiOiAiYXV0aCJ9.oH0IShTL7mdlVs4kcx3BIs_-1j0Oe-qXezJKjo-9Xgo",
-    "refresh_token": "eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJpc3MiOiAiTW9vbnJha2VyIiwgImlhdCI6IDE2MTg4NzY3ODMuODkxNzAyNCwgImV4cCI6IDE2MjY2NTI3ODMuODkxNzAyNCwgInVzZXJuYW1lIjogIm15X3VzZXIiLCAidG9rZW5fdHlwZSI6ICJyZWZyZXNoIn0.a6ZeRjk8RQQJDDH0JV-qGY_d_HIgfI3XpsqUlUaFT7c",
-    "action": "user_created"
-}

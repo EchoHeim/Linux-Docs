@@ -1,9 +1,0 @@
-{
-    "jsonrpc": "2.0",
-    "method": "server.database.delete_item",
-    "params": {
-        "namespace": "{namespace}",
-        "key": "{key}"
-    },
-    "id": 4654
-}

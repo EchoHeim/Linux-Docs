@@ -1,5 +1,0 @@
-{
-    "jsonrpc": "2.0",
-    "method": "printer.query_endstops.status",
-    "id": 3456
-}

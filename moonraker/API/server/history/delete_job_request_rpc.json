@@ -1,8 +1,0 @@
-{
-    "jsonrpc": "2.0",
-    "method": "server.history.delete_job",
-    "params":{
-        "uid": "{uid}"
-    },
-    "id": 5534
-}

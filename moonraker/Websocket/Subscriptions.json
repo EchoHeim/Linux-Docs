@@ -1,5 +1,0 @@
-{
-    "jsonrpc": "2.0",
-    "method": "notify_status_update",
-    "params": [{<status object>}, <eventtime>]
-}

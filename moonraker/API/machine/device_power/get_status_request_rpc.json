@@ -1,9 +1,0 @@
-{
-    "jsonrpc": "2.0",
-    "method": "machine.device_power.status",
-    "params": {
-        "dev_one":null,
-        "dev_two": null
-    },
-    "id": 4564
-}

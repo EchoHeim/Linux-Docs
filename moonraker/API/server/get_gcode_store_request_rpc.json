@@ -1,8 +1,0 @@
-{
-    "jsonrpc": "2.0",
-    "method": "server.gcode_store",
-    "params": {
-        "count": 100
-    },
-    "id": 7643
-}

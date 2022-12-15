@@ -1,5 +1,0 @@
-{
-    "jsonrpc": "2.0",
-    "method":"server.history.totals",
-    "id": 5656
-}

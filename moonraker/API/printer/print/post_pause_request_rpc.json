@@ -1,5 +1,0 @@
-{
-    "jsonrpc": "2.0",
-    "method": "printer.print.pause",
-    "id": 4564
-}

@@ -1,7 +1,0 @@
-{
-    "item": {
-        "path": "gcodes/testdir",
-        "root": "gcodes"
-    },
-    "action": "create_dir"
-}

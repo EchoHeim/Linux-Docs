@@ -1,5 +1,0 @@
-{
-    "jsonrpc": "2.0",
-    "method": "printer.emergency_stop",
-    "id": 4564
-}

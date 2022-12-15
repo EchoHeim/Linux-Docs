@@ -1,8 +1,0 @@
-{
-    "jsonrpc": "2.0",
-    "method": "printer.gcode.script",
-    "params": {
-        "script": "G28"
-    },
-    "id": 7466
-}

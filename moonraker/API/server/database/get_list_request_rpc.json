@@ -1,5 +1,0 @@
-{
-    "jsonrpc": "2.0",
-    "method": "server.database.list",
-    "id": 8694
-}

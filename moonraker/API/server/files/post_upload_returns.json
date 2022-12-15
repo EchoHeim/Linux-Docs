@@ -1,8 +1,0 @@
-{
-    "item": {
-        "path": "Lock Body Shim 1mm_0.2mm_FLEX_MK3S_2h30m.gcode",
-        "root": "gcodes"
-    },
-    "print_started": false,
-    "action": "create_file"
-}

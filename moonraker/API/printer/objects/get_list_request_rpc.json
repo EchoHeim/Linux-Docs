@@ -1,5 +1,0 @@
-{
-    "jsonrpc": "2.0",
-    "method": "printer.objects.list",
-    "id": 1454
-}
