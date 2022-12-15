@@ -1,0 +1,7 @@
+/* 1、打开视频设备 */
+/* 2、VIDIOC_QUERYCAP 确定它是否视频捕捉设备,支持哪种接口(streaming/read,write) */
+/* 3、VIDIOC_ENUM_FMT 查询支持哪种格式 */
+/* 4、 VIDIOC_S_FMT 设置摄像头使用哪种格式 */
+/* 5、VIDIOC_REQBUFS  申请buffer */
+/* 6、VIDIOC_QUERYBUF 确定每一个buffer的信息 并且 mmap */
+/* 7、VIDIOC_QBUF  放入队列 */

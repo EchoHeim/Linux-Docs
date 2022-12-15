@@ -1,0 +1,1147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+     
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    
+<head>   
+    
+     
+    <script type="text/javascript" src="http://c.csdnimg.cn/pubfooter/js/tracking.js" charset="utf-8"></script>  
+
+    <script type="text/javascript">
+        var protocol = window.location.protocol;
+        document.write('<script type="text/javascript" src="' + protocol + '//csdnimg.cn/pubfooter/js/repoAddr2.js?v=' + Math.random() + '"></' + 'script>');
+    </script>
+
+     <script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/46aae4d1e2371e4aa769798941cef698/allmobilize.min.js"></script>
+ <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+
+    <title>为qt-embedded添加jpeg库的交叉编译方法for arm - wwwxxlby520的专栏
+        - 博客频道 - CSDN.NET</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="过程：看了一个文章：=====================================谢论坛内各位的帮助,我的qt/e2.3.10和qtopia2.1.1终于全部编译通过.下面是jpeg和uuid库的编译方法.是我自己总结的,希望对大家有点儿用.为qt-embedded添加jpeg库的交叉编译方法for arm下载jpegsrc.v6b.tar." />
+    <script src="http://static.blog.csdn.net/scripts/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://static.blog.csdn.net/scripts/ad.js?v=1.1"></script>
+        <!--new top-->
+               <link rel="stylesheet" href="http://static.csdn.net/public/common/toolbar/css/index.css">        <!--new top-->
+
+    <link rel="Stylesheet" type="text/css" href="http://static.blog.csdn.net/skin/default/css/style.css?v=1.1" />
+    <link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="/wwwxxlby520/rss/list" />
+    <link rel="shortcut icon" href="http://c.csdnimg.cn/public/favicon.ico" />
+    <link type="text/css" rel="stylesheet" href="http://static.blog.csdn.net/scripts/SyntaxHighlighter/styles/default.css" />
+ 
+
+
+</head>
+<body>
+    
+   
+      <!--new top-->
+    <script id="toolbar-tpl-scriptId" fixed="true" prod="blog" skin="black" src="http://static.csdn.net/public/common/toolbar/js/html.js" type="text/javascript"></script>
+     <!--new top-->
+    <div id="container">
+        <div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h2>
+                <a href="http://blog.csdn.net/wwwxxlby520">wwwxxlby520的专栏</a></h2>
+            <h3></h3>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg">
+    </div>
+    <div class="navigator">
+        <ul>
+            
+                <li id="btnContents"><a href="http://blog.csdn.net/wwwxxlby520?viewmode=contents"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_mulu'])">
+                    <img src="http://static.blog.csdn.net/images/ico_list.gif">目录视图</span></a></li>
+                <li id="btnView"><a href="http://blog.csdn.net/wwwxxlby520?viewmode=list"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_zhaiyao'])">
+                    <img src="http://static.blog.csdn.net/images/ico_summary.gif">摘要视图</span></a></li>
+                <li id="btnRss"><a href="http://blog.csdn.net/wwwxxlby520/rss/list"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_RSS'])">
+                    <img src="http://static.blog.csdn.net/images/ico_rss.gif">订阅</span></a></li>                
+
+            </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "wwwxxlby520";
+    var _blogger = username;
+    var blog_address = "http://blog.csdn.net/wwwxxlby520";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "";  
+</script>
+
+        <div id="body">
+            <div id="main">
+                <div class="main">
+                        <div class="ad_class">
+<div class="notice tracking-ad" data-mod='popu_3' > 
+
+<a href="http://geek.csdn.net/news/detail/34791 "><font color=blue>
+新版极客头条上线，每天一大波干货</font></a>
+&nbsp;&nbsp;&nbsp;
+  
+
+<a href="http://www.csdn.net/article/2015-07-06/2825132-Android">
+<font color=red>任玉刚：Android开发者的职场规划  
+</font></a>
+&nbsp;&nbsp;&nbsp;
+
+<a href="http://edu.csdn.net/training/ios-15-1">
+<font color=blue>从零练就iOS高手实战班震撼来袭
+</font></a>
+&nbsp;&nbsp;&nbsp;
+
+<a href="http://www.csdn.net/article/2015-06-05/2824836-database">
+<font color=red>新型数据库利弊谈 
+</font></a>
+
+
+&nbsp;&nbsp;&nbsp;</div>                        </div>
+                        
+
+  
+<link href="http://static.blog.csdn.net/css/comment1.css" type="text/css" rel="stylesheet" />
+<link href="http://static.blog.csdn.net/css/style1.css" type="text/css" rel="stylesheet" />
+<script language='JavaScript' type='text/javascript' src='http://download.csdn.net/js/jquery.cookie.js'></script>
+<script type="text/javascript" src="http://c.csdnimg.cn/rabbit/search-service/main.js"></script>
+
+
+<link rel="stylesheet" href="http://static.blog.csdn.net/public/res-min/markdown_views.css?v=1.0" />
+
+<script type="text/javascript" src="http://static.blog.csdn.net/public/res/bower-libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+
+
+
+
+
+
+
+
+
+  <script type="text/ecmascript">
+      window.quickReplyflag = true;
+    </script>
+<div id="article_details" class="details">
+    <div class="article_title">   
+         <span class="ico ico_type_Repost"></span>
+
+
+    <h1>
+        <span class="link_title"><a href="/wwwxxlby520/article/details/4384224">
+        为qt-embedded添加jpeg库的交叉编译方法for arm            
+        </a>
+        </span>
+    </h1>
+</div>
+
+    <div class="article_manage">
+    <span class="link_postdate">2009-07-27 15:30</span>
+    <span class="link_view" title="阅读次数">2291人阅读</span>
+    <span class="link_comments" title="评论次数"><a href="#comments" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_pinglun'])">评论</a>(0)</span>
+    <span class="link_collect"><a href="javascript:void(0);" onclick="javascript:_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shoucang']);collectArticle('为qt-embedded添加jpeg库的交叉编译方法for arm','4384224');return false;" title="收藏">收藏</a></span>
+    <span class="link_report"><a href="#report"  onclick="javascript:_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_jubao']);report(4384224,2);return false;" title="举报">举报</a></span>
+    
+</div>
+<div class="tag2box"><a href='http://www.csdn.net/tag/makefile' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">makefile</a><a href='http://www.csdn.net/tag/path' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">path</a><a href='http://www.csdn.net/tag/command' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">command</a><a href='http://www.csdn.net/tag/compiler' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">compiler</a><a href='http://www.csdn.net/tag/build' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">build</a><a href='http://www.csdn.net/tag/gcc' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">gcc</a></div>
+
+  
+    
+<div id="article_content" class="article_content">
+<p>过程：<br />
+<br />
+<br />
+<br />
+<br />
+看了一个文章：<br />
+=====================================<br />
+<span style="color: #555555;">谢论坛内各位的帮助,我的qt/e2.3.10和qtopia2.1.1终于全部编译通过.<br />
+下面是jpeg和uuid库的编译方法.是我自己总结的,希望对大家有点儿用.</span>
+</p>
+<p><span style="color: #555555;">为qt-embedded添加jpeg库的交叉编译方法for arm<br />
+下载jpegsrc.v6b.tar.gz<br />
+解压<br />
+tar -xzf jpegsrc.v6b.tar.gz<br />
+cd jpeg-6b<br />
+[root@SJTU-LIUJIAN jpeg-6b]# ./configure --enable-shared<br />
+[root@SJTU-LIUJIAN jpeg-6b]# make<br />
+修改生成的Makefile文件:<br />
+<span style="font-weight: bold;">prefix = qt-embeddedd的文件夹路径(eg: /home/qt-2.3.10)</span>
+<br />
+CC= /usr/local/arm/2.95.3/bin/arm-linux-gcc<br />
+AR= /usr/local/arm/2.95.3/bin/arm-linux-ar rc<br />
+AR2= /usr/local/arm/2.95.3/bin/arm-linux-ranlib</span>
+</p>
+<p><span style="color: #555555;">保存<br />
+在你的qt-embedded中建立man/man1文件家,否则安装jpeg库时会出错<br />
+[root@SJTU-LIUJIAN jpeg-6b]#mkdir -p qt-2.3.10/man/man1</span>
+</p>
+<p><span style="color: #555555;">最后:<br />
+[root@SJTU-LIUJIAN jpeg-6b]# make install<br />
+就可以给qt-embedded添加好for arm的libjpeg库.</span>
+</p>
+<p><span style="color: #555555;">把生成的库文件向下面的目录中也拷贝一份:<br />
+/usr/local/arm/2.95.3/arm-linux/lib</span>
+</p>
+<p><span style="color: #555555;">通过命令file libjpeg.so查看:<br />
+libjpeg.so: ELF 32-bit LSB shared object, ARM, version 1 (ARM), not stripped<br />
+这样的话就说明生成的库是for arm的,类似方法可以勇于生成libuuid.so库. <br />
+</span>
+</p>
+<p><span style="color: #555555;">=========================================================<br />
+</span>
+</p>
+<p>出错：：<br />
+然后看一文章：http://q.163.com/10301/blog/hujw0710/8797282200791854540158/#8797282200791854540158<br />
+===<br />
+<br />
+		      
+   1. 首先要 在你安装的目录下建立4个文件目录 :/bin&nbsp;&nbsp;&nbsp; /include&nbsp; /lib /man/man1.如果你 没有建立这4个文件目录的话.在make install的时候你会遇到下面的 问题:<br />
+/usr/bin/install -c -m 644 ./cjpeg.1 /home/zz/jpeg-6b/jpeg/man/man1/cjpeg.1<br />
+/usr/bin/install: 无法创建一般文件&lsquo;/home/zz/jpeg-6b/jpeg/man/man1/cjpeg.1&rsquo;: 没有那个文件或目录<br />
+make: *** [install] Error 1<br />
+2. 关于配置安装的 几点意见:<br />
+<span lang="EN-US"><span style="font-family: Times New Roman; font-size: small;">#&nbsp; export CC=arm-linux-gcc</span>
+</span>
+<br />
+<span lang="EN-US"><span style="font-family: Times New Roman;"><span style="font-size: small;"># ./configure --host=arm-unknown-linux --prefix=/home/zz/jpeg-6b/jpeg&nbsp;&nbsp; --enable-shared&nbsp; --enable-static<br />
+&nbsp;分别对动态链接库和静态链接库的支持</span>
+</span>
+</span>
+<br />
+<br />
+=====<br />
+建了四个文件夹在prefix下。4个文件目录 :/bin&nbsp;&nbsp;&nbsp; /include&nbsp; /lib /man/man1<br />
+在configure后修改Makefile还是出错<br />
+<br />
+You must prepare a system-dependent jconfig.h file<br />
+<br />
+====================这个文件与系统有关，可能!<br />
+copy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /usr/include 文件到/include&nbsp;&nbsp;  还是报错，我就把这个文件copy到与Makefile同级目录中。再make没这个错了，又出了新错误：<br />
+========================================<br />
+[root@localhost jpeg-6b]# make<br />
+./libtool --mode=compile arm-linux-gcc -O2&nbsp; -I. -c ./jcapimin.c<br />
+make: ./libtool: Command not found<br />
+make: *** [jcapimin.lo] Error 127<br />
+========================================<br />
+<br />
+检查环境变量，看了一下，PATH里没有arm-linux-gcc所在的bin，加入看一下结果。还是报错如上。<br />
+搜索一下，看这个libtool是个什么东西。<br />
+=================================</p>
+<div class="sect2">
+<h2 class="sect2"><a name="AEN6428">官方下载地址</a>
+</h2>
+<p class="literallayout">Libtool&nbsp;(1.5):&nbsp;<br />
+<a href="ftp://ftp.gnu.org/gnu/libtool/" target="_top">ftp://ftp.gnu.org/gnu/libtool/</a>
+</p>
+<div class="installation">
+<div class="titlepage">
+<h2 class="sect2">6.21.1. 安装 Libtool</h2>
+</div>
+<p>为编译 Libtool 做准备：</p>
+<pre class="userinput"><kbd class="command">./configure --prefix=/usr</kbd>
+</pre>
+<p>编译软件包：</p>
+<pre class="userinput"><kbd class="command">make</kbd>
+</pre>
+<p>要测试结果，请运行：<strong class="userinput"><tt>make check</tt>
+</strong>
+ 。</p>
+<p>安装软件包：</p>
+<pre class="userinput"><kbd class="command">make install<br />
+<br />
+</kbd>
+</pre>
+</div>
+</div>
+<div class="sect2">
+<h2 class="sect2"><a name="AEN6432">Libtool的内容</a>
+</h2>
+<p>GNU libtool 是一个通用库支持脚本，将使用动态库的复杂性隐藏在统一、可移植的接口中。</p>
+<p><em>安装下列程序</em>
+: libtool 和 libtoolize</p>
+<p><em>安装下列库文件</em>
+: libltdl.[a,so].</p>
+</div>
+<div class="sect2">
+<h2 class="sect2"><a name="AEN6439"></a>
+</h2>
+<p>&nbsp;</p>
+</div>
+<div class="sect2">
+<h2 class="sect2"><a name="AEN6442">简短说明</a>
+</h2>
+<p><strong class="command">libtool</strong>
+ 提供通用的库编译支持。</p>
+<p><strong class="command">libtoolize</strong>
+ 提供了一种标准方式来将libtool支持加入到一个软件包。</p>
+<p><strong class="command">libltdl</strong>
+隐藏 dlopening 库的复杂细节。</p>
+</div>
+<div class="sect2">
+<h2 class="sect2"><a name="AEN6450"></a>
+</h2>
+<p>&nbsp;</p>
+</div>
+<div class="sect2">
+<h2 class="sect2"><a name="AEN6453">Libtool 安装依赖关系</a>
+</h2>
+<p>Libtool 依赖于: Bash, Binutils, Coreutils, Diffutils,
+GCC, Glibc, Grep, Make, Sed.</p>
+<p>===================================</p>
+<p>不会再安这个东西吧!天啊</p>
+</div>
+<p><br />
+http://ftp.gnu.org/gnu/libtool/ 下载，<br />
+<br />
+安装，在安装目录下<br />
+===<br />
+[root@localhost libtool-1.5.12]# ./libtool<br />
+<br />
+*** Warning: inferring the mode of operation is deprecated.<br />
+*** Future versions of Libtool will require --mode=MODE be specified.<br />
+libtool: warning: cannot infer operation mode without MODE-ARGS<br />
+libtool: you must specify a MODE<br />
+Try `libtool --help' for more information.<br />
+看来还能用，但是<br />
+在jpeg-6b下又不找到命令，可能是环境变量的问题：<br />
+把这个目录放入PATH中看一下export PATH=$PWD:$PATH<br />
+还是错误<br />
+=====<br />
+[root@localhost jpeg-6b]# make<br />
+./libtool --mode=compile arm-linux-gcc -O2&nbsp; -I. -c ./jcapimin.c<br />
+make: ./libtool: Command not found<br />
+make: *** [jcapimin.lo] Error 127<br />
+[root@localhost jpeg-6b]# ./libtool<br />
+<br />
+-bash: ./libtool: 没有这个文件或目录。只能在复制来了，看一下。<br />
+<br />
+==================================jpeg目录==<br />
+[root@localhost jpeg-6b]# cp ../libtool-1.5.12/libtool .<br />
+<br />
+[root@localhost jpeg-6b]# ./libtool<br />
+*** Warning: <span style="color: #0099cc;">inferring the mode of operation is deprecated.</span>
+<br />
+*** Future versions of Libtool will require --mode=MODE be specified.<br />
+libtool: warning: cannot infer operation mode without MODE-ARGS<br />
+libtool: you must specify a MODE<br />
+Try `libtool --help' for more information.<br />
+<br />
+=======================<br />
+再make看一下。<br />
+<br />
+[root@localhost jpeg-6b]# make<br />
+./libtool --mode=compile arm-linux-gcc -O2&nbsp; -I. -c ./jcapimin.c<br />
+libtool: compile: unable to infer tagged configuration<br />
+libtool: compile: specify a tag with `--tag'<br />
+make: *** [jcapimin.lo] Error 1<br />
+<br />
+=====================================搜到一文章说======<br />
+<span lang="EN-US">
+<p class="MsoNormal" style="margin: 0cm 0cm 0pt 21pt;"><span style="font-family: 宋体;"><span style="font-size: small;">有的机器上会出现下列错误：</span>
+</span>
+</p>
+<p class="MsoNormal" style="margin: 0cm 0cm 0pt 21pt;"><em><span style="color: red;" lang="EN-US"><span style="font-family: Times New Roman;"><span style="font-size: small;">libtool: compile: unable to infer tagged configuration</span>
+</span>
+</span>
+</em>
+</p>
+<p class="MsoNormal" style="margin: 0cm 0cm 0pt 21pt;"><em><span style="color: red;" lang="EN-US"><span style="font-family: Times New Roman;"><span style="font-size: small;">libtool: compile: specify a tag with `--tag'</span>
+</span>
+</span>
+</em>
+</p>
+<p class="MsoNormal" style="margin: 0cm 0cm 0pt 21pt;"><span lang="EN-US"><span style="font-family: Times New Roman;"><span style="font-size: small;">&nbsp;</span>
+</span>
+</span>
+</p>
+<p class="MsoNormal" style="margin: 0cm 0cm 0pt 21pt;"><span style="font-size: small;"><span style="font-family: 宋体;">这时检查一下</span>
+<span lang="EN-US"><span style="font-family: Times New Roman;">libtool</span>
+</span>
+<span style="font-family: 宋体;">里的</span>
+<span lang="EN-US"><span style="font-family: Times New Roman;">CC</span>
+</span>
+<span style="font-family: 宋体;">变量是否设置为</span>
+<span lang="EN-US"><span style="font-family: Times New Roman;">arm-linux-gcc</span>
+</span>
+<span style="font-family: 宋体;">，如果不是，可以手工改过来，或者设置环境变量</span>
+<span lang="EN-US"><span style="font-family: Times New Roman;">lt_compiler=arm-linux-gcc</span>
+</span>
+<span style="font-family: 宋体;">，重新配置一下。</span>
+</span>
+</p>
+<p class="MsoNormal" style="margin: 0cm 0cm 0pt 21pt;"><span style="font-size: small;"><span style="font-family: 宋体;">===================================</span>
+</span>
+</p>
+<p class="MsoNormal" style="margin: 0cm 0cm 0pt 21pt;"><span style="font-size: small;"><span style="font-family: 宋体;">这是什么啊，libtool里的环境变量在哪？？？？？？<br />
+</span>
+</span>
+</p>
+</span>
+<br />
+<br />
+<br />
+=========================</p>
+<pre>Building ccdv<br />
+Compiling cpufreq.c:                                                  [ERROR]  <br />
+  /usr/bin/libtool --silent --mode=compile gcc -DVERSION=&quot;002&quot; -DPACKAGE=&quot;cpufr<br />
+  equtils&quot; -DPACKAGE_BUGREPORT=&quot;linux@brodo.de&quot; -D_GNU_SOURCE -pipe -DINTERFACE<br />
+  _PROC -DINTERFACE_SYSFS -Os -fomit-frame-pointer -O3 -pipe -mmmx -msse -msse2<br />
+   -msse3 -march=pentium4 -Wall -Wchar-subscripts -Wpointer-arith -Wsign-compar<br />
+  e -Wno-pointer-sign -Wdeclaration-after-statement -Wshadow -I/usr/lib/gcc/i68<br />
+  6-pc-linux-gnu/4.2.0/include -o lib/cpufreq.lo -c lib/cpufreq.c<br />
+  libtool: compile: unable to infer tagged configuration<br />
+  libtool: compile: specify a tag with `--tag'<br />
+make: *** [lib/cpufreq.lo] Error 1<br />
+</pre>
+<p><br />
+This is the libtool require a --tag=CC setting<br />
+so change the Makefile and add the options for libtool from</p>
+<pre><br />
+LIBTOOL_OPT=--silent<br />
+</pre>
+<p><br />
+to</p>
+<pre><br />
+LIBTOOL_OPT=--silent --tag=CC<br />
+</pre>
+<p>=========================================是在jpeg的的makefile里改，但是没有LIBOOL_OPT 这个选项==<br />
+<br />
+又找资料，看到一个人写得，是libtool版本低，我又下了一个，刚才是1.5的，现在是2.2，把编译生成的libtool生成后，又按他写得复制两个文件，再编译，通过：<br />
+<br />
+==============================================<br />
+<a name="4">错误分析：由于libtool版本过低导致的，重新下载新版本的libtool以默认方式安装，执行以下命令：<br />
+<br />
+./configure<br />
+make<br />
+make install<br />
+<br />
+<strong><span style="color: #ff0000;">然后进入jpeg-6b的源码目录，然后执行以下步骤，切记！<br />
+<br />
+</span>
+</strong>
+cp /usr/share/libtool/config.sub .<br />
+cp /usr/share/libtool/config.guess .<br />
+./configure --enable-shared --enable-static<br />
+make<br />
+<br />
+=======================高兴的太早了，忘了修改makefile，太失败了====================<br />
+</a>
+<br />
+目的是生成板子能用得库，而这是pc能用的库!!<br />
+失败<br />
+<br />
+重新删除jpeg所在文件夹，又解压缩进，把build文件夹建起来，下设<br />
+四个文件夹，/usr/include拷过来，configure后修改makefile 改成arm-linux-gcc，要拷libtool<br />
+时出了个提示，说是否要复盖，没让复盖。拷<a name="4">cp /usr/share/libtool/config.sub .<br />
+cp /usr/share/libtool/config.guess .也说让复盖吗，复盖了。之后编译通过。<br />
+<br />
+成功。<br />
+<br />
+<br />
+在build文件夹下/lib下有了 <br />
+<br />
+<br />
+[root@localhost lib]# ls -la<br />
+&times;&Uuml;&Oacute;&Atilde;&Aacute;&iquest; 160<br />
+drwxr-xr-x&nbsp;&nbsp;&nbsp; 2 root&nbsp;&nbsp;&nbsp;&nbsp; root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4096&nbsp; 3&Ocirc;&Acirc; 20 15:11 .<br />
+drwxr-xr-x&nbsp;&nbsp;&nbsp; 7 root&nbsp;&nbsp;&nbsp;&nbsp; root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4096&nbsp; 3&Ocirc;&Acirc; 20 15:06 ..<br />
+-rwxr-xr-x&nbsp;&nbsp;&nbsp; 1 root&nbsp;&nbsp;&nbsp;&nbsp; root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 495&nbsp; 3&Ocirc;&Acirc; 20 15:11 libjpeg.la<br />
+lrwxrwxrwx&nbsp;&nbsp;&nbsp; 1 root&nbsp;&nbsp;&nbsp;&nbsp; root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 17&nbsp; 3&Ocirc;&Acirc; 20 15:11 libjpeg.so -&gt; libjpeg.so.62.0.0<br />
+lrwxrwxrwx&nbsp;&nbsp;&nbsp; 1 root&nbsp;&nbsp;&nbsp;&nbsp; root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 17&nbsp; 3&Ocirc;&Acirc; 20 15:11 libjpeg.so.62 -&gt; libjpeg.so.62.0.0<br />
+-rwxr-xr-x&nbsp;&nbsp;&nbsp; 1 root&nbsp;&nbsp;&nbsp;&nbsp; root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 144955&nbsp; 3&Ocirc;&Acirc; 20 15:11 libjpeg.so.62.0.0<br />
+<br />
+</a>
+有两个链接文件。!!把它们都拷过去。<br />
+<br />
+<br />
+15：24现在。早晨8点多到现在历时8个小时，终于弄好了。这只是一小步，下一步要编译支持jpeg的qt/e!!!</p>    
+</div>
+
+
+
+
+<!-- Baidu Button BEGIN -->
+
+<div class="bdsharebuttonbox" style="float: right;">
+<a href="#" class="bds_more" data-cmd="more" style="background-position:0 0 !important; background-image: url(http://bdimg.share.baidu.com/static/api/img/share/icons_0_16.png?v=d754dcc0.png) !important"></a>
+<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"  style="background-position:0 -52px !important"></a>
+<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"style="background-position:0 -104px !important"></a>
+<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"style="background-position:0 -260px !important"></a>
+<a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"style="background-position:0 -208px !important"></a>
+<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"style="background-position:0 -1612px !important" ></a>
+</div>
+<script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+<!-- Baidu Button END -->
+
+            <link rel="stylesheet" href="http://static.blog.csdn.net/css/blog_detail.css" />
+
+    
+<!--172.16.140.11-->
+<ul class="article_next_prev">
+            <li class="prev_article"><span  onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shangyipian']);location.href='/wwwxxlby520/article/details/4375834';">上一篇</span><a href="/wwwxxlby520/article/details/4375834" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shangyipian'])">qtopia移植笔记--很不错的文章</a></li>
+            <li class="next_article"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_xiayipian']);location.href='/wwwxxlby520/article/details/4384230';">下一篇</span><a href="/wwwxxlby520/article/details/4384230" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_xiayipian'])">QT的一些问题</a></li>
+</ul>
+
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=1536434" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+    document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<!-- Baidu Button END -->
+
+ 
+
+</div>
+  
+
+    <dl class="blog-associat-tag">
+        <dt>主题推荐</dt>
+        <dd>
+                <a href="http://www.csdn.net/tag/交叉编译" target="_blank" class="blog-tage-red" >交叉编译</a> 
+                <a href="http://www.csdn.net/tag/库" target="_blank" class="blog-tage-red" >库</a> 
+                <a href="http://www.csdn.net/tag/makefile" target="_blank" class="blog-tage-red" >makefile</a> 
+                <a href="http://www.csdn.net/tag/object" target="_blank" class="blog-tage-red" >object</a> 
+                <a href="http://www.csdn.net/tag/论坛" target="_blank" class="blog-tage-red" >论坛</a> 
+        </dd>
+    </dl> 
+
+<style>
+.blog-ass-articl dd {
+color: #369;
+width: 99%; /*修改行*/
+float: left;
+overflow: hidden;
+font: normal normal 12px/23px "SimSun";
+height: 23px;
+margin: 0;
+padding: 0 0 0 10px;
+margin-right: 30px;
+background: url(../images/blog-dot-red3.gif) no-repeat 0 10px;
+}
+
+</style>
+
+<dl class="blog-ass-articl" id="res-relatived" > 
+     <dt><span>猜你在找</span></dt>    
+
+
+   
+
+
+    <div id="adCollege" style="width: 42%;float: left;"> 
+        <script src="http://csdnimg.cn/jobreco/job_reco.js" type="text/javascript"></script> 
+        <script type="text/javascript">
+            csdn.position.showEdu({
+                sourceType: "blog",
+                searchType: "detail",
+                searchKey: "4384224",
+                username: "",
+                recordcount: "5",
+                containerId: "adCollege" //容器DIV的id。 
+            });
+        </script> 
+    </div>  
+
+    
+     <div id="res"  data-mod="popu_36"  class="tracking-ad" style="width: 42%;float: left;margin-right: 30px;"></div>
+   
+</dl>
+
+<div id="job_blog_reco">
+<script src="http://c.csdnimg.cn/jobreco/job_reco.js" type="text/javascript"></script>
+   
+     <script type="text/javascript">
+         csdn.position.show({
+         sourceType: "blog",
+         tplType: "blogDetail",
+         searchType: "detail",
+         searchKey: "4384224",
+             username: "",
+         containerId: "job_blog_reco"
+        }); 
+    </script>
+
+</div>
+
+<script type="text/javascript">
+    var searchtitletags = '为qt-embedded添加jpeg库的交叉编译方法for arm' + ',' + '交叉编译,库,makefile,object,论坛';
+    searchService({
+        index: 'blog',
+        query: searchtitletags,
+        from: 5,
+        size: 5,
+        appendTo: '#res',
+        url: 'recommend',
+        his: 2,
+        client: "blog_cf_enhance",
+        tmpl: '<dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="#{ url }" title="#{ title }" strategy="#{ strategy }">#{ title }</a></dd>'
+    });
+
+ </script>   
+
+
+
+    <div id="ad_cen">
+   
+          <script type="text/javascript">
+              new Ad(4, 'ad_cen');
+          </script>
+    </div>
+<div class="comment_class">
+    <div id="comment_title" class="panel_head">
+        <span class="see_comment">查看评论</span><a name="comments"></a></div>
+    <div id="comment_list">
+    </div>
+    <div id="comment_bar">
+    </div>
+    <div id="comment_form">
+    </div>
+
+    <div class="announce">
+        * 以上用户言论只代表其个人观点，不代表CSDN网站的观点或立场<a name="reply"></a><a name="quote"></a></div>
+</div>
+
+<script type="text/javascript">
+    var fileName = '4384224';
+    var commentscount = 0;
+    var islock = false
+</script>
+<script type="text/javascript" src="http://static.blog.csdn.net/scripts/comment.js"></script>
+    <div id="ad_bot">
+    </div>
+    <script type="text/javascript">
+    new Ad(5, 'ad_bot');
+    </script>
+<div id="report_dialog">
+</div>
+
+<div id="d-top"  style="bottom:60px;">
+        <a id="quick-reply" class="btn btn-top q-reply" title="快速回复" style="display:none;">
+            <img src="http://static.blog.csdn.net/images/blog-icon-reply.png" alt="快速回复">
+        </a>    
+
+    <a id="d-top-a" class="btn btn-top backtop"  style="display: none;" title="返回顶部" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_huidaodingbu'])" style="">         
+         <img src="http://static.blog.csdn.net/images/top.png" alt="TOP">
+    </a>
+</div>
+<script type="text/javascript">
+    $(function ()
+    {
+        $("#ad_frm_0").height("90px");
+        
+        setTimeout(function(){
+            $("#ad_frm_2").height("200px");
+        },1000);
+        
+        /*
+        if($("#comment_content").length>0)
+        {
+            $("#quick-reply").show();
+
+            $("#quick-reply").click(function(){
+                setEditorFocus();
+            });
+        }       
+     
+        var d_top = $('#d-top-a');
+
+        document.onscroll = function ()
+        {
+            var scrTop = (document.body.scrollTop || document.documentElement.scrollTop);
+            if (scrTop > 500)
+            {
+                d_top.show();
+            } else
+            {
+                d_top.hide();
+            }
+        }
+        $('#d-top-a').click(function ()
+        {
+            scrollTo(0, 0);
+            this.blur();
+            return false;
+        });
+        */
+    });
+  
+</script>
+<style type="text/css">
+    .tag_list
+    {
+        background: none repeat scroll 0 0 #FFFFFF;
+        border: 1px solid #D7CBC1;
+        color: #000000;
+        font-size: 12px;
+        line-height: 20px;
+        list-style: none outside none;
+        margin: 10px 2% 0 1%;
+        padding: 1px;
+    }
+    .tag_list h5
+    {
+        background: none repeat scroll 0 0 #E0DBD3;
+        color: #47381C;
+        font-size: 12px;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 5px;
+        margin: 0;
+    }
+    .tag_list h5 a
+    {
+        color: #47381C;
+    }
+    .classify
+    {
+        margin: 10px 0;
+        padding: 4px 12px 8px;
+    }
+    .classify a
+    {
+        margin-right: 20px;
+        white-space: nowrap;
+    }
+</style>
+<div class="tag_list">
+    <h5>
+        <a href="http://www.csdn.net/tag/" target="_blank">核心技术类目</a></h5>
+    <div class="classify">
+<a title="全部主题" href="http://www.csdn.net/tag" target="_blank" onclick="LogClickCount(this,336);">全部主题</a>
+<a title="Hadoop" href="http://g.csdn.net/5272865" target="_blank" onclick="LogClickCount(this,336);">Hadoop</a>
+<a title="AWS" href="http://g.csdn.net/5272866" target="_blank" onclick="LogClickCount(this,336);">AWS</a>
+<a title="移动游戏" href="http://g.csdn.net/5272870" target="_blank" onclick="LogClickCount(this,336);">移动游戏</a>
+<a title="Java" href="http://g.csdn.net/5272871" target="_blank" onclick="LogClickCount(this,336);">Java</a>
+<a title="Android" href="http://g.csdn.net/5272872" target="_blank" onclick="LogClickCount(this,336);">Android</a>
+<a title="iOS" href="http://g.csdn.net/5272873" target="_blank" onclick="LogClickCount(this,336);">iOS</a>
+<a title="Swift" href="http://g.csdn.net/5272868" target="_blank" onclick="LogClickCount(this,336);">Swift</a>
+<a title="智能硬件" href="http://g.csdn.net/5272869" target="_blank" onclick="LogClickCount(this,336);">智能硬件</a>
+<a title="Docker" href="http://g.csdn.net/5272867" target="_blank" onclick="LogClickCount(this,336);">Docker</a>
+<a title="OpenStack" href="http://g.csdn.net/5272925" target="_blank" onclick="LogClickCount(this,336);">OpenStack</a>
+<a title="VPN" href="http://www.csdn.net/tag/vpn" target="_blank" onclick="LogClickCount(this,336);">VPN</a>
+<a title="Spark" href="http://g.csdn.net/5272924" target="_blank" onclick="LogClickCount(this,336);">Spark</a>
+<a title="ERP" href="http://www.csdn.net/tag/erp" target="_blank" onclick="LogClickCount(this,336);">ERP</a>
+<a title="IE10" href="http://www.csdn.net/tag/ie10" target="_blank" onclick="LogClickCount(this,336);">IE10</a>
+<a title="Eclipse" href="http://www.csdn.net/tag/eclipse" target="_blank" onclick="LogClickCount(this,336);">Eclipse</a>
+<a title="CRM" href="http://www.csdn.net/tag/crm" target="_blank" onclick="LogClickCount(this,336);">CRM</a>
+<a title="JavaScript" href="http://www.csdn.net/tag/javascript" target="_blank" onclick="LogClickCount(this,336);">JavaScript</a>
+<a title="数据库" href="http://www.csdn.net/tag/数据库" target="_blank" onclick="LogClickCount(this,336);">数据库</a>
+<a title="Ubuntu" href="http://www.csdn.net/tag/ubuntu" target="_blank" onclick="LogClickCount(this,336);">Ubuntu</a>
+<a title="NFC" href="http://www.csdn.net/tag/nfc" target="_blank" onclick="LogClickCount(this,336);">NFC</a>
+<a title="WAP" href="http://www.csdn.net/tag/wap" target="_blank" onclick="LogClickCount(this,336);">WAP</a>
+<a title="jQuery" href="http://www.csdn.net/tag/jquery" target="_blank" onclick="LogClickCount(this,336);">jQuery</a>
+<a title="BI" href="http://www.csdn.net/tag/bi" target="_blank" onclick="LogClickCount(this,336);">BI</a>
+<a title="HTML5" href="http://www.csdn.net/tag/html5" target="_blank" onclick="LogClickCount(this,336);">HTML5</a>
+<a title="Spring" href="http://www.csdn.net/tag/spring" target="_blank" onclick="LogClickCount(this,336);">Spring</a>
+<a title="Apache" href="http://www.csdn.net/tag/apache" target="_blank" onclick="LogClickCount(this,336);">Apache</a>
+<a title=".NET" href="http://www.csdn.net/tag/.net" target="_blank" onclick="LogClickCount(this,336);">.NET</a>
+<a title="API" href="http://www.csdn.net/tag/api" target="_blank" onclick="LogClickCount(this,336);">API</a>
+<a title="HTML" href="http://www.csdn.net/tag/html" target="_blank" onclick="LogClickCount(this,336);">HTML</a>
+<a title="SDK" href="http://www.csdn.net/tag/sdk" target="_blank" onclick="LogClickCount(this,336);">SDK</a>
+<a title="IIS" href="http://www.csdn.net/tag/iis" target="_blank" onclick="LogClickCount(this,336);">IIS</a>
+<a title="Fedora" href="http://www.csdn.net/tag/fedora" target="_blank" onclick="LogClickCount(this,336);">Fedora</a>
+<a title="XML" href="http://www.csdn.net/tag/xml" target="_blank" onclick="LogClickCount(this,336);">XML</a>
+<a title="LBS" href="http://www.csdn.net/tag/lbs" target="_blank" onclick="LogClickCount(this,336);">LBS</a>
+<a title="Unity" href="http://www.csdn.net/tag/unity" target="_blank" onclick="LogClickCount(this,336);">Unity</a>
+<a title="Splashtop" href="http://www.csdn.net/tag/splashtop" target="_blank" onclick="LogClickCount(this,336);">Splashtop</a>
+<a title="UML" href="http://www.csdn.net/tag/uml" target="_blank" onclick="LogClickCount(this,336);">UML</a>
+<a title="components" href="http://www.csdn.net/tag/components" target="_blank" onclick="LogClickCount(this,336);">components</a>
+<a title="Windows Mobile" href="http://www.csdn.net/tag/windowsmobile" target="_blank" onclick="LogClickCount(this,336);">Windows Mobile</a>
+<a title="Rails" href="http://www.csdn.net/tag/rails" target="_blank" onclick="LogClickCount(this,336);">Rails</a>
+<a title="QEMU" href="http://www.csdn.net/tag/qemu" target="_blank" onclick="LogClickCount(this,336);">QEMU</a>
+<a title="KDE" href="http://www.csdn.net/tag/kde" target="_blank" onclick="LogClickCount(this,336);">KDE</a>
+<a title="Cassandra" href="http://www.csdn.net/tag/cassandra" target="_blank" onclick="LogClickCount(this,336);">Cassandra</a>
+<a title="CloudStack" href="http://www.csdn.net/tag/cloudstack" target="_blank" onclick="LogClickCount(this,336);">CloudStack</a>
+<a title="FTC" href="http://www.csdn.net/tag/ftc" target="_blank" onclick="LogClickCount(this,336);">FTC</a>
+<a title="coremail" href="http://www.csdn.net/tag/coremail" target="_blank" onclick="LogClickCount(this,336);">coremail</a>
+<a title="OPhone " href="http://www.csdn.net/tag/ophone " target="_blank" onclick="LogClickCount(this,336);">OPhone </a>
+<a title="CouchBase" href="http://www.csdn.net/tag/couchbase" target="_blank" onclick="LogClickCount(this,336);">CouchBase</a>
+<a title="云计算" href="http://www.csdn.net/tag/云计算" target="_blank" onclick="LogClickCount(this,336);">云计算</a>
+<a title="iOS6" href="http://www.csdn.net/tag/iOS6" target="_blank" onclick="LogClickCount(this,336);">iOS6</a>
+<a title="Rackspace " href="http://www.csdn.net/tag/rackspace " target="_blank" onclick="LogClickCount(this,336);">Rackspace </a>
+<a title="Web App" href="http://www.csdn.net/tag/webapp" target="_blank" onclick="LogClickCount(this,336);">Web App</a>
+<a title="SpringSide" href="http://www.csdn.net/tag/springside" target="_blank" onclick="LogClickCount(this,336);">SpringSide</a>
+<a title="Maemo" href="http://www.csdn.net/tag/maemo" target="_blank" onclick="LogClickCount(this,336);">Maemo</a>
+<a title="Compuware" href="http://www.csdn.net/tag/compuware" target="_blank" onclick="LogClickCount(this,336);">Compuware</a>
+<a title="大数据" href="http://www.csdn.net/tag/大数据" target="_blank" onclick="LogClickCount(this,336);">大数据</a>
+<a title="aptech" href="http://www.csdn.net/tag/aptech" target="_blank" onclick="LogClickCount(this,336);">aptech</a>
+<a title="Perl" href="http://www.csdn.net/tag/perl" target="_blank" onclick="LogClickCount(this,336);">Perl</a>
+<a title="Tornado" href="http://www.csdn.net/tag/tornado" target="_blank" onclick="LogClickCount(this,336);">Tornado</a>
+<a title="Ruby" href="http://www.csdn.net/tag/ruby" target="_blank" onclick="LogClickCount(this,336);">Ruby</a>
+<a title="Hibernate" href="http://www.csdn.net/hibernate" target="_blank" onclick="LogClickCount(this,336);">Hibernate</a>
+<a title="ThinkPHP" href="http://www.csdn.net/tag/thinkphp" target="_blank" onclick="LogClickCount(this,336);">ThinkPHP</a>
+<a title="HBase" href="http://www.csdn.net/tag/hbase" target="_blank" onclick="LogClickCount(this,336);">HBase</a>
+<a title="Pure" href="http://www.csdn.net/tag/pure" target="_blank" onclick="LogClickCount(this,336);">Pure</a>
+<a title="Solr" href="http://www.csdn.net/tag/solr" target="_blank" onclick="LogClickCount(this,336);">Solr</a>
+<a title="Angular" href="http://www.csdn.net/tag/angular" target="_blank" onclick="LogClickCount(this,336);">Angular</a>
+<a title="Cloud Foundry" href="http://www.csdn.net/tag/cloudfoundry" target="_blank" onclick="LogClickCount(this,336);">Cloud Foundry</a>
+<a title="Redis" href="http://www.csdn.net/tag/redis" target="_blank" onclick="LogClickCount(this,336);">Redis</a>
+<a title="Scala" href="http://www.csdn.net/tag/scala" target="_blank" onclick="LogClickCount(this,336);">Scala</a>
+<a title="Django" href="http://www.csdn.net/tag/django" target="_blank" onclick="LogClickCount(this,336);">Django</a>
+<a title="Bootstrap" href="http://www.csdn.net/tag/bootstrap" target="_blank" onclick="LogClickCount(this,336);">Bootstrap</a>
+    </div>
+</div>
+
+<div id="pop_win" style="display:none ;position: absolute; z-index: 10000; border: 1px solid rgb(220, 220, 220); top: 222.5px; left: 630px; opacity: 1; background: none 0px 0px repeat scroll rgb(255, 255, 255);">
+    
+</div>
+<div id="popup_mask"></div>
+<style>
+    #popup_mask
+    {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        z-index: 9999;
+        left: 0px;
+        top: 0px;
+        opacity: 0.3;
+        filter: alpha(opacity=30);
+        display: none;
+    }
+
+</style>
+
+
+
+
+<script type="text/javascript">
+    $(function(){
+        setTimeout(function(){
+            $(".comment_body:contains('回复')").each(function(index,item){
+                var u=$(this).text().split('：')[0].toString().replace("回复","")
+                var thisComment=$(this);
+                if(u)
+                {
+                    $.getJSON("https://passport.csdn.net/get/nick?callback=?", {users: u}, function(a) {
+                        if(a!=null&&a.data!=null&&a.data.length>0)
+                        {
+                            nick=a.data[0].n; 
+                            if(u!=nick)
+                            {
+                                thisComment.text(thisComment.text().replace(u,nick));  
+                            }
+                        }       
+                    });  
+                }
+            });
+        },200);  
+        
+        setTimeout(function(){
+            $("a img[src='http://js.tongji.linezing.com/stats.gif']").parent().css({"position":"absolute","left":"50%"});
+        },300);
+    });
+
+    function loginbox(){
+        var $logpop=$("#pop_win");
+        $logpop.html('<iframe src="https://passport.csdn.net/account/loginbox?service=http://static.blog.csdn.net/callback.htm" frameborder="0" height="600" width="400" scrolling="no"></iframe>');
+
+        $('#popup_mask').css({
+            opacity: 0.5,
+            width: $( document ).width() + 'px',
+            height:  $( document ).height() + 'px'
+        });
+        $('#popup_mask').css("display","block");
+ 
+        $logpop.css( {
+            top: ($( window ).height() - $logpop.height())/ 2  + $( window 
+       ).scrollTop() + 'px',
+            left:($( window ).width() - $logpop.width())/ 2
+        } );
+ 
+        setTimeout( function () {
+            $logpop.show();
+            $logpop.css( {
+                opacity: 1
+            } );
+        }, 200 );
+ 
+        $('#popup_mask').unbind("click");
+        $('#popup_mask').bind("click", function(){
+            $('#popup_mask').hide();
+            var $clopop = $("#pop_win");
+            $("#common_ask_div_sc").css("display","none");
+            $clopop.css( {
+                opacity: 0
+            } );
+            setTimeout( function () {
+                $clopop.hide();
+            }, 350 );
+            return false;
+        });
+    }    
+
+</script>
+                        <div class="clear">
+                        </div>
+                    </div>                   
+                
+            </div>
+            <div id="side">
+    <div class="side">
+<div id="panel_Profile" class="panel">
+<ul class="panel_head"><span>个人资料</span></ul>
+<ul class="panel_body profile">
+<div id="blog_userface">
+    <a href="http://my.csdn.net/wwwxxlby520" target="_blank">
+    <img src="http://avatar.csdn.net/1/2/3/1_wwwxxlby520.jpg" title="访问我的空间" style="max-width:90%"/>
+    </a>
+    <br />
+    <span><a href="http://my.csdn.net/wwwxxlby520" class="user_name" target="_blank">wwwxxlby520</a></span>
+</div>
+<div class="interact">
+<a href="javascript:void(0);" class="attent" id="span_add_follow" title="[加关注]" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_guanzhu'])"></a>
+
+ <a href="javascript:void(0);" class="letter"  title="[发私信]" onclick="window.open('http://msg.csdn.net/letters/model?receiver=wwwxxlby520','_blank','height=350,width=700');_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_sixin'])"></a>  
+</div>
+<div id="blog_medal">
+                <div id="bms_box">
+               </div>
+</div>
+<ul id="blog_rank">
+    <li>访问：<span>61525次</span></li>
+    <li>积分：<span>642</span> </li>    
+    <li >等级： <span style="position:relative;display:inline-block;z-index:1" >
+            <img src="http://c.csdnimg.cn/jifen/images/xunzhang/jianzhang/blog3.png" alt="" style="vertical-align: middle;" id="leveImg">
+            <div id="smallTittle" style=" position: absolute;  left: -24px;  top: 25px;  text-align: center;  width: 101px;  height: 32px;  background-color: #fff;  line-height: 32px;  border: 2px #DDDDDD solid;  box-shadow: 0px 2px 2px rgba (0,0,0,0.1);  display: none;   z-index: 999;">
+            <div style="left: 42%;  top: -8px;  position: absolute;  width: 0;  height: 0;  border-left: 10px solid transparent;  border-right: 10px solid transparent;  border-bottom: 8px solid #EAEAEA;"></div>
+            积分：642 </div>
+        </span>  </li>
+    <li>排名：<span>千里之外</span></li>
+</ul>
+<ul id="blog_statistics">
+    <li>原创：<span>17篇</span></li>
+    <li>转载：<span>6篇</span></li>
+    <li>译文：<span>0篇</span></li>
+    <li>评论：<span>5条</span></li>
+</ul>
+</ul>
+</div>
+
+
+<div class="panel" id="panel_Search">
+    <ul class="panel_head"><span>文章搜索</span></ul>
+    <ul class="panel_body">
+        <form id="frmSearch" action="http://so.csdn.net/search" class="form_search" target="_blank">
+        <span><input id="inputSearch" type="text" class="blogsearch" title="请输入关键字" /></span>
+        <input id="btnSubmit" type="button" value="搜索" title="search in blog" />
+        <input type="hidden" name="q" id="inputQ" />
+        <input type="hidden" name="t" value="blog" />
+        <a id="btnSearchBlog" target="_blank"></a>
+        </form>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnSubmit").click(function () {           
+            search();
+        });
+
+        $("#frmSearch").submit(function () {
+            search();
+            return false;
+        });
+
+        function search()
+        {
+            var url = "http://so.csdn.net/so/search/s.do?q=" + encodeURIComponent($("#inputSearch").val()) + "&u=" + username + "&t=blog";
+            window.location.href = url;
+        }   
+    });
+</script><div id="panel_Archive" class="panel">
+<ul class="panel_head"><span>文章存档</span></ul>
+<ul class="panel_body">
+<div id="archive_list">
+<!--归档统计-->
+<li><a href="http://blog.csdn.net/wwwxxlby520/article/month/2009/10">2009年10月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/wwwxxlby520/article/month/2009/08">2009年08月</a><span>(4)</span></li><li><a href="http://blog.csdn.net/wwwxxlby520/article/month/2009/07">2009年07月</a><span>(17)</span></li><li><a href="http://blog.csdn.net/wwwxxlby520/article/month/2009/06">2009年06月</a><span>(1)</span></li>
+</div>
+</ul>
+</div>
+<div id="hotarticls" class="panel">
+<ul class="panel_head">
+    <span>       
+阅读排行    </span>
+</ul>
+
+<ul class="panel_body itemlist">
+<li>
+<a href="/wwwxxlby520/article/details/4374079" title="linux开机自动启动脚本">linux开机自动启动脚本</a><span>(38639)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4363696" title="Linux输入子系统 input_dev 概述">Linux输入子系统 input_dev 概述</a><span>(4061)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4384224" title="为qt-embedded添加jpeg库的交叉编译方法for arm">为qt-embedded添加jpeg库的交叉编译方法for arm</a><span>(2291)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4349461" title="Linux设备驱动之定时器">Linux设备驱动之定时器</a><span>(1987)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4411621" title="gnash源码解析 ">gnash源码解析 </a><span>(1771)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4375834" title="qtopia移植笔记--很不错的文章">qtopia移植笔记--很不错的文章</a><span>(1448)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4384361" title="zlib 交叉编译方法">zlib 交叉编译方法</a><span>(1077)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4371150" title="I2C总线原理及应用实例">I2C总线原理及应用实例</a><span>(780)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4349474" title="支持4G的SD卡">支持4G的SD卡</a><span>(761)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4349469" title="sd卡驱动在linux 2.6.24上的实现简易心得">sd卡驱动在linux 2.6.24上的实现简易心得</a><span>(539)</span>
+</li>
+</ul>
+</div>
+<div id="hotarticls2" class="panel">
+<ul class="panel_head"><span>评论排行</span></ul>
+<ul class="panel_body itemlist">
+<li>
+<a href="/wwwxxlby520/article/details/4411621" title="gnash源码解析 ">gnash源码解析 </a><span>(2)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4371150" title="I2C总线原理及应用实例">I2C总线原理及应用实例</a><span>(1)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4363696" title="Linux输入子系统 input_dev 概述">Linux输入子系统 input_dev 概述</a><span>(1)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4374079" title="linux开机自动启动脚本">linux开机自动启动脚本</a><span>(1)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4407801" title="共享内存">共享内存</a><span>(0)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4391390" title="[转载]Linux的I2C驱动架构">[转载]Linux的I2C驱动架构</a><span>(0)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4418189" title="浅析linux 2.6.23驱动注册函数driver_register()">浅析linux 2.6.23驱动注册函数driver_register()</a><span>(0)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4384230" title="QT的一些问题">QT的一些问题</a><span>(0)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4384224" title="为qt-embedded添加jpeg库的交叉编译方法for arm">为qt-embedded添加jpeg库的交叉编译方法for arm</a><span>(0)</span>
+</li>
+<li>
+<a href="/wwwxxlby520/article/details/4375834" title="qtopia移植笔记--很不错的文章">qtopia移植笔记--很不错的文章</a><span>(0)</span>
+</li>
+</ul>
+</div>
+<div id="homepageArticles" class="panel tracking-ad" data-mod="popu_4">
+<ul class="panel_head"><span>推荐文章</span></ul>
+<ul class="panel_body" id="ad_commend"></ul>
+</div>
+<script type="text/javascript">
+ new Ad(12, 'ad_commend');
+</script><div id="newcomments" class="panel">
+<ul class="panel_head"><span>最新评论</span></ul>
+<ul class="panel_body itemlist">
+    <li>
+   
+         <a href="/wwwxxlby520/article/details/4363696#comments">Linux输入子系统 input_dev 概述</a>
+    <p style="margin:0px;"><a href="/wang_chun_lin" class="user_name">wang_chun_lin</a>:
+好
+    </p>
+    </li>
+    <li>
+   
+         <a href="/wwwxxlby520/article/details/4374079#comments">linux开机自动启动脚本</a>
+    <p style="margin:0px;"><a href="/gray13" class="user_name">gray13</a>:
+好。。
+    </p>
+    </li>
+    <li>
+   
+         <a href="/wwwxxlby520/article/details/4411621#comments">gnash源码解析 </a>
+    <p style="margin:0px;"><a href="/armeasy" class="user_name">armeasy</a>:
+赞一个，期待下文。我这里编译gnash时遇到错误，前面的一些依赖的库都编译通过了，在编译gnash时...
+    </p>
+    </li>
+    <li>
+   
+         <a href="/wwwxxlby520/article/details/4371150#comments">I2C总线原理及应用实例</a>
+    <p style="margin:0px;"><a href="/caogenlaolu" class="user_name">caogenlaolu</a>:
+学习。
+    </p>
+    </li>
+    <li>
+   
+         <a href="/wwwxxlby520/article/details/4371150#comments">gnash源码解析 </a>
+    <p style="margin:0px;"><a href="/flex_009" class="user_name">flex_009</a>:
+很不错，拜读了。还有下文吗？
+    </p>
+    </li>
+</ul>
+</div>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+            <div class="clear">
+            </div>
+        </div>
+        
+
+<script type="text/javascript" src="http://c.csdnimg.cn/rabbit/cnick/cnick.js"></script>
+<script type="text/javascript" src="http://static.blog.csdn.net/scripts/newblog.min.js"></script>
+
+
+<script type="text/javascript" src="http://medal.blog.csdn.net/showblogmedal.ashx?blogid=605111"></script>
+<script type="text/javascript" src="http://static.blog.csdn.net/scripts/JavaScript1.js"></script>
+
+    <script type="text/javascript" src="http://passport.csdn.net/content/loginbox/login.js"></script>
+<script type="text/javascript">document.write("<img src=http://counter.csdn.net/pv.aspx?id=24 border=0 width=0 height=0>");</script>
+<script type="text/javascript" src="http://www.csdn.net/ui/scripts/Csdn/counter.js"></script>
+<script type="text/javascript" src="http://ad.csdn.net/scripts/ad-blog.js"></script>
+<script type="text/javascript" src="http://zz.csdn.net/js/count.js"></script>
+<script type="text/javascript">
+    $(function () {
+        function __get_code_toolbar(snippet_id) {
+            return $("<a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "' target='_blank' title='在CODE上查看代码片' style='text-indent:0;'><img src='https://code.csdn.net/assets/CODE_ico.png' width=12 height=12 alt='在CODE上查看代码片' style='position:relative;top:1px;left:2px;'/></a>"
+                    + "<a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "/fork' target='_blank' title='派生到我的代码片'  style='text-indent:0;'><img src='https://code.csdn.net/assets/ico_fork.svg' width=12 height=12 alt='派生到我的代码片' style='position:relative;top:2px;left:2px;'/></a>");
+        }
+        
+        $("[code_snippet_id]").each(function () {
+            __s_id = $(this).attr("code_snippet_id");
+            if (__s_id != null && __s_id != "" && __s_id != 0 && parseInt(__s_id) > 70020) {
+                __code_tool = __get_code_toolbar(__s_id);
+                $(this).prev().find(".tools").append(__code_tool);
+            }
+        });
+    });
+</script>
+
+
+
+
+    </div>
+      <!--new top-->
+    
+    <script id="csdn-toolbar-id" btnId="header_notice_num" wrapId="note1" count="5" subCount="5" type="text/javascript" src="http://static.csdn.net/public/common/toolbar/js/toolbar.js"></script>     <!--new top-->
+   
+    <link href="http://c.csdnimg.cn/comm_ask/css/ask_float_block.css" type="text/css" rel="stylesheet" />
+    <script language='JavaScript' type='text/javascript' src='http://c.csdnimg.cn/comm_ask/js/libs/wmd.js'></script>
+    <script language='JavaScript' type='text/javascript' src='http://c.csdnimg.cn/comm_ask/js/libs/showdown.js'></script>
+    <script language='JavaScript' type='text/javascript' src='http://c.csdnimg.cn/comm_ask/js/libs/prettify.js'></script>
+    <script language='JavaScript' type='text/javascript' src='http://c.csdnimg.cn/comm_ask/js/apps/ask_float_block.js'></script>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+/xydzz/madplayer/madplayer
+/xydzz/madplayer/include
+/xydzz/madplayer/lib
+
+
+1）zlib解压目录：
+
+# mkdir tmp
+
+#./configure --prefix=/xydzz/madplayer/zlib-1.1.4/tmp
+
+修改Makefile：
+
+CC=arm-linux-gcc
+AR=arm-linux-ar rc
+RANLIB=arm-linux-ranlib
+
+#make 
+#make install 
+
+在tmp中将include lib的所有文件拷贝到相应的/xydzz/madplayer/include /xydzz/madplayer/lib
+
+
+2）libid3tag-0.15.1b解压目录：
+
+# mkdir tmp
+
+# ./configure CC=arm-linux-gcc --prefix=/xydzz/madplayer/libid3tag-0.15.1b/tmp --host=arm-linux CPPFLAGS=-I/xydzz/madplayer/include LDFLAGS=-L/xydzz/madplayer/lib
+
+# make
+# make install
+
+在tmp中将include lib的所有文件拷贝到相应的/xydzz/madplayer/include /xydzz/madplayer/lib
+
+
+3）libmad-0.15.1b解压目录：
+
+# mkdir tmp
+
+# ./configure CC=arm-linux-gcc --prefix=/xydzz/madplayer/libmad-0.15.1b/tmp --host=arm-linux CPPFLAGS=-I/xydzz/madplayer/include LDFLAGS=-L/xydzz/madplayer/lib
+
+# vim Makefile
+
+去除-fforce-mem编译选项
+
+# make 
+# make install
+
+在tmp中将include lib的所有文件拷贝到相应的/xydzz/madplayer/include /xydzz/madplayer/lib
+
+
+4）madplay-0.15.2b解压目录：
+
+# mkdir tmp
+
+# ./configure CC=arm-linux-gcc --prefix=/xydzz/madplayer/madplay-0.15.2b/tmp --host=arm-linux CPPFLAGS=-I/xydzz/madplayer/include LDFLAGS=-L/xydzz/madplayer/lib
+
+# make
+
+# make install
+
+在tmp中将所有文件拷贝到/xydzz/madplayer/madplayer
+
+5）打开/xydzz/madplayer
+
+将/xydzz/madplayer/lib所有文件拷贝到开发板根目录的lib
+将/xydzz/madplayer/madplayer的所有文件拷贝到开发版根目录的bin
+
+6）启动开发板
+
+# madplay HappyBirthday.mp3 
+
+MPEG Audio Decoder 0.15.2 (beta) - Copyright (C) 2000-2004 Robert Leslie et al.
+audio: /dev/dsp: No such file or directory
+
+7）安装声卡驱动：
+
+[root@XYD /madplayer]# insmod snd-soc-wm8960.ko 
+[root@XYD /madplayer]# insmod snd-soc-tiny4412-wm8960.ko 
+[root@XYD /madplayer]# ./fa_codec_ctrl mini210
+
+8）重新执行madplayer
+
+# madplay HappyBirthday.mp3
+
+
+
+
+
+

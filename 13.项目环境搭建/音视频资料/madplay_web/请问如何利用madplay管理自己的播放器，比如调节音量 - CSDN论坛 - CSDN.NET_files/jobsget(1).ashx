@@ -1,0 +1,1 @@
+document.write('<li><a href="http://www.csdn.net/article/2013-12-13/2817804-Weekly-news" target=_blank>一周消息树：微软畏惧Chromebook、苹果失去优秀工程师</a></li><li><a href="http://www.csdn.net/article/2013-12-13/2817800-mozilla-teams-with-manufacturers-and-carriers" target=_blank>Mozilla与设备商、运营商成立开放Web设备联盟</a></li>');

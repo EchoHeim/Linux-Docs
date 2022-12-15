@@ -1,0 +1,892 @@
+--- libx86-1.1+ds1.orig/debian/control
++++ libx86-1.1+ds1/debian/control
+@@ -0,0 +1,39 @@
++Source: libx86
++Priority: optional
++Maintainer: Anibal Monsalve Salazar <anibal@debian.org>
++Build-Depends: debhelper (>= 7.0.50~), quilt (>= 0.46-7~)
++Standards-Version: 3.8.3
++Section: libs
++Homepage: http://www.codon.org.uk/~mjg59/libx86/
++Vcs-Git: git://git.debian.org/git/collab-maint/libx86.git
++Vcs-Browser: http://git.debian.org/?p=collab-main/libx86.git
++
++Package: libx86-dev
++Section: libdevel
++Architecture: any
++Depends: libx86-1 (= ${binary:Version}), ${misc:Depends}
++Description: x86 real-mode library - development files
++ A library to provide support for making real-mode calls x86 calls. On x86
++ hardware, vm86 mode is used. On other platforms, x86 emulation is provided.
++ . 
++ This package contains the development files for libx86.
++
++Package: libx86-1
++Architecture: any
++Depends: ${shlibs:Depends}, ${misc:Depends}
++Description: x86 real-mode library
++ A library to provide support for making real-mode calls x86 calls. On x86
++ hardware, vm86 mode is used. On other platforms, x86 emulation is provided.
++ .
++ This package contains the shared library.
++
++Package: libx86-dbg
++Architecture: any
++Priority: extra
++Section: debug
++Depends: libx86-1 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
++Description: x86 real-mode library - debugging symbols
++ A library to provide support for making real-mode calls x86 calls. On x86
++ hardware, vm86 mode is used. On other platforms, x86 emulation is provided.
++ .
++ This package provides debugging symbols for libx86.
+--- libx86-1.1+ds1.orig/debian/README.source
++++ libx86-1.1+ds1/debian/README.source
+@@ -0,0 +1,5 @@
++Before editing the source package, apply the patches in
++debian/patches.
++
++For information about the patch system used for the source
++package refer to /usr/share/doc/quilt/README.source
+--- libx86-1.1+ds1.orig/debian/libx86-1.install
++++ libx86-1.1+ds1/debian/libx86-1.install
+@@ -0,0 +1 @@
++lib/lib*.so.*
+--- libx86-1.1+ds1.orig/debian/libx86-1.dirs
++++ libx86-1.1+ds1/debian/libx86-1.dirs
+@@ -0,0 +1 @@
++lib
+--- libx86-1.1+ds1.orig/debian/README.Debian-source
++++ libx86-1.1+ds1/debian/README.Debian-source
+@@ -0,0 +1,15 @@
++libx86 for Debian
++-----------------
++
++ The upstream source has been repackaged because:
++  a) it shipped a debian/ directory
++  b) it shipped precompiled binary libraries
++ 
++ This package uses quilt to manage all modifications to the upstream
++ source.  Changes are stored in the source package as diffs in
++ debian/patches and applied during the build.
++
++ To read how to properly use quilt, please read the official documentation
++ at /usr/share/doc/quilt/README.source
++
++ -- David Paleino <d.paleino@gmail.com>  Wed, 06 Feb 2008 19:34:53 +0100 
+--- libx86-1.1+ds1.orig/debian/compat
++++ libx86-1.1+ds1/debian/compat
+@@ -0,0 +1 @@
++7
+--- libx86-1.1+ds1.orig/debian/watch
++++ libx86-1.1+ds1/debian/watch
+@@ -0,0 +1,3 @@
++version=3
++opts=dversionmangle=s/\+ds\d+$// \
++http://www.codon.org.uk/~mjg59/libx86/downloads/libx86-([[:digit:]].*)\.tar\.gz
+--- libx86-1.1+ds1.orig/debian/rules
++++ libx86-1.1+ds1/debian/rules
+@@ -0,0 +1,41 @@
++#!/usr/bin/make -f
++# -*- makefile -*-
++
++# Uncomment this to turn on verbose mode.
++#export DH_VERBOSE=1
++
++DEB_HOST_ARCH := $(shell dpkg-architecture -qDEB_HOST_ARCH)
++
++ifneq (,$(filter i386 lpia,$(DEB_HOST_ARCH)))
++	BACKEND =
++else
++	BACKEND = x86emu
++endif
++
++override_dh_auto_build:
++	dh_auto_build -- BACKEND="$(BACKEND)"
++
++build: build-stamp
++build-stamp:
++	dh --with quilt build
++	touch $@
++
++clean:
++	dh --with quilt $@
++
++install: install-stamp
++install-stamp: build
++	dh install
++	touch $@
++
++binary-indep:
++
++override_dh_strip:
++	dh_strip --dbg-package=libx86-dbg
++
++binary-arch: build install
++	dh $@
++
++binary: binary-indep binary-arch
++
++.PHONY: build clean binary-indep binary-arch binary install
+--- libx86-1.1+ds1.orig/debian/copyright
++++ libx86-1.1+ds1/debian/copyright
+@@ -0,0 +1,55 @@
++Format-Specification: http://dep.debian.net/deps/dep5/
++
++Files: debian/*
++Copyright: © 2008, David Paleino <d.paleino@gmail.com>
++ © 2006, Matthew Garrett <mjg59@srcf.ucam.org>
++License: MIT
++
++Files: *
++Copyright: © 2005-2006, Matthew Garrett <mjg59@srcf.ucam.org>
++ © 2005-2006, Jonathan McDowell <noodles@earth.li>
++ © 1998, Josh Vanderhoof
++License: MIT
++
++Files: x86emu/*
++Copyright: © 1999, Egbert Eich
++ © David Mosberger-Tang
++ © 1996-1999, SciTech Software, Inc.
++License: other
++ Permission to use, copy, modify, distribute, and sell this software and
++ its documentation for any purpose is hereby granted without fee,
++ provided that the above copyright notice appear in all copies and that
++ both that copyright notice and this permission notice appear in
++ supporting documentation, and that the name of the authors not be used
++ in advertising or publicity pertaining to distribution of the software
++ without specific, written prior permission.  The authors makes no
++ representations about the suitability of this software for any purpose.
++ It is provided "as is" without express or implied warranty.
++ .
++ THE AUTHORS DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
++ INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
++ EVENT SHALL THE AUTHORS BE LIABLE FOR ANY SPECIAL, INDIRECT OR
++ CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
++ USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
++ OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
++ PERFORMANCE OF THIS SOFTWARE.
++
++License: MIT
++ Permission is hereby granted, free of charge, to any person obtaining
++ a copy of this software and associated documentation files (the
++ "Software"), to deal in the Software without restriction, including
++ without limitation the rights to use, copy, modify, merge, publish,
++ distribute, sublicense, and/or sell copies of the Software, and to
++ permit persons to whom the Software is furnished to do so, subject to
++ the following conditions:
++ .
++ The above copyright notice and this permission notice shall be
++ included in all copies or substantial portions of the Software.
++ .
++ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
++ IN NO EVENT SHALL JOSH VANDERHOOF BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ OTHER DEALINGS IN THE SOFTWARE.
+--- libx86-1.1+ds1.orig/debian/libx86-dev.dirs
++++ libx86-1.1+ds1/debian/libx86-dev.dirs
+@@ -0,0 +1,2 @@
++usr/lib
++usr/include
+--- libx86-1.1+ds1.orig/debian/libx86-dev.install
++++ libx86-1.1+ds1/debian/libx86-dev.install
+@@ -0,0 +1,3 @@
++usr/include/*
++usr/lib/lib*.a
++usr/lib/lib*.so
+--- libx86-1.1+ds1.orig/debian/libx86-1.shlibs
++++ libx86-1.1+ds1/debian/libx86-1.shlibs
+@@ -0,0 +1 @@
++libx86	1	libx86-1	(>= 0.99-1)
+--- libx86-1.1+ds1.orig/debian/changelog
++++ libx86-1.1+ds1/debian/changelog
+@@ -0,0 +1,149 @@
++libx86 (1.1+ds1-6) unstable; urgency=low
++
++  * New maintainer
++    Closes: 546252
++  * Fix out-of-date-standards-version
++  * Fix patch-system-but-no-source-readme
++
++ -- Anibal Monsalve Salazar <anibal@debian.org>  Sat, 12 Sep 2009 11:02:59 +1000
++
++libx86 (1.1+ds1-5) unstable; urgency=low
++
++  * Orphaning the package.
++
++ -- David Paleino <d.paleino@gmail.com>  Sat, 12 Sep 2009 00:43:30 +0200
++
++libx86 (1.1+ds1-4) unstable; urgency=medium
++
++  * debian/patches/series:
++    - disable 01-update_lrmi.patch, 0.10 dropped support for anything
++      !x86, asked upstream to take a look and eventually update the
++      base source code (Closes: #533259)
++    - 01-fix_processor_flags.patch re-added.
++  * debian/patches/01-fix_processor_flags.patch: description added
++  * debian/control: Standards-Version bumped to 3.8.2 (no changes needed)
++
++ -- David Paleino <d.paleino@gmail.com>  Tue, 23 Jun 2009 21:06:58 +0200
++
++libx86 (1.1+ds1-3) unstable; urgency=low
++
++  * debian/watch updated to use dversionmangle
++  * debian/patches/:
++    - 00-fix_Makefile.patch: description added
++    - 01-fix_processor_flags.patch removed, merged in LRMI upstream
++    - 01-update_lrmi.patch added, LRMI updated to 0.10
++  * debian/README.Debian-source updated with information about quilt
++  * debian/control:
++    - removed duplicate Section fields
++    - extended long description for libx86-1 (make lintian happy)
++    - debhelper B-D bumped to >= 7.0.50
++    - quilt B-D bumped to >= 0.46-7~ to use --with quilt in debian/rules
++    - added ${misc:Depends} to libx86-dev dependencies
++    - packaging moved to git, updating Vcs-* fields
++    - DMUA set
++    - Standards-Version bumped to 3.8.1 (no changes needed)
++    - put libx86-dbg into "debug" Section
++  * debian/rules:
++    - updated to dh7
++    - don't uselessly try to parallel-build it... (fixes FTBFS with dh7
++      layout)
++    - use --with quilt
++  * debian/compat bumped to 7
++  * debian/copyright updated
++
++ -- David Paleino <d.paleino@gmail.com>  Fri, 12 Jun 2009 22:19:30 +0200
++
++libx86 (1.1+ds1-2) unstable; urgency=low
++
++  * Disable the x86emu backend for lpia architecture (Closes: #488100)
++  * debian/patches/:
++    - 01-fix_processor_flags.patch added, Linux 2.6.26-rc1 and newer no
++      longer define *_MASK; use X86_EFLAGS_* instead (thanks to Colin
++      Watson) (Closes: #488101)
++  * debian/control:
++    - Standards-Version bumped to 3.8.0:
++      + debian/rules improved to allow parallel building $(MAKE) jobs.
++
++ -- David Paleino <d.paleino@gmail.com>  Thu, 26 Jun 2008 14:43:35 +0200
++
++libx86 (1.1+ds1-1) unstable; urgency=low
++
++  * New upstream release
++    - fix mmap() call, which segfaulted on NX-capable kernels/arches
++    - handle reading addresses that are outside the process range with
++      the x86emu backend
++  * Make libx86 build again on Arch: any (Closes: #478186)
++    - debian/rules updated
++    - debian/control updated
++  * debian/patches:
++    - 00-fix_Makefile.patch updated
++    - 01-read_addresses_outside_process_range_x86emu.patch removed, applied
++      upstream.
++    - 02-fix_memory_mmap_flags.patch removed, applied upstream.
++
++ -- David Paleino <d.paleino@gmail.com>  Fri, 30 May 2008 18:45:05 +0200
++
++libx86 (0.99+ds1-2) unstable; urgency=low
++
++  * Make libx86 mmap memory with PROT_EXEC flag set (Closes: #476586)
++    (debian/patches/02-fix_memory_mmap_flags.patch added -- thanks to
++    Klaus S. Madsen)
++  * debian/control:
++    - build the package only on i386 and amd64
++    - removed libc6-dev from Build-Depends
++
++ -- David Paleino <d.paleino@gmail.com>  Fri, 25 Apr 2008 10:27:24 +0200
++
++libx86 (0.99+ds1-1) unstable; urgency=low
++
++  * Adopting the package (Closes: #459900)
++  * Acknowledge previous NMUs
++  * debian/watch added
++  * debian/{dirs,docs} removed
++  * debian/libx86-1.shlibs added
++  * debian/control:
++    - Standards-Version updated (no changes needed)
++    - Maintainer updated
++    - added new package "libx86-dbg", which provides debugging symbols
++    - Vcs-Svn and Vcs-Browser added: the package is now in collab-maint
++    - Homepage field added
++    - added quilt to Build-Depends
++  * debian/rules updated:
++    - removed useless and commented dh_* calls
++    - failsafe $(MAKE) clean
++    - removed useless configure target
++    - support quilt patch system
++    - other minor changes
++  * debian/copyright rewritten
++  * debian/README.Debian-source added
++  * debian/patches:
++    - 00-fix_Makefile.patch added (merging changes to upstream
++      sources, made by the previous maintainer, into a nice quilt
++      patch)
++    - 01-read_addresses_outside_process_range_x86emu.patch
++      added (imported from Ubuntu version 0.99-1.2ubuntu2)
++
++ -- David Paleino <d.paleino@gmail.com>  Sat, 09 Feb 2008 10:50:44 +0100
++
++libx86 (0.99-1.2) unstable; urgency=low
++
++  * Non-maintainer upload.
++  * Move libx86.so.1 to /lib
++    (https://launchpad.net/ubuntu/+source/libx86/+bug/83920).
++
++ -- Colin Watson <cjwatson@debian.org>  Thu,  8 Feb 2007 09:08:05 +0000
++
++libx86 (0.99-1.1) unstable; urgency=low
++
++  * Non-maintainer upload with maintainer consent.
++  * debian/rules, Makefile: Fix some misuses of make that prevented x86emu
++    from being used on amd64 systems.
++
++ -- Colin Watson <cjwatson@debian.org>  Tue,  6 Feb 2007 16:01:55 +0000
++
++libx86 (0.99-1) unstable; urgency=low
++
++  * Initial release
++
++ -- Matthew Garrett <mjg59@srcf.ucam.org>  Sun, 29 Oct 2006 18:43:31 +0000
++
+--- libx86-1.1+ds1.orig/debian/patches/00-fix_Makefile.patch
++++ libx86-1.1+ds1/debian/patches/00-fix_Makefile.patch
+@@ -0,0 +1,13 @@
++Fix installation paths
++--- libx86-1.1.orig/Makefile
+++++ libx86-1.1/Makefile
++@@ -32,7 +32,7 @@
++ 	rm -f *.so.1 *.a
++ 
++ install: libx86.so.1
++-	install -D libx86.so.1 $(DESTDIR)$(LIBDIR)/libx86.so.1
+++	install -D libx86.so.1 $(DESTDIR)/lib/libx86.so.1
++ 	install -D libx86.a $(DESTDIR)$(LIBDIR)/libx86.a
++-	ln -sf libx86.so.1 $(DESTDIR)$(LIBDIR)/libx86.so
+++	ln -sf /lib/libx86.so.1 $(DESTDIR)$(LIBDIR)/libx86.so
++ 	install -p -m 0644 -D lrmi.h $(DESTDIR)/usr/include/libx86.h
+--- libx86-1.1+ds1.orig/debian/patches/series
++++ libx86-1.1+ds1/debian/patches/series
+@@ -0,0 +1,3 @@
++00-fix_Makefile.patch
++#01-update_lrmi.patch
++01-fix_processor_flags.patch
+--- libx86-1.1+ds1.orig/debian/patches/01-update_lrmi.patch
++++ libx86-1.1+ds1/debian/patches/01-update_lrmi.patch
+@@ -0,0 +1,486 @@
++Update LRMI to 0.10
++Also don't build x86-common.c, as those functions were merged into LRMI 0.10
++main code (lrmi.c)
++---
++ Makefile |    3 
++ lrmi.c   |  284 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------
++ lrmi.h   |   20 +++-
++ 3 files changed, 271 insertions(+), 36 deletions(-)
++
++--- libx86.orig/lrmi.c
+++++ libx86/lrmi.c
++@@ -23,18 +23,38 @@ ARISING FROM, OUT OF OR IN CONNECTION WI
++ OTHER DEALINGS IN THE SOFTWARE.
++ */
++ 
+++#if defined(__i386__) && (defined(__linux__) || defined(__NetBSD__) \
+++	|| defined(__FreeBSD__) || defined(__OpenBSD__))
+++
++ #include <stdio.h>
++ #include <string.h>
++ 
++-#if defined(__linux__) && defined(__i386__)
+++#if defined(__linux__)
+++
+++#ifndef TF_MASK
+++#define TF_MASK X86_EFLAGS_TF
+++#endif
+++
+++#ifndef IF_MASK
+++#define IF_MASK X86_EFLAGS_IF
+++#endif
+++
+++#ifndef IOPL_MASK
+++#define IOPL_MASK X86_EFLAGS_IOPL
+++#endif
+++
+++#ifndef VIF_MASK
+++#define VIF_MASK X86_EFLAGS_VIF
+++#endif
++ 
++ #include <asm/vm86.h>
+++#include <signal.h>
++ 
++ #ifdef USE_LIBC_VM86
++ #include <sys/vm86.h>
++ #endif
++ 
++-#elif defined(__NetBSD__) || defined(__FreeBSD__)
+++#elif defined(__NetBSD__) || defined(__FreeBSD__) || defined(__OpenBSD__)
++ 
++ #include <sys/param.h>
++ #include <signal.h>
++@@ -43,7 +63,11 @@ OTHER DEALINGS IN THE SOFTWARE.
++ #include <machine/vm86.h>
++ #include <machine/sysarch.h>
++ 
++-#endif /* __NetBSD__ || __FreeBSD__ */
+++#endif /* __NetBSD__ || __FreeBSD__ || __OpenBSD__ */
+++
+++#if defined(__FreeBSD__)
+++#include <sys/ucontext.h>
+++#endif
++ 
++ #include <sys/types.h>
++ #include <sys/stat.h>
++@@ -52,11 +76,187 @@ OTHER DEALINGS IN THE SOFTWARE.
++ #include <fcntl.h>
++ 
++ #include "lrmi.h"
++-#include "x86-common.h"
+++
+++#define REAL_MEM_BASE 	((void *)0x10000)
+++#define REAL_MEM_SIZE 	0x40000
+++#define REAL_MEM_BLOCKS 	0x100
+++
+++struct mem_block {
+++	unsigned int size : 20;
+++	unsigned int free : 1;
+++};
+++
+++static struct {
+++	int ready;
+++	int count;
+++	struct mem_block blocks[REAL_MEM_BLOCKS];
+++} mem_info = { 0 };
+++
+++static int
+++read_file(char *name, void *p, size_t n)
+++{
+++	int fd;
+++
+++	fd = open(name, O_RDONLY);
+++
+++	if (fd == -1) {
+++		perror("open");
+++		return 0;
+++	}
+++
+++	if (read(fd, p, n) != n) {
+++		perror("read");
+++		close(fd);
+++		return 0;
+++	}
+++
+++	close(fd);
+++
+++	return 1;
+++}
+++
+++static int
+++map_file(void *start, size_t length, int prot, int flags, char *name, long offset)
+++{
+++	void *m;
+++	int fd;
+++
+++	fd = open(name, (flags & MAP_SHARED) ? O_RDWR : O_RDONLY);
+++
+++	if (fd == -1) {
+++		perror("open");
+++		return 0;
+++	}
+++
+++	m = mmap(start, length, prot, flags, fd, offset);
+++
+++	if (m == (void *)-1) {
+++		perror("mmap");
+++		close(fd);
+++		return 0;
+++	}
+++
+++	close(fd);
+++	return 1;
+++}
+++
+++static int
+++real_mem_init(void)
+++{
+++	if (mem_info.ready)
+++		return 1;
+++
+++	if (!map_file((void *)REAL_MEM_BASE, REAL_MEM_SIZE,
+++	 PROT_READ | PROT_WRITE | PROT_EXEC,
+++	 MAP_FIXED | MAP_PRIVATE, "/dev/zero", 0))
+++		return 0;
+++
+++	mem_info.ready = 1;
+++	mem_info.count = 1;
+++	mem_info.blocks[0].size = REAL_MEM_SIZE;
+++	mem_info.blocks[0].free = 1;
+++
+++	return 1;
+++}
+++
+++static void
+++real_mem_deinit(void)
+++{
+++	if (mem_info.ready) {
+++		munmap((void *)REAL_MEM_BASE, REAL_MEM_SIZE);
+++		mem_info.ready = 0;
+++	}
+++}
+++
+++
+++static void
+++insert_block(int i)
+++{
+++	memmove(
+++	 mem_info.blocks + i + 1,
+++	 mem_info.blocks + i,
+++	 (mem_info.count - i) * sizeof(struct mem_block));
+++
+++	mem_info.count++;
+++}
+++
+++static void
+++delete_block(int i)
+++{
+++	mem_info.count--;
+++
+++	memmove(
+++	 mem_info.blocks + i,
+++	 mem_info.blocks + i + 1,
+++	 (mem_info.count - i) * sizeof(struct mem_block));
+++}
+++
+++void *
+++LRMI_alloc_real(int size)
+++{
+++	int i;
+++	char *r = (char *)REAL_MEM_BASE;
+++
+++	if (!mem_info.ready)
+++		return NULL;
+++
+++	if (mem_info.count == REAL_MEM_BLOCKS)
+++		return NULL;
+++
+++	size = (size + 15) & ~15;
+++
+++	for (i = 0; i < mem_info.count; i++) {
+++		if (mem_info.blocks[i].free && size < mem_info.blocks[i].size) {
+++			insert_block(i);
+++
+++			mem_info.blocks[i].size = size;
+++			mem_info.blocks[i].free = 0;
+++			mem_info.blocks[i + 1].size -= size;
+++
+++			return (void *)r;
+++		}
+++
+++		r += mem_info.blocks[i].size;
+++	}
+++
+++	return NULL;
+++}
+++
+++
+++void
+++LRMI_free_real(void *m)
+++{
+++	int i;
+++	char *r = (char *)REAL_MEM_BASE;
+++
+++	if (!mem_info.ready)
+++		return;
+++
+++	i = 0;
+++	while (m != (void *)r) {
+++		r += mem_info.blocks[i].size;
+++		i++;
+++		if (i == mem_info.count)
+++			return;
+++	}
+++
+++	mem_info.blocks[i].free = 1;
+++
+++	if (i + 1 < mem_info.count && mem_info.blocks[i + 1].free) {
+++		mem_info.blocks[i].size += mem_info.blocks[i + 1].size;
+++		delete_block(i + 1);
+++	}
+++
+++	if (i - 1 >= 0 && mem_info.blocks[i - 1].free) {
+++		mem_info.blocks[i - 1].size += mem_info.blocks[i].size;
+++		delete_block(i);
+++	}
+++}
+++
++ 
++ #if defined(__linux__)
++ #define DEFAULT_VM86_FLAGS 	(IF_MASK | IOPL_MASK)
++-#elif defined(__NetBSD__) || defined(__FreeBSD__)
+++#elif defined(__NetBSD__) || defined(__FreeBSD__) || defined(__OpenBSD__)
++ #define DEFAULT_VM86_FLAGS  (PSL_I | PSL_IOPL)
++ #define TF_MASK         PSL_T
++ #define VIF_MASK        PSL_VIF
++@@ -67,7 +267,7 @@ OTHER DEALINGS IN THE SOFTWARE.
++ #if defined(__linux__)
++ #define CONTEXT_REGS	context.vm.regs
++ #define REG(x)			x
++-#elif defined(__NetBSD__)
+++#elif defined(__NetBSD__) || defined(__OpenBSD__)
++ #define CONTEXT_REGS	context.vm.substr.regs
++ #define REG(x)			vmsc.sc_ ## x
++ #elif defined(__FreeBSD__)
++@@ -79,7 +279,7 @@ static struct {
++ 	int ready;
++ 	unsigned short ret_seg, ret_off;
++ 	unsigned short stack_seg, stack_off;
++-#if defined(__linux__) || defined(__NetBSD__)
+++#if defined(__linux__) || defined(__NetBSD__) || defined(__OpenBSD__)
++ 	struct vm86_struct vm;
++ #elif defined(__FreeBSD__)
++ 	struct {
++@@ -87,7 +287,7 @@ static struct {
++ 		ucontext_t uc;
++ 	} vm;
++ #endif
++-#if defined(__NetBSD__) || defined(__FreeBSD__)
+++#if defined(__NetBSD__) || defined(__FreeBSD__) || defined(__OpenBSD__)
++ 	int success;
++ 	jmp_buf env;
++ 	void *old_sighandler;
++@@ -136,10 +336,35 @@ LRMI_init(void)
++ 	if (context.ready)
++ 		return 1;
++ 
++-	if (!LRMI_common_init())
+++	if (!real_mem_init())
++ 		return 0;
++ 
++ 	/*
+++	 Map the Interrupt Vectors (0x0 - 0x400) + BIOS data (0x400 - 0x502)
+++	 and the ROM (0xa0000 - 0x100000)
+++	*/
+++	if (!map_file((void *)0, 0x502,
+++	 PROT_READ | PROT_WRITE | PROT_EXEC,
+++	 MAP_FIXED | MAP_PRIVATE, "/dev/zero", 0)) {
+++		real_mem_deinit();
+++		return 0;
+++	}
+++
+++	if (!read_file("/dev/mem", (void *)0, 0x502)) {
+++		munmap((void *)0, 0x502);
+++		real_mem_deinit();
+++		return 0;
+++	}
+++
+++	if (!map_file((void *)0xa0000, 0x100000 - 0xa0000,
+++	 PROT_READ | PROT_WRITE,
+++	 MAP_FIXED | MAP_SHARED, "/dev/mem", 0xa0000)) {
+++		munmap((void *)0, 0x502);
+++		real_mem_deinit();
+++		return 0;
+++	}
+++
+++	/*
++ 	 Allocate a stack
++ 	*/
++ 	m = LRMI_alloc_real(DEFAULT_STACK_SIZE);
++@@ -166,7 +391,7 @@ LRMI_init(void)
++ #if defined(__linux__)
++ 	memset(&context.vm.int_revectored, 0, sizeof(context.vm.int_revectored));
++ 	set_bit(RETURN_TO_32_INT, &context.vm.int_revectored);
++-#elif defined(__NetBSD__)
+++#elif defined(__NetBSD__) || defined(__OpenBSD__)
++ 	set_bit(RETURN_TO_32_INT, &context.vm.int_byuser);
++ #elif defined(__FreeBSD__)
++ 	set_bit(RETURN_TO_32_INT, &context.vm.init.int_map);
++@@ -217,7 +442,7 @@ get_regs(struct LRMI_regs *r)
++ 
++ enum {
++ 	CSEG = 0x2e, SSEG = 0x36, DSEG = 0x3e,
++-	ESEG = 0x26, FSEG = 0x64, GSEG = 0x65
+++	ESEG = 0x26, FSEG = 0x64, GSEG = 0x65,
++ };
++ 
++ static void
++@@ -587,9 +812,19 @@ static int
++ run_vm86(void)
++ {
++ 	unsigned int vret;
+++	sigset_t all_sigs, old_sigs;
+++	unsigned long old_gs, old_fs;
++ 
++ 	while (1) {
+++		// FIXME: may apply this to BSD equivalents?
+++		sigfillset(&all_sigs);
+++		sigprocmask(SIG_SETMASK, &all_sigs, &old_sigs);
+++		asm volatile ("mov %%gs, %0" : "=rm" (old_gs));
+++		asm volatile ("mov %%fs, %0" : "=rm" (old_fs));
++ 		vret = lrmi_vm86(&context.vm);
+++		asm volatile ("mov %0, %%gs" :: "rm" (old_gs));
+++		asm volatile ("mov %0, %%fs" :: "rm" (old_fs));
+++		sigprocmask(SIG_SETMASK, &old_sigs, NULL);
++ 
++ 		if (VM86_TYPE(vret) == VM86_INTx) {
++ 			unsigned int v = VM86_ARG(vret);
++@@ -597,13 +832,6 @@ run_vm86(void)
++ 			if (v == RETURN_TO_32_INT)
++ 				return 1;
++ 
++-			/*		fprintf(stderr, "Calling INT 0x%X (%04X:%04X)\n",
++-					v,
++-					get_int_seg(v),
++-					get_int_off(v));
++-			fprintf(stderr, " EAX is 0x%lX\n",
++-					CONTEXT_REGS.REG(eax));
++-			*/
++ 			pushw(CONTEXT_REGS.REG(eflags));
++ 			pushw(CONTEXT_REGS.REG(cs));
++ 			pushw(CONTEXT_REGS.REG(eip));
++@@ -626,8 +854,8 @@ run_vm86(void)
++ 
++ 	return 0;
++ }
++-#elif defined(__NetBSD__) || defined(__FreeBSD__)
++-#if defined(__NetBSD__)
+++#elif defined(__NetBSD__) || defined(__FreeBSD__) || defined(__OpenBSD__)
+++#if defined(__NetBSD__) || defined(__OpenBSD__)
++ static void
++ vm86_callback(int sig, int code, struct sigcontext *sc)
++ {
++@@ -727,7 +955,7 @@ run_vm86(void)
++ 		return (0);
++ 	}
++ 
++-#if defined(__NetBSD__)
+++#if defined(__NetBSD__) || defined(__OpenBSD__)
++ 	context.old_sighandler = signal(SIGURG, (void (*)(int))vm86_callback);
++ #elif defined(__FreeBSD__)
++ 	context.old_sighandler = signal(SIGBUS, (void (*)(int))vm86_callback);
++@@ -742,7 +970,7 @@ run_vm86(void)
++ 	}
++ 
++ 	if (setjmp(context.env)) {
++-#if defined(__NetBSD__)
+++#if defined(__NetBSD__) || defined(__OpenBSD__)
++ 		(void) signal(SIGURG, context.old_sighandler);
++ #elif defined(__FreeBSD__)
++ 		(void) signal(SIGBUS, context.old_sighandler);
++@@ -755,7 +983,7 @@ run_vm86(void)
++ 		return (0);
++ 	}
++ 
++-#if defined(__NetBSD__)
+++#if defined(__NetBSD__) || defined(__OpenBSD__)
++ 	if (i386_vm86(&context.vm) == -1)
++ 		return (0);
++ #elif defined(__FreeBSD__)
++@@ -769,7 +997,7 @@ run_vm86(void)
++ 	/* NOTREACHED */
++ 	return (0);
++ }
++-#endif	/* __NetBSD__ || __FreeBSD__ */
+++#endif	/* __NetBSD__ || __FreeBSD__ || __OpenBSD__ */
++ 
++ int
++ LRMI_call(struct LRMI_regs *r)
++@@ -848,8 +1076,6 @@ LRMI_int(int i, struct LRMI_regs *r)
++ 	return vret;
++ }
++ 
++-size_t
++-LRMI_base_addr(void)
++-{
++-	return 0;
++-}
+++#else /* (__linux__ || __NetBSD__ || __FreeBSD__ || __OpenBSD__) && __i386__ */
+++#warning "LRMI is not supported on your system!"
+++#endif
++--- libx86.orig/lrmi.h
+++++ libx86/lrmi.h
++@@ -26,7 +26,8 @@ OTHER DEALINGS IN THE SOFTWARE.
++ #ifndef LRMI_H
++ #define LRMI_H
++ 
++-#define LRMI_PREFIX LRMI_
+++#if defined(__i386__) && (defined(__linux__) || defined(__NetBSD__) \
+++	|| defined(__FreeBSD__) || defined(__OpenBSD__))
++ 
++ struct LRMI_regs {
++ 	unsigned int edi;
++@@ -48,11 +49,20 @@ struct LRMI_regs {
++ 	unsigned short int ss;
++ };
++ 
+++#ifndef LRMI_PREFIX
+++#define LRMI_PREFIX LRMI_
+++#endif
+++
++ #define LRMI_CONCAT2(a, b) 	a ## b
++ #define LRMI_CONCAT(a, b) 	LRMI_CONCAT2(a, b)
++ #define LRMI_MAKENAME(a) 	LRMI_CONCAT(LRMI_PREFIX, a)
++ 
++ /*
+++ Package version (high 16bit = major, low 16bit minor)
+++*/
+++#define LRMI_version 0x0009 /* 0.9 */
+++
+++/*
++  Initialize
++  returns 1 if sucessful, 0 for failure
++ */
++@@ -91,10 +101,8 @@ LRMI_alloc_real(int size);
++ void
++ LRMI_free_real(void *m);
++ 
++-/*
++- * Get the base address of the real memory address space block.
++- */
++-size_t
++-LRMI_base_addr(void);
+++#else /* (__linux__ || __NetBSD__ || __FreeBSD__) && __i386__ */
+++#warning "LRMI is not supported on your system!"
+++#endif
++ 
++ #endif
++--- libx86.orig/Makefile
+++++ libx86/Makefile
++@@ -1,4 +1,5 @@
++-OBJECTS = x86-common.o
+++#OBJECTS = x86-common.o
+++OBJECTS =
++ CFLAGS ?= -O2 -Wall -DDEBUG -g
++ LIBDIR ?= /usr/lib
++ 
+--- libx86-1.1+ds1.orig/debian/patches/01-fix_processor_flags.patch
++++ libx86-1.1+ds1/debian/patches/01-fix_processor_flags.patch
+@@ -0,0 +1,23 @@
++Linux 2.6.26-rc1 and newer no longer define *_MASK; use X86_EFLAGS_*
++instead (thanks to Colin Watson)
++--- libx86.orig/lrmi.c
+++++ libx86/lrmi.c
++@@ -55,6 +55,18 @@
++ #include "x86-common.h"
++ 
++ #if defined(__linux__)
+++#ifndef TF_MASK
+++#define TF_MASK X86_EFLAGS_TF
+++#endif
+++#ifndef IF_MASK
+++#define IF_MASK X86_EFLAGS_IF
+++#endif
+++#ifndef IOPL_MASK
+++#define IOPL_MASK X86_EFLAGS_IOPL
+++#endif
+++#ifndef VIF_MASK
+++#define VIF_MASK X86_EFLAGS_VIF
+++#endif
++ #define DEFAULT_VM86_FLAGS 	(IF_MASK | IOPL_MASK)
++ #elif defined(__NetBSD__) || defined(__FreeBSD__)
++ #define DEFAULT_VM86_FLAGS  (PSL_I | PSL_IOPL)

@@ -1,0 +1,1 @@
+./configure --prefix=/test/jpeg6 --host=arm-unknown-linux --prefix=/xydzz/v4l2/jpeg-6b/_install --enable-shared --enable-static

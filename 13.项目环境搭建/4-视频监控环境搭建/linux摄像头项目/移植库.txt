@@ -1,0 +1,12 @@
+1、jpegsrc.v6b移植：
+
+1）libtool-1.5.6.tar.gz
+2）jpegsrc.v6b.tar.gz
+
+2、video摄像头\配置和安装.doc
+3）(2)mjpg-stream的移植
+
+
+3、测试
+4）v4l2_sample_v1.0_ok\v4l2_sample拷贝到开发板执行可以看到摄像头视频
+

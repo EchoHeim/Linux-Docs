@@ -1,0 +1,49 @@
+// mplayer中文手册
+
+libmad已经安装
+/xydzz/madplayer/include
+/xydzz/madplayer/lib
+
+# tar xvf MPlayer-1.1.1.tar.xz 
+
+# cd MPlayer-1.1.1
+
+# mkdir tmp
+
+./configure --prefix=/xydzz/mplayer/MPlayer-1.1.1/tmp --cc=arm-linux-gcc --host-cc=gcc --target=arm-linux --enable-cross-compile --enable-mad --disable-mp3lib --disable-gui --disable-menu --disable-gtk1 --disable-x11 --yasm="" 2>&1 |tee logfile
+
+# make
+
+// make install 错误
+
+去除：config.mak当中的INSTALLSTRIP = -s 的 -s  
+
+# make install
+
+# cp ./tmp/mplayer /xydzz/rootfs/bin
+
+开发板执行 
+
+# mplayer fengchuimailang.mp4
+
+// ls /opt/FriendlyARM/toolschain/4.5.1/arm-none-linux-gnueabi/sys-root/usr/lib/libncurses.so.5
+
+# cp /opt/FriendlyARM/toolschain/4.5.1/arm-none-linux-gnueabi/sys-root/usr/lib/* /xydzz/rootfs/lib 
+
+// 闪屏
+
+# mplayer fengchuimailang.mp4 -zoom -x 800 -y 480
+
+// 没声音
+
+# mplayer fengchuimailang.mp4 -zoom -x 800 -y 480 -ac mad
+
+// 声卡驱动
+
+[root@XYD /madplayer]# insmod snd-soc-wm8960.ko 
+[root@XYD /madplayer]# insmod snd-soc-tiny4412-wm8960.ko 
+[root@XYD /madplayer]# ./fa_codec_ctrl mini210
+
+# mplayer fengchuimailang.mp4 -zoom -x 800 -y 480 -ac mad
+
+

@@ -1,0 +1,49 @@
+if (typeof _ssp_ad == "object") {
+    var _rotatorNum = _ssp_ad.count % 4;
+} else {
+    var _rotatorNum = 0;
+}
+var _picUrlList = ["http://d1.sina.com.cn/201312/04/526081_260x255_tp.png", //第一图
+"http://d1.sina.com.cn/201311/15/522579_260-255.gif", //第二图
+"http://d1.sina.com.cn/201311/15/522579_260-255.gif", //第三图
+"http://d1.sina.com.cn/201311/15/522579_260-255.gif" //第四图
+];
+var _linkUrlList = ["http://sina.allyes.com/main/adfclick?db=sina&bid=617017,685562,690829&cid=0,0,0&sid=696072&advid=17114&camid=109749&show=ignore&url=http://as.kejet.net/N0ZBNEE1NjgxNTlFQjM1RjE2ODA3MDZDRTAyRTcx?u/NkYwREVDRThFMzI2Nzg1/o/N0ZBNEE1NjgxNTlFQjM1/m/RjE2ODA3MDZDRTAyRTcx/q/afaclick?http://www.cntaiping.com/zhuanti/guanwang/jiashu/?hmsr=js&hmmd=t&hmpl=t&hmkw=&hmci", //链接一
+"http://sina.allyes.com/main/adfclick?db=sina&bid=610999,679395,684660&cid=0,0,0&sid=689766&advid=20998&camid=108605&show=ignore&url=http://click.mediav.com/c?type=2&db=mediav&pub=130_2783_1022802&cus=2_126900_1156616_10662773_10662773000&url=http://www.yhd.com?tracker_u=10822048570", //链接二
+"http://sina.allyes.com/main/adfclick?db=sina&bid=610999,679395,684660&cid=0,0,0&sid=689766&advid=20998&camid=108605&show=ignore&url=http://click.mediav.com/c?type=2&db=mediav&pub=130_2783_1022802&cus=2_126900_1156616_10662773_10662773000&url=http://www.yhd.com?tracker_u=10822048570", //链接三
+"http://sina.allyes.com/main/adfclick?db=sina&bid=610999,679395,684660&cid=0,0,0&sid=689766&advid=20998&camid=108605&show=ignore&url=http://click.mediav.com/c?type=2&db=mediav&pub=130_2783_1022802&cus=2_126900_1156616_10662773_10662773000&url=http://www.yhd.com?tracker_u=10822048570", //链接四
+];
+
+var data = {
+    isAD: true,
+    flashURL: 'http://d3.sina.com.cn/litong/kuaijieweibo/yafeng/boke/sc/bk.swf',
+    //flash source if use
+    clickUrl: _linkUrlList[_rotatorNum],
+    //click address
+    picURL: _picUrlList[_rotatorNum],
+    //background picture    
+    logurl: 'http://1088.adsina.allyes.com/main/adfshow?user=AFP6_for_SINA|2012_add|2012_blog_fdtc_bk&db=sina&border=0&local=yes&js=ie',
+    isUseWb: false,
+    bloger: {
+        id: '1951657750',
+        name: '轻博客',
+        isV: true,
+        vType: 2
+    },
+    addata: {
+        appkey: "2034545597",
+        ralateUid: "1951657750",
+        title: "#Qing新年祝福#2012年求桃花？求多金？求瘦身？求船票？来Qing送出你的定制祝福吧，各种超炫心愿祝福卡片让你一求百应！",
+        pic: "http://d1.sina.com.cn/litong/kuaijieweibo/yafeng/boke/sc/fxbk.jpg",
+        searchPic: false,
+        url: "http://qing.weibo.com/tag/%E6%96%B0%E5%B9%B4%E7%A5%9D%E7%A6%8F"
+    },
+    txtcontent: '1号店食品饮料3件19元起',
+    txturl: 'http://sina.allyes.com/main/adfclick?db=sina&bid=610999,679395,684660&cid=0,0,0&sid=689766&advid=20998&camid=108605&show=ignore&url=http://click.mediav.com/c?type=2&db=mediav&pub=130_2783_1022802&cus=2_126900_1156616_10662773_10662773000&url=http://www.yhd.com?tracker_u=10822048570',
+    //don't modify all following content
+    borderImg: 'http://d1.sina.com.cn/litong/kuaijieweibo/yafeng/boke/images/imgbgnn.gif',
+    flashWidth: 293,
+    flashHeight: 60,
+    btnImg: 'http://d1.sina.com.cn/201007/09/237719_btn.gif'
+};
+

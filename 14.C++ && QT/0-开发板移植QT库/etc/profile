@@ -1,0 +1,43 @@
+# Ash profile 
+# vim: syntax=sh
+
+# No core files by default
+#ulimit -S -c 0 > /dev/null 2>&1
+
+export set HOME=/root
+export set QTDIR=/opt/QT/qt-embedded-arm9
+export set QPEDIR=/opt/QT/qt-embedded-arm9
+export set QWS_DISPLAY="LinuxFB:/dev/fb0"
+export set QWS_DISPLAY="LinuxFB:mmWidth68:mmHeight91:0"  #X35竖屏时使用
+#export set QWS_DISPLAY="Transformed:Rot90:LinuxFB:mmWidth68:mmHeight91:0"  #W35横屏时使用
+#export set QWS_DISPLAY="LinuxFB:mmWidth91:mmHeight68:0"  #横屏时使用
+export set QWS_KEYBOARD="TTY:/dev/tty1"
+#计算公式：像素数/尺寸数   （比如240＊320，3.5英寸计算如下：mmWidth＝240/3.5 = 68;mmHeight = 320/3.5 ）
+if [ -f /sys/devices/virtual/input/input0/uevent ] ; then
+	export set TSLIB_TSDEVICE=/dev/input/event0
+	export set TSLIB_CALIBFILE=/etc/pointercal
+	#export set TSLIB_CONFFILE=/etc/ts.conf
+	export set TSLIB_CONFFILE=/opt/tslib/etc/ts.conf
+	#export set TSLIB_PLUGINDIR=/lib/ts
+	export set TSLIB_PLUGINDIR=/opt/tslib/lib/ts
+	#export set QWS_MOUSE_PROTO="TSLIB:/dev/event0 Intellimouse:/dev/mouse0"
+	export set QWS_MOUSE_PROTO="TSLIB:/dev/input/event0 Intellimouse:/dev/mice"
+else
+	#export set QWS_MOUSE_PROTO="Intellimouse:/dev/mouse0"
+	export set QWS_MOUSE_PROTO="Intellimouse:/dev/mice"
+fi
+export set QT_PLUGIN_PATH=$QTDIR/plugins/
+#export set QT_QWS_FONTDIR=$QTDIR/lib/fonts/
+export set PATH=$QPEDIR/bin:$PATH
+export set LD_LIBRARY_PATH=$QTDIR/lib:$QPEDIR/plugins/imageformats:$LD_LIBRARY_PATH
+#export LD_PRELOAD=/lib/preloadable_libiconv.so
+USER="`id -un`"
+LOGNAME=$USER
+PS1='[\u@\h \W]# '
+PATH=$PATH
+
+HOSTNAME=`/bin/hostname`
+
+export USER LOGNAME PS1 PATH
+export set QT_QWS_FONTDIR=/opt/QT/qt-embedded-4.6.3-arm/lib/fonts
+

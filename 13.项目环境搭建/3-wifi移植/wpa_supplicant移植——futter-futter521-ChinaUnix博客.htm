@@ -1,0 +1,1637 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<script src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/ga.js" async="" type="text/javascript"></script><script>
+var ua = navigator.userAgent.toLowerCase();
+if(ua.match(/MicroMessenger/i)=="micromessenger") {
+    location.href='http://blog.chinaunix.net/article.php?url='+ window.location.href;
+}
+</script>
+        <style>
+    .Blog_nav1_2 a em { display:inline-block; width:16px; height:13px; background:url(/image/v.jpg) no-repeat; overflow:hidden;}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/style.css">
+<link rel="stylesheet" type="text/css" href="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/qqFace.css">
+<link rel="stylesheet" type="text/css" href="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/asyncbox.css">
+<link rel="stylesheet" type="text/css" href="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/pager.css">
+<script type="text/javascript" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/jquery_003.js"></script>
+<script type="text/javascript" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/jquery.js"></script>
+<script type="text/javascript" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/AsyncBox.js"></script>
+<title>wpa_supplicant移植——futter-futter521-ChinaUnix博客</title>
+<meta name="description" content="这两天在捣腾wifi驱动移植，结合前辈们的经验，终于移植成功，在此标记一下。因为现在的无线wifi网络大多是wpa加密。所以需要移植wpa_supplicant工具。
+一、下载源码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">
+<script type="text/javascript" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/h600.js"></script><script type="text/javascript" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/h600_002.js"></script>
+
+<script type="text/javascript">
+if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))){
+	try{
+		if(!/iPad/i.test(navigator.userAgent)){
+			var oldurl=window.location.href;
+			var wapUrl= oldurl.replace('blog.chinaunix.net', "m.blog.chinaunix.net") ;
+			window.location.href = wapUrl;
+		}
+	}catch(e){}
+}
+</script>
+
+
+<script language="javascript">
+//用户是否在线
+var isOnLine = '';
+$(document).ready(function(){
+	var blog = {'name': '', 'name_url': '', 'brief': ''};
+	//消息通知显示和隐藏控制
+	$('#show_message_slide_button').hover(
+		function(){
+			$('#message_slide_div').slideDown(100);											   
+		},
+		function(){
+			
+		}
+	);
+
+	$('#message_slide_div').hover(
+		function(){
+			
+		},
+		function(){
+			$('#message_slide_div').slideUp(100);
+		}
+	);
+	
+	//编辑博客名
+	$('#editbna').click(function(){
+		blog.name = $('#bnaspan a').text();
+		var val = '<input id="bnainput" type="text" style="float:left" value="" rel="' +$(this).attr('rel') + '" /><input id="bnasub" type="button" style="float:left" class="btn1"><input id="bnacanl" type="button" style="float:left" class="btn2"><div class="clear"></div>';
+		$('#bnaspan').html(val);
+		$('#bnainput').val(blog.name);
+		$(this).parent().hide();
+	});
+	
+	$('#bnasub').live('click', function(){
+	    var rel = eval('({' + $('#bnainput').attr('rel') + '})');
+		var name = $('#bnainput').val();
+		if(name != blog.name){
+	        $.ajax({
+			    type: "POST",
+			    url: rel.url,	
+			    data: {
+				    'name' : name
+			    },
+			    success:function(data){
+				    if(data == 0){
+						$('#bnaspan').html(blog.name);
+						$('#bnaspan').html('<a href="' + rel.href + '">' + $('#bnaspan').html() + '</a>');
+				    }else{
+						$('#bnaspan').html(data);
+						$('#bnaspan').html('<a href="' + rel.href + '">' + $('#bnaspan').html() + '</a>');
+				    }
+					$('#editbna').parent().show();
+				}
+			});
+		}else{
+		    $('#bnaspan').text(blog.name).html();
+			$('#bnaspan').html('<a href="' + rel.href + '">' + $('#bnaspan').html() + '</a>');
+			$('#editbna').parent().show();
+		}
+	});
+	
+	$('#bnacanl').live('click', function(){
+		var rel = eval('({' + $('#bnainput').attr('rel') + '})');
+		$('#bnaspan').html('<a href="' + rel.href + '">' + blog.name + '</a>');
+		$('#editbna').parent().show();
+	});
+	
+	//编辑签名
+	$('#editbrief').click(function(){
+	    blog.brief = $('#briefem').text();
+		var val = '<input id="brfinput" type="text" style="float:left" value="" rel="' + $(this).attr('rel') + '" /><input id="brfsub" style="float:left"  type="button" class="btn1"><input style="float:left"  id="brfcanl" type="button" class="btn2"><div class="clear"></div>';
+		$('#briefem').html(val);
+		$('#brfinput').val(blog.brief);
+		$(this).parent().hide();
+	});
+	
+	$('#brfsub').live('click', function(){
+	    var url = $('#brfinput').attr('rel');
+		var brief = $('#brfinput').val();
+		if(brief != blog.brief){
+	        $.ajax({
+			    type: "POST",
+			    url: url,	
+			    data: {
+				    'brief' : brief
+			    },
+			    success:function(data){
+				    if(data == 0){
+				        $('#briefem').html(blog.brief);
+				    }else{
+						$('#briefem').html(data);
+				    }
+					$('#editbrief').parent().show();
+				}
+			});
+		}else{
+		    $('#briefem').text(blog.brief).html();
+			$('#editbrief').parent().show();
+		}
+	});
+	
+	$('#brfcanl').live('click', function(){
+		$('#briefem').html(blog.brief);
+		$('#editbrief').parent().show();
+	});
+
+});
+</script>
+<script src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/share.js"></script><link href="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/share_style0_16.css" rel="stylesheet"></head>
+<body><div style="position: absolute; left: -1px; bottom: -1px; z-index: 0; width: 0px; height: 0px; overflow: hidden; visibility: hidden; display: none;" id="BAIDU_DUP_fp_wrapper"><iframe style="width: 0px; height: 0px; visibility: hidden; display: none;" src="http://pos.baidu.com/wh/o.htm?ltr=http%3A%2F%2Fwww.baidu.com%2Flink%3Furl%3Dyy-mgHLSrp7L7QmixZrDeP09VnbcsWBy8CSQCweClpDnlnC1il6wxPG_BK-WtkI3sIPRxAzm4fKPnvdURHQndK%26wd%3D%26eqid%3Dcb2476c900000370000000065673a65f&amp;cf=u" id="BAIDU_DUP_fp_iframe"></iframe></div>
+<div class="box">
+  <!-- 一级导航 -->
+  <div class="Blog_nav1">
+    <div class="Blog_nav1_2"><a href="http://blog.chinaunix.net/"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/1.png"></a><a href="http://www.chinaunix.net/" class="Blog_a1">Chinaunix首页</a> | <a href="http://bbs.chinaunix.net/" target="_blank">论坛</a> | <a href="http://u.it168.com/vip/"><font color="red">认证专区</font></a> | <a href="http://blog.chinaunix.net/" target="_blank">博客</a><span class="Blog_span1"></span>
+              <a href="http://blog.chinaunix.net/site/login.html" class="Blog_a1" onclick="linkto()">登录</a> | <a href="http://u.it168.com/Register?webid=5&amp;returnUrl=http%3A%2F%2Fblog.chinaunix.net%2Fuid-26921272-id-3416832.html" class="Blog_a1">注册</a>
+          </div>
+	<!--自动提示层-->
+	<style>
+	.bor13221{border:1px #bbb solid;width:206px;position:absolute;top:34px;left:0;background:#fff; z-index:9999;display:none}
+	.bor13221 li{height:26px;line-height:26px;padding-left:6px;color:#555;font-size:14px;cursor:pointer;}
+	.here{background:#f3f3f3;}
+    </style>
+
+	<!--自动提示层-->
+    <div class="Blog_nav1_3" style="position:relative; z-index:9999;">
+	 <div style="display: none;" class="bor13221">
+      <ul>
+      </ul>
+    </div>
+	  <form action="/site/search.html" method="post">
+		<input autocomplete="off" class="Blog_txt1" id="search_input_id" name="keywords" type="text">
+		<select class="Bolg_sel1" name="type" id="search_type_blog">
+		  <option selected="selected" value="blog">博文</option>
+		  <option value="author">博主</option>
+		</select>
+		<input value="" name="submit" class="Blog_btn1" type="submit">
+	 </form>
+    </div>
+    <div class="clear"></div>
+    <div class="Blog_nav1_layer1" id="message_slide_div" style="display:none;">
+	    <ul>
+	    	<li><a href="http://blog.chinaunix.net/message/private.html">私人消息()</a></li>
+	    	<li><a href="http://blog.chinaunix.net/message/system.html">系统消息()</a></li>
+	    	<li><a href="http://blog.chinaunix.net/member/request.html">好友请求()</a></li>
+	    	<li><a href="http://blog.chinaunix.net/member/notification.html">通知管理()</a></li>
+	    </ul>
+    </div>
+  </div>
+   <script type="text/javascript">
+  	$(function(){
+		//点击添加进文本框
+		$(".bor13221 li").live( 'click' , function(e){
+			if ( e && e.stopPropagation )
+			{
+				//因此它支持W3C的stopPropagation()方法
+				e.stopPropagation();
+			}
+			else
+			{
+				//否则，我们需要使用IE的方式来取消事件冒泡
+				window.event.cancelBubble = true; 
+			}
+			$('#search_input_id').val($(this).text());
+			$(".bor13221 ul").html('');
+			$(".bor13221").hide();
+		});
+		$(".bor13221 ul li").live({
+			mouseenter:
+			function()
+			{
+				$(".bor13221 ul li").removeClass("here");
+				$(this).addClass('here');
+			},
+			mouseleave:
+			function()
+			{
+				$(".bor13221 ul li").removeClass("here");
+				$(this).removeClass('here');
+			}
+		});
+		//自动提示
+		$('#search_input_id').keyup(function(event){
+			//取消博主的提示
+			var search_type_blog = $('#search_type_blog').val();
+			if(search_type_blog == 'author') return false;
+
+			var key = $(this).val();
+			//获取键值
+			var keycode = event.which; //38 上 40 下
+			var count = $('.bor13221 ul li').length;
+			if(key != '' && keycode != 38 && keycode != 40)
+			{
+				$.getJSON("http://api.sou.it168.com/autoWenKuCloud?jsoncallback=?",{"ty":"json","offset":"0","limit":"10","q":key}, function(result)
+					{
+						var arr = result.data;
+
+						var html ='';
+						for (i=0;i<arr.length ;i++ )   
+						{   
+							html += '<li>'+arr[i]+'</li>';
+						} 
+						
+						$('.bor13221 ul').html(html);
+						(arr.length > 1) ?  $(".bor13221").show() : $(".bor13221").hide();
+					}
+				);
+			}
+			else if(keycode == 38)
+			{
+				if(count > 0)
+				{
+					//遍历li
+					var curr_li_num;
+					$('.bor13221 ul li').each(function(index , dom){
+						if($(dom).attr('class') == 'here')
+						{
+							curr_li_num = index;
+							return false;
+						}
+					}); 
+					var next_li_num;
+					if(typeof(curr_li_num) == 'undefined')
+					{
+						next_li_num = count - 1;
+					}
+					else
+					{
+						if(curr_li_num == 0)
+						{
+							next_li_num = count - 1;
+						}
+						else
+						{
+							next_li_num = curr_li_num - 1;
+						}
+					}
+					$(".bor13221 ul li").removeClass("here");
+					$(".bor13221 ul li:eq(" + next_li_num + ")").addClass("here");
+					$('#search_input_id').val($(".bor13221 ul li:eq(" + next_li_num + ")").text());
+				}
+			}
+			else if(keycode == 40)
+			{
+				if(count > 0)
+				{
+					//遍历li
+					var curr_li_num;
+					$('.bor13221 ul li').each(function(index , dom){
+						if($(dom).attr('class') == 'here')
+						{
+							curr_li_num = index;
+							return false;
+						}
+					}); 
+					var next_li_num;
+					if(typeof(curr_li_num) == 'undefined')
+					{
+						next_li_num = 0;
+					}
+					else
+					{
+						if(curr_li_num == count - 1)
+						{
+							next_li_num = 0;
+						}
+						else
+						{
+							next_li_num = curr_li_num + 1;
+						}
+					}
+					$(".bor13221 ul li").removeClass("here");
+					$(".bor13221 ul li:eq(" + next_li_num + ")").addClass("here");
+					$('#search_input_id').val($(".bor13221 ul li:eq(" + next_li_num + ")").text());
+				}
+			}
+		});
+		$(document).click(function(e){
+			$(".bor13221").hide();
+		});
+
+	});
+  </script>
+  <!-- 头 -->
+  <!-- 推荐博客-->
+  <div class="Blog_header1">
+	    <div class="Blog_header1_1">
+      <p class="Blog_p1"><em><a href="http://blog.chinaunix.net/uid/26921272.html">晴天</a></em>      </p><p class="Blog_p2" style="color:#125A94">见贤思齐，见不贤而内省。</p>
+    </div>
+        <div class="Blog_header1_2" id="hide_div1">
+    	<span class="Blog_span3"></span>
+    	<div class="float_div1" style="white-space:nowrap;" onmouseover="javascript:isMove=false" onmouseout="javascript:isMove=true">
+	    <ul style="line-height: 25px; margin-top: -67px;" id="noticev2">  
+		    		    <li><a href="http://blog.chinaunix.net/uid-24789255-id-5568211.html" target="_blank">新注册用户开通“博客写作”功能，需要申请与实名认证 </a></li>
+		    		    <li><a href="http://blog.chinaunix.net/uid-10718265-id-5141960.html" target="_blank"> 互动：数据分析与云计算应用案例 （征集|参与）</a></li>
+		    		    <li><a href="http://bbs.chinaunix.net/thread-4182662-1-1.html" target="_blank">有奖讨论：企业网络架构的世界真有“试衣间”</a></li>
+		    	    </ul>
+	    </div>
+    </div>
+            <div class="Blog_header1_3"><a href="http://blog.chinaunix.net/uid/26921272.html">首页</a>　| 　<a href="http://blog.chinaunix.net/uid/26921272/abstract/1.html">博文目录</a>　| 　<a href="http://blog.chinaunix.net/member/profile/uid/26921272.html">关于我</a></div>
+  </div>
+    
+  <!-- 内容部分 -->
+  	<script type="text/javascript" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/XRegExp.js"></script> <!-- XRegExp is bundled with the final shCore.js during build -->
+<script type="text/javascript" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/shCore.js"></script>
+<script type="text/javascript" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/shAutoloader.js"></script>
+<link type="text/css" rel="stylesheet" href="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/shCore.css">
+<link type="text/css" rel="Stylesheet" href="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/shThemeDefault.css">
+<link href="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/fck_editorarea.css" rel="stylesheet" type="text/css">
+<style>
+.Blog_p5 em{ display:inline-block; width:16px; height:13px; background:url(/image/v.jpg) no-repeat; overflow:hidden;}
+</style>
+  <div class="Blog_contain"> 
+    <!-- 左 -->
+	<style>
+    .Blog_left1_1 p a em { display:inline-block; width:16px; height:13px; background:url(/image/v.jpg) no-repeat; overflow:hidden;}
+</style>
+
+<script language="javascript">
+$(document).ready(function(){
+	$('#ConcernBtn').bind('click',function(){
+			var cuid = '26921272';
+			var url =  '/member/concern.html';
+			var type = $(this).attr('rel');
+		
+			if(type == 'addConcern'){
+				$.ajax({
+					type : 'get',
+					url  : url,
+					data : {'op' : 'ajaxadd' , 'cuid' : cuid, 'random' : Math.random()},
+					success : function(msg){	
+					   if(msg == -1){
+						   showErrorMsg('参数错误！');
+					   } else if (msg == 0){
+						   showErrorMsg('关注失败，没有该用户！');
+					   } else if (msg == 1){
+						   showErrorMsg('关注失败，您已经关注了该用户！');
+					   } else if (msg == 2){
+						   $('#ConcernBtn').val('已关注');
+						   $('#ConcernBtn').attr('rel','delConcern');
+						   showSucceedMsg('关注成功!');
+					   } else if (msg == 3){
+						   showErrorMsg('未知错误');
+					   }
+					}
+				});	
+			} else if ( type == 'delConcern'){
+				$.ajax({
+					type : 'get',
+					url  : url,
+					data : {'op' : 'ajaxdel' , 'cuid' : cuid, 'random' : Math.random()},
+					success : function(msg){
+					   if(msg == 0){
+						   showErrorMsg('参数错误！','消息提示');
+					   } else if (msg == 1){
+						   showErrorMsg('操作失败，请尝试刷新页面重试！','消息提示');
+					   } else if (msg == 2){
+						   $('#ConcernBtn').val('加关注');
+						   $('#ConcernBtn').attr('rel','addConcern');
+						   showSucceedMsg('成功取消关注！','消息提示');
+					   } else if (msg == 3){
+						   showErrorMsg('未知错误！','消息提示'); 
+					   }
+					}
+				});	
+			}
+	});					   
+});
+
+//加好友
+function addFriend(fuid, url){
+	if(fuid == '' || fuid.length == 0){
+		showErrorMsg('缺少参数！','信息提示');
+		return false;
+	}
+	$.ajax({
+		   type : 'get',
+		   url : url,
+		   data : {'op' : 'add', 'fuid' : fuid , 'random' : Math.random()},
+		   success : function(msg){
+				if(msg == -1){
+					showErrorMsg('参数错误！','消息提示');
+				} else if (msg == -2){
+					showErrorMsg('添加好友失败,没有该用户的信息！','消息提示');
+				} else if (msg == -3){
+					showErrorMsg('添加好友失败,你不能添加自己为好友！','消息提示');
+				} else if (msg == -4){
+					showErrorMsg('添加好友未知错误,该错误已被记录！','消息提示');
+				} else if (msg == -5){
+					showErrorMsg('添加好友失败,你之前已经发送过好友请求,请耐心等待对方同意申请！','消息提示');
+				} else if (msg == -6){
+					showErrorMsg('添加好友失败,你们已经是好友了！','消息提示');
+				} else {
+					$.cover(true);
+					asyncbox.open({
+						id : 'addFriend',
+						title : '添加好友',
+						url : url,
+						data : {'op' : 'add', 'fuid' : fuid , 'random' : Math.random()},
+						width : 490,
+						height : 180,
+						scroll : 'no',
+						callback : function(action) {
+							if (action == 'close'){
+								$.cover(false);
+							}	
+						}
+					});	
+				}
+		   }
+	});	
+	
+}
+
+//发送短消息
+function postMessage(msguid, url){
+	if(msguid == '' || msguid.length == 0){
+		showErrorMsg('缺少参数！','信息提示');
+		return false;
+	}
+	
+	$.ajax({
+		   type : 'post',
+		   url : url,
+		   data : {'op' : 'ajaxpost', 'msguid' : msguid , 'random' : Math.random()},
+		   success : function(msg){
+				if(msg == -1){
+					showErrorMsg('发送失败，缺少收件人对象！','消息提示');
+				} else if(msg == -2){
+					showErrorMsg('发送失败，自己不能给自己发送短消息！','消息提示');
+				} else {
+					$.cover(true);
+					asyncbox.open({
+						id : 'postMessage',
+						title : '发送短消息',
+						url : url,
+						data : {'op' : 'ajaxpost', 'msguid' : msguid , 'random' : Math.random()},
+						width : 510,
+						height : 255,
+						scroll : 'no',
+						callback : function(action) {
+							if (action == 'close'){
+								$.cover(false);
+							}	
+						}
+					});	
+				}
+		   }
+	});	
+}
+
+</script>
+<div class="Blog_left">
+      <div class="Blog_left1 Blog_bg1">
+        <div class="Blog_left1_1">
+			<!-- 专家博客-->
+			<a href="http://blog.chinaunix.net/uid/26921272.html"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/72_avatar_middle.jpg" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_middle.gif'"></a>
+                        <p><a href="http://blog.chinaunix.net/uid/26921272.html">futter521</a></p>
+                     </div>
+        <ul class="Blog_ul1 Blog_noline1">
+          <li>博客访问： 491030 </li>
+          <li>博文数量： 301 </li>
+          <li>博客积分： 3251 </li>
+          <!--<li>专家积分： 180</li>-->
+          <li>博客等级： 中校 </li>
+		  <li>技术积分： 2865 </li>
+          <li>用  户  组：  普通用户</li>
+          <li>注册时间： 2012-04-26 17:23 </li>
+                            </ul>  
+
+
+        
+                <div class="HT_line3 HT_line3_1"></div>
+        <ul class="Blog_ul2">
+          <li><input value="加关注" id="ConcernBtn" onclick="showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html')" type="button"></li>
+          <li><input value="短消息" id="postMessageBtn" onclick="showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html')" type="button"></li>
+          <li><input value="论坛" onclick="location.href='http://bbs.chinaunix.net'" type="button"></li>
+          <li><input value="加好友" id="addFriendBtn" onclick="showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html')" type="button"></li>
+        </ul>
+              </div>
+        
+         
+      <div class="Blog_left2 Blog_bg1">
+        <div class="Blog_tit1">文章分类</div>
+        <div class="Blog_left2_1">
+          <p class="Blog_p4"><a href="http://blog.chinaunix.net/uid/26921272/list/1.html">全部博文</a>（301）</p>
+          <ul id="blogCla">
+                            <li><a href="http://blog.chinaunix.net/uid/26921272/cid-216716-list-1.html" title="文件解析">文件解析</a>（1）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/26921272/cid-216234-list-1.html" title="AVR">AVR</a>（1）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/26921272/cid-206735-list-1.html" title="STM8">STM8</a>（14）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/26921272/cid-182545-list-1.html" title="MSP430">MSP430</a>（8）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/26921272/cid-180765-list-1.html" title="SIP">SIP</a>（3）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/26921272/cid-173198-list-1.html" title="STM32">STM32</a>（12）
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/26921272/cid-168482-list-1.html" title="WIFI">WIFI</a>（6）
+                                </li>
+                            <li><span class="Blog_jia1"></span><a href="http://blog.chinaunix.net/uid/26921272/cid-167030-list-1.html" title="数据库">数据库</a>（18）
+                                    <div style="display:none;" class="zk">
+					                        <p><a href="http://blog.chinaunix.net/uid/26921272/sid-167032-list-1.html" title="mysql">mysql</a>（2）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-167031-list-1.html" title="sqlite">sqlite</a>（16）</p>
+                                        </div>
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/26921272/cid-165411-list-1.html" title="SVN">SVN</a>（1）
+                                </li>
+                            <li><span class="Blog_jia1"></span><a href="http://blog.chinaunix.net/uid/26921272/cid-161668-list-1.html" title="硬件">硬件</a>（9）
+                                    <div style="display:none;" class="zk">
+					                        <p><a href="http://blog.chinaunix.net/uid/26921272/sid-205274-list-1.html" title="RFID">RFID</a>（1）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-202591-list-1.html" title="模拟视频">模拟视频</a>（1）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-202220-list-1.html" title="网卡">网卡</a>（2）</p>
+                                        </div>
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/26921272/cid-160049-list-1.html" title="boot">boot</a>（1）
+                                </li>
+                            <li><span class="Blog_jia1"></span><a href="http://blog.chinaunix.net/uid/26921272/cid-157383-list-1.html" title="C/C++">C/C++</a>（42）
+                                    <div style="display:none;" class="zk">
+					                        <p><a href="http://blog.chinaunix.net/uid/26921272/sid-164136-list-1.html" title="数据结构">数据结构</a>（3）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-164134-list-1.html" title="库函数">库函数</a>（11）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-164133-list-1.html" title="基础知识">基础知识</a>（15）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-163864-list-1.html" title="指针及空间分配">指针及空间分配</a>（13）</p>
+                                        </div>
+                                </li>
+                            <li><span class="Blog_jia1"></span><a href="http://blog.chinaunix.net/uid/26921272/cid-156893-list-1.html" title="linux">linux</a>（141）
+                                    <div style="display:none;" class="zk">
+					                        <p><a href="http://blog.chinaunix.net/uid/26921272/sid-170024-list-1.html" title="linux网络协议栈">linux网络协议栈</a>（33）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-165395-list-1.html" title="drives">drives</a>（8）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-164870-list-1.html" title="fs">fs</a>（1）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-163693-list-1.html" title="CGI &amp; WEB">CGI &amp; WEB</a>（8）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-163406-list-1.html" title="kernel">kernel</a>（4）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-162925-list-1.html" title="makefile">makefile</a>（1）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-162365-list-1.html" title="snmp">snmp</a>（2）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-159793-list-1.html" title="串口通讯">串口通讯</a>（5）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-158791-list-1.html" title="杂谈">杂谈</a>（18）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-158659-list-1.html" title="环境搭建">环境搭建</a>（15）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-158338-list-1.html" title="进程通讯">进程通讯</a>（5）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-158229-list-1.html" title="音视频">音视频</a>（5）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-158148-list-1.html" title="网络通讯">网络通讯</a>（8）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-157396-list-1.html" title="多线程编程(POSIX)">多线程编程(POSIX</a>（11）</p>
+                                            <p><a href="http://blog.chinaunix.net/uid/26921272/sid-157365-list-1.html" title="命令集">命令集</a>（4）</p>
+                                        </div>
+                                </li>
+                            <li><a href="http://blog.chinaunix.net/uid/26921272/cid--1-list-1.html" title="未分配的博文">未分配的博文</a>（44）
+                                </li>
+                      </ul>
+        </div>
+      </div>
+      	              <div class="Blog_left2 Blog_bg1">
+        <div class="Blog_tit1">文章存档</div>
+        <div class="Blog_left2_1" id="blogdtr">
+                    <p class="Blog_p4"><span class="Blog_jia1"></span><a href="http://blog.chinaunix.net/uid/26921272/year-2015-list-1.html">2015年</a>（18）</p>
+          <ul style="display:none;" class="Blog_ul3 zk">
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201512-list-1.html">2015年12月</a>（2）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201511-list-1.html">2015年11月</a>（13）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201503-list-1.html">2015年03月</a>（1）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201501-list-1.html">2015年01月</a>（2）</li>
+                      </ul>
+                    <p class="Blog_p4"><span class="Blog_jia1"></span><a href="http://blog.chinaunix.net/uid/26921272/year-2014-list-1.html">2014年</a>（16）</p>
+          <ul style="display:none;" class="Blog_ul3 zk">
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201411-list-1.html">2014年11月</a>（3）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201410-list-1.html">2014年10月</a>（6）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201409-list-1.html">2014年09月</a>（6）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201407-list-1.html">2014年07月</a>（1）</li>
+                      </ul>
+                    <p class="Blog_p4"><span class="Blog_jia1"></span><a href="http://blog.chinaunix.net/uid/26921272/year-2013-list-1.html">2013年</a>（12）</p>
+          <ul style="display:none;" class="Blog_ul3 zk">
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201309-list-1.html">2013年09月</a>（8）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201308-list-1.html">2013年08月</a>（3）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201303-list-1.html">2013年03月</a>（1）</li>
+                      </ul>
+                    <p class="Blog_p4"><span class="Blog_jia1"></span><a href="http://blog.chinaunix.net/uid/26921272/year-2012-list-1.html">2012年</a>（255）</p>
+          <ul style="display:none;" class="Blog_ul3 zk">
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201212-list-1.html">2012年12月</a>（34）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201211-list-1.html">2012年11月</a>（34）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201210-list-1.html">2012年10月</a>（41）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201209-list-1.html">2012年09月</a>（45）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201208-list-1.html">2012年08月</a>（32）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201207-list-1.html">2012年07月</a>（6）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201206-list-1.html">2012年06月</a>（5）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201205-list-1.html">2012年05月</a>（55）</li>
+                        <li><a href="http://blog.chinaunix.net/uid/26921272/year-201204-list-1.html">2012年04月</a>（3）</li>
+                      </ul>
+                  </div>
+      </div>
+      	  	        <div class="Blog_left2 Blog_bg1">
+        <div class="Blog_tit1">我的朋友</div>
+        <ul class="Blog_ul4">
+                    <li><a href="http://blog.chinaunix.net/uid/29087908.html"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/29087908.html" title="陌生people">陌生peop</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/28317885.html"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/28317885.html" title="成都琥珀">成都琥珀</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/26896686.html"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/26896686.html" title="skl谈云技术">skl谈云</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/26185912.html"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/12_avatar_small.jpg" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/26185912.html" title="无赖皮肤">无赖皮肤</a></p>
+          </li>
+                  </ul>
+      </div>
+	  	        <div class="Blog_left2 Blog_bg1">
+        <div class="Blog_tit1">最近访客</div>
+        <ul class="Blog_ul4">
+                    <li><a href="http://blog.chinaunix.net/uid/30306210.html"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/30306210.html" title="ggq1992">ggq1992</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/28868468.html"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/28868468.html" title="赵仁煊">赵仁煊</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/30627011.html"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/30627011.html" title="zouppp">zouppp</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/27034079.html"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/79_avatar_small.jpg" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/27034079.html" title="电子学习员">电子学习</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/20798632.html"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/20798632.html" title="381930260">38193026</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/30631205.html"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/30631205.html" title="Solomon1558">Solomon1</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/28689156.html"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/28689156.html" title="liu_hang_yu">liu_hang</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/30610784.html"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/30610784.html" title="liang9527888">liang952</a></p>
+          </li>
+                    <li><a href="http://blog.chinaunix.net/uid/30632295.html"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/noavatar_small.gif" onerror="this.onerror=null;this.src='http://passport.ixpub.net/images/noavatar_small.gif'"></a>
+            <p><a href="http://blog.chinaunix.net/uid/30632295.html" title="xugangw88">xugangw8</a></p>
+          </li>
+                  </ul>
+      </div>
+	           <div class="Blog_left2 Blog_left3 Blog_bg1">
+        <div class="Blog_tit1">微信关注</div>
+        <div class="">
+                <div class="" style="float:left; margin-right:5px;">
+                 <img alt="" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/IT168.jpg" height="90" width="90">
+                 </div><br>
+                <div class="" style="margin-top:10px;">
+                 <p class="">
+                         IT168企业级官微
+                </p>
+                 <p class="">
+
+                 <br><br>
+                 微信号：IT168qiye
+                </p>
+                </div>
+        </div>
+<hr style="clear:both;" size="1">
+        <div class="" style="clear:both;">
+                <div class="" style="float:left; margin-right:5px;">
+                 <img alt="" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/itpub.jpg" height="90" width="90">
+                 </div><br>
+                <div class="" style="margin-top:10px;">
+                 <p class="">
+                         系统架构师大会
+                </p>
+                 <p class="">
+
+                 <br><br>
+                 微信号：SACC2013
+                </p>
+                </div>
+        </div>
+
+</div>
+      <div class="Blog_left2 Blog_bg1">
+        <div class="Blog_tit1">订阅</div>
+        <ul class="Blog_ul5">
+          <li><a href="http://blog.chinaunix.net/blog/rss/uid/26921272.html" class="Blog_a4"></a></li>
+          <li><a href="http://www.google.com/ig/add?feedurl=http%3A%2F%2Fblog.chinaunix.net%2Fuid%2F26921272.html" class="Blog_a5"></a></li>
+        </ul>
+      </div>
+      <div class="Blog_left2 Blog_left3 Blog_bg1">
+        <div class="Blog_tit1">推荐博文</div>
+        <ul class="Blog_ul6">
+				  			<li>·<a href="http://blog.chinaunix.net/uid-25057421-id-5576282.html" title="ELK Stack最新版本测试一安装篇">ELK Stack最新版本测试一安装...</a></li>
+		  			<li>·<a href="http://blog.chinaunix.net/uid-25057421-id-5576272.html" title="ELK Stack最新版本测试二配置篇">ELK Stack最新版本测试二配置...</a></li>
+		  			<li>·<a href="http://blog.chinaunix.net/uid-29386764-id-5573774.html" title="HTML5实现3D和2D可视化QuadTree四叉树碰撞检测">HTML5实现3D和2D可视化QuadTr...</a></li>
+		  			<li>·<a href="http://blog.chinaunix.net/uid-20726500-id-5573764.html" title="为什么Mysql explain extended中的filtered列值总是100%">为什么Mysql explain extende...</a></li>
+		  			<li>·<a href="http://blog.chinaunix.net/uid-12845622-id-5573478.html" title="PyQt5系列教程(二)利用QtDesigner设计UI界面">PyQt5系列教程(二)利用QtDesi...</a></li>
+		  						  			<li>·<a href="http://blog.itpub.net/24930246/viewspace-1873675" title="TimesTen内存数据库体系结构">TimesTen内存数据库体系结构...</a></li>
+		  			<li>·<a href="http://blog.itpub.net/23718752/viewspace-1873639" title="和开发人员讨论一个业务需求和简单实现">和开发人员讨论一个业务需求...</a></li>
+		  			<li>·<a href="http://blog.itpub.net/29254281/viewspace-1873635" title="考勤统计问题">考勤统计问题</a></li>
+		  			<li>·<a href="http://blog.itpub.net/9240380/viewspace-1873589" title="基于row cache object latch研究对于sga抖动的影响">基于row cache object latch...</a></li>
+		  			<li>·<a href="http://blog.itpub.net/9240380/viewspace-1873556" title="进一步理解oracle11g之v$sga_resize_ops">进一步理解oracle11g之v$sga_...</a></li>
+		  				
+        </ul>
+      </div>
+      <div class="Blog_left2 Blog_left3 Blog_bg1">
+        <div class="Blog_tit1">热词专题</div>
+        <ul class="Blog_ul6">
+                        <li>·<a href="http://blog.chinaunix.net/zt/1006/i9100chen_1006126.shtml" target="blank" title="查看centos的系统版本">查看centos的系统版本</a></li>
+                        <li>·<a href="http://blog.chinaunix.net/zt/1040/solarissshhuner_1040756.shtml" target="blank" title="ssh 无密码登陆">ssh 无密码登陆</a></li>
+                        <li>·<a href="http://blog.chinaunix.net/zt/1006/uhunhu_1006082.shtml" target="blank" title="硬盘安装linux系统">硬盘安装linux系统</a></li>
+                        <li>·<a href="http://blog.chinaunix.net/zt/1010/phpcurlsetopt_1010060.shtml" target="blank" title="php curl post">php curl post</a></li>
+                        <li class="no_line1">·<a href="http://blog.chinaunix.net/zt/1034/linuxnit_1034358.shtml" target="blank" title="使用initramfs启动Linux">使用initramfs启动Linux</a></li>
+          <!--              <li>·<a href="http://www.dataguru.cn/zhuanti/hadoop220peizhi.shtml" target='blank' title='配置hadoop2.2.0格式化namenode问题'></a></li>
+              <li>·<a href="http://www.dataguru.cn/zhuanti/hadoopshouce.shtml" target='blank' title='hadoop2.2.0安装手册'></a></li>-->
+        </ul>
+      </div>
+	  
+
+	</div>
+<script language="javascript">
+$(document).ready(function(){
+    /*目录树JS效果*/
+	$('#blogCla li > span').click(function(){
+		var cla = $(this).attr('class');
+		if(cla == 'Blog_jia1'){
+			//$('#blogCla li > span').removeClass('Blog_jian1').addClass('Blog_jia1');
+			//$('#blogCla li > .zk').css('display', 'none');
+				
+			$(this).removeClass('Blog_jia1').addClass('Blog_jian1');
+            $(this).parent().children('.zk').css('display', 'block');
+		}else{
+			$(this).removeClass('Blog_jian1').addClass('Blog_jia1');
+            $(this).parent().children('.zk').css('display', 'none');
+		}
+	});
+		
+	$('#blogdtr > p > span').click(function(){
+		var cla = $(this).attr('class');
+		if(cla == 'Blog_jia1'){
+			//$('#blogdtr > .Blog_p4 > span').removeClass('Blog_jian1').addClass('Blog_jia1');
+			//$('#blogdtr ul').css('display', 'none');
+				
+			$(this).removeClass('Blog_jia1').addClass('Blog_jian1');
+            $(this).parent().next().css('display', 'block');
+		}else{
+			$(this).removeClass('Blog_jian1').addClass('Blog_jia1');
+            $(this).parent().next().css('display', 'none');
+		}
+	});
+});
+</script>    <!-- 右 -->
+    <div class="Blog_right1">
+      <div class="Blog_right1_1 Blog_right1_11">
+        <div class="Blog_right1_2 ">
+			<!--推荐博文-->
+          <div class="Blog_tit4 Blog_tit5">
+                        <b class="Blog_b1"></b>
+            <a href="http://blog.chinaunix.net/uid-26921272-id-3416832.html">wpa_supplicant移植——futter</a>
+            <em>2012-11-21 20:46:19</em>
+          </div>
+          <div class="Blog_con2">
+            <div class="Blog_con3">
+              <p>分类： <span>LINUX</span></p>
+			                <p></p>
+            </div>
+           <div class="Blog_wz1" style="word-wrap: break-word;">
+			<font size="2">这两天在捣腾wifi<font size="2">驱动移植，</font>结合前辈们的经验，终于移植成功，在此标记一下。<br><br></font><span style="font-family:宋体,Arial; font-size:18px; color:#333333; font-size:14px; line-height:19px; background-color:rgb(239,239,239)">因为现在的无线wifi网络大多是wpa加密。所以需要移植wpa_supplicant工具。</span>
+<p><span style="font-size:18px"><strong>一、下载源码</strong></span></p><p><span style="font-size:18px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://hostap.epitest.fi/wpa_supplicant/" target="_blank" style="color:blue; text-decoration:underline"><span style="color:#336699">http://hostap.epitest.fi/wpa_supplicant/</span></a></span></p><p><span style="font-size:18px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 下载wpa_supplicant-0.7.3.tar.gz （openssl用到0.7.3提供的补丁）</span></p><p><span style="font-size:18px">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #tar xvfz wpa_supplicant-0.7.3.tar.gz</span></p><p><span style="font-size:18px">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 下载<a href="http://www.openssl.org/source/openssl-0.9.8e.tar.gz" target="_blank" style="color:blue; text-decoration:underline"><span style="color:#336699">www.openssl.org/source/openssl-1.0.1c.tar.gz</span></a><font size="1"><br>
+&nbsp;</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #tar zxvf openssl-1.0.1c.tar.gz</span></p><p><span style="font-size:18px"><strong>二、编译openssl库</strong></span><br></p><div><div><span style="FONT-SIZE: medium" class="Apple-style-span"><br></span></div>
+<div><span style="FONT-SIZE: large" class="Apple-style-span"><b>makefile修改</b></span><span style="FONT-SIZE: medium" class="Apple-style-span"> (-为去掉设置， +为新加的设置)</span></div>
+<div><span style="FONT-SIZE: medium" class="Apple-style-span">#vi makefile</span></div>
+<div><span style="FONT-SIZE: medium" class="Apple-style-span"><font class="Apple-style-span" color="#0000f0">- CC= cc</font></span></div>
+<div><span style="FONT-SIZE: medium" class="Apple-style-span"><font class="Apple-style-span" color="#0000f0">+ CC= arm-none-linux-gnueabi-gcc</font></span></div>
+<div><span style="FONT-SIZE: medium" class="Apple-style-span"><font class="Apple-style-span" color="#0000f0"><br></font></span></div>
+<div><span style="FONT-SIZE: medium" class="Apple-style-span"><font class="Apple-style-span" color="#0000f0">- AR= ar $(ARFLAGS) r</font></span></div>
+<div><span style="FONT-SIZE: medium" class="Apple-style-span"><font class="Apple-style-span" color="#0000f0">+ AR= arm-</font></span><span style="FONT-SIZE: medium" class="Apple-style-span"><font class="Apple-style-span" color="#0000f0"><span style="FONT-SIZE: medium" class="Apple-style-span"><font class="Apple-style-span" color="#0000f0">none-linux-gnueabi</font></span>-ar $(ARFLAGS) r</font></span></div>
+
+<div><span style="FONT-SIZE: medium" class="Apple-style-span"><font class="Apple-style-span" color="#0000f0">- RANLIB= /usr/bin/ranlib<br>+ RANLIB= arm-</font></span><span style="FONT-SIZE: medium" class="Apple-style-span"><font class="Apple-style-span" color="#0000f0"><span style="FONT-SIZE: medium" class="Apple-style-span"><font class="Apple-style-span" color="#0000f0">none-linux-gnueabi</font></span>-ranlib</font></span></div>
+<div><span style="FONT-SIZE: medium" class="Apple-style-span"><br></span></div>
+<div><b><span style="FONT-SIZE: medium" class="Apple-style-span">#make&nbsp;</span></b></div>
+<div><b><span style="FONT-SIZE: medium" class="Apple-style-span">#make install</span></b></div>
+<div><span style="FONT-SIZE: medium" class="Apple-style-span">在/usr/local/ssl目录下安装了ssl库</span></div>
+<div><span style="FONT-SIZE: medium" class="Apple-style-span"><br></span></div>
+<div><b><span style="FONT-SIZE: medium" class="Apple-style-span">拷贝下面文件驱动到目标系统/usr/lib/</span></b></div>
+<div><span style="FONT-SIZE: medium" class="Apple-style-span">libssl.a</span></div>
+<div><span style="FONT-SIZE: medium" class="Apple-style-span">libcrypto.a</span></div></div><p><span style="FONT-SIZE: medium" class="Apple-style-span">openssl 移植完成<font color="#f00000">.</font></span></p><p><span style="font-size:18px"><strong>三、编译wpa_supplicant</strong>&nbsp;<br>
+<font size="3" face="Arial">进入wpa_supplicant-0.7.3.tar.gz解压生成的wpa_supplicant-0.7.3/wpa_supplicant目录中：<br>
+<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #cp defconfig&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; .config<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #vim .config</b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CC=arm-linux-gcc&nbsp; -L/usr/local/ssl/lib/<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; #CC=/opt/brcm/hndtools-mipsel-uclibc/bin/mipsel-uclibc-gcc<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+CFLAGS += -I/usr/local/ssl/include<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+#CPPFLAGS += -I../src/include -I../../src/router/openssl/include<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+LIBS += -L/usr/local/ssl/lib<br>
+<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #make</b></font></span></p><p><font size="3" face="Arial"><font size="3">出现错误：</font></font></p><p><font size="3" face="Arial"><font size="3">../src/drivers/driver_nl80211.c:25:31: fatal error: netlink/genl/genl.h: No such file or directory<br>compilation terminated.<br>make: *** [../src/drivers/driver_nl80211.o] Error 1</font></font></p><p><font size="3" face="Arial"><font size="3">安装libnl-dev 和libpopt-dev后，编译成功。</font></font></p><p><font size="3" face="Arial"><font size="3"><font size="3">注：一开始安装了</font></font></font><font size="3" face="Arial"><font size="3"><font size="3"><span style="font-size:18px"><font size="3" face="Arial">wpa_supplicant-<font size="3">1.0，死活找不到<font size="3">/usr/<font size="3">include<font size="3">内的头文件，<font size="3">报类似上面的错误，最后退回到</font></font></font></font></font></font></span></font></font></font><span style="font-size:18px"><font size="3" face="Arial">wpa_supplicant-0.7.3编译通过。</font></span></p><p><font size="3" face="Arial">经过编译后的wpa_supplicant源程序可以看到两个主要的可执行工
+具：wpa_supplicant和wpa_cli。wpa_supplicant是核心程序，它和wpa_cli的关系就是服务和客户端的关系：后台运
+行wpa_supplicant，使用wpa_cli来搜索、设置、和连接网络。</font></p><p><font size="3" face="Arial"><br></font></p><p><br><span style="font-size:18px"></span></p>           </div>
+            <!-- <div class="Blog_con3_1">管理员在2009年8月13日编辑了该文章文章。</div> -->
+            <div class="Blog_con2_1 Blog_con3_2">
+              <div>
+			  <!--<img src="/image/default/tu_8.png">-->
+			  <!-- JiaThis Button BEGIN -->
+				<div data-bd-bind="1450419900816" class="bdsharebuttonbox bdshare-button-style0-16"><a class="bds_more" href="#" data-cmd="more"></a><a class="bds_qzone" title="分享到QQ空间" href="#" data-cmd="qzone"></a><a class="bds_tsina" title="分享到新浪微博" href="#" data-cmd="tsina"></a><a class="bds_tqq" title="分享到腾讯微博" href="#" data-cmd="tqq"></a><a class="bds_renren" title="分享到人人网" href="#" data-cmd="renren"></a><a class="bds_weixin" title="分享到微信" href="#" data-cmd="weixin"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+				<!-- JiaThis Button END -->
+			  </div>
+              阅读(6142) | 评论(0) | 转发(5) |
+			                <div class="HT_line3"></div>
+            </div>
+            <div class="Blog_con3_3">
+              <div><span id="digg_num">0</span><a href="javascript:void(0)" id="digg" bid="3416832" url="/blog/digg.html"></a></div>
+              <p>上一篇：<a href="http://blog.chinaunix.net/uid-26921272-id-3416747.html">库文件</a></p>
+              <p>下一篇：<a href="http://blog.chinaunix.net/uid-26921272-id-3418298.html">linux下的动态库(转）</a></p>
+            </div>
+          </div>
+          <div class="Blog_con3_4">
+            <div class="Blog_tit2 Blog_tit6">相关热门文章</div>
+			            <ul class="Blog_ul7">
+						  <li><span class="Blog_span6"></span><a href="http://blog.chinaunix.net/uid-23381466-id-5112483.html" title=" wpa_supplicant &amp; wpa_cli 无线网络配置 " target="blank"> wpa_supplicant &amp; wpa_cli 无...</a></li>
+						  <li><span class="Blog_span6"></span><a href="http://blog.chinaunix.net/uid-20737871-id-5107395.html" title="hostapd 文档" target="blank">hostapd 文档</a></li>
+						  <li><span class="Blog_span6"></span><a href="http://blog.chinaunix.net/uid-28790518-id-5097003.html" title="shell解析URL发送来的QUERY_STRING编码字符串——futter心得" target="blank">shell解析URL发送来的QUERY_ST...</a></li>
+						  <li><span class="Blog_span6"></span><a href="http://blog.chinaunix.net/uid-28790518-id-5072361.html" title="wifi测试相关（iwconfig，WPA Supplicant用法） " target="blank">wifi测试相关（iwconfig，WPA ...</a></li>
+						  <li><span class="Blog_span6"></span><a href="http://blog.chinaunix.net/uid-20279362-id-5050746.html" title="wpa_supplicant驱动移植" target="blank">wpa_supplicant驱动移植</a></li>
+			            </ul>
+			            <ul class="Blog_ul7">
+						  <li><span class="Blog_span7"></span><a href="http://blog.chinaunix.net/uid-10900999-id-2920737.html" title="linux 常见服务端口" target="blank">linux 常见服务端口</a></li>
+						  <li><span class="Blog_span7"></span><a href="http://blog.chinaunix.net/uid-20457694-id-1944680.html" title="xmanager 2.0 for linux配置" target="blank">xmanager 2.0 for linux配置</a></li>
+						  <li><span class="Blog_span7"></span><a href="http://blog.chinaunix.net/uid-21025382-id-168762.html" title="【ROOTFS搭建】busybox的httpd使用CGI脚本(BusyBox httpd CGI scripts)" target="blank">【ROOTFS搭建】busybox的httpd...</a></li>
+						  <li><span class="Blog_span7"></span><a href="http://blog.chinaunix.net/uid-26824563-id-4591418.html" title="openwrt中luci学习笔记" target="blank">openwrt中luci学习笔记</a></li>
+						  <li><span class="Blog_span7"></span><a href="http://blog.chinaunix.net/uid-20378509-id-1956694.html" title="什么是shell" target="blank">什么是shell</a></li>
+			            </ul>
+            <ul class="Blog_ul7">
+						  <li><span class="Blog_span6"></span><a href="http://ask.chinaunix.net/question/785970" title="linux dhcp  peizhi roc" target="blank">linux dhcp  peizhi roc</a></li>
+						  <li><span class="Blog_span6"></span><a href="http://ask.chinaunix.net/question/785964" title="关于Unix文件的软链接" target="blank">关于Unix文件的软链接</a></li>
+						  <li><span class="Blog_span6"></span><a href="http://ask.chinaunix.net/question/785935" title="求教这个命令什么意思，我是新手，刚刚学习solaris" target="blank">求教这个命令什么意思，我是新...</a></li>
+						  <li><span class="Blog_span6"></span><a href="http://ask.chinaunix.net/question/785919" title="sed -e &quot;/grep/d&quot; 是什么意思？谢谢" target="blank">sed -e "/grep/d" 是什么意思...</a></li>
+						  <li><span class="Blog_span6"></span><a href="http://ask.chinaunix.net/question/785702" title="谁能够帮我解决LINUX  2.6  10版本驱动" target="blank">谁能够帮我解决LINUX  2.6  10...</a></li>
+			            </ul>
+            <div class="clear"></div>
+          </div>
+		  <!--
+          <div class="Blog_con3_4 Blog_con3_5">
+            <div class="Blog_tit2 Blog_tit7">热门推荐</div>
+            <ul>
+			              <li><a href="" title="" target='blank' ></a></li>
+			            </ul>
+          </div>
+		  -->
+        </div>
+      </div>
+      <div class="Blog_right1_7" id="replyList">
+		<div class="Blog_tit3">给主人留下些什么吧！~~</div>
+				<!--暂无内容-->
+				<!-- 评论分页-->
+		<div class="Blog_right1_6 Blog_right1_12">
+        		</div>
+		<!-- 评论分页-->
+        <div class="Blog_right1_10">
+          <div class="Blog_tit3">评论热议</div>
+		  		 <!--未登录 -->
+        <div class="Blog_right1_8">
+          <div class="nologin_con1"> 请登录后评论。
+            <p><a href="http://blog.chinaunix.net/site/login.html" onclick="linkto()">登录</a> <a href="http://sso.chinaunix.net/Register?return_url=http%3A%2F%2Ft.cublog.com%2F">注册</a></p>
+          </div>
+        </div>
+        <br>
+        <div>
+            <div style="float:left;margin-left:70px;margin-right:10px;">
+             <script type="text/javascript">
+            var cpro_id = "u1625692";
+            </script>
+            <script src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/c.js" type="text/javascript"></script><div id="BAIDU_DUP_wrapper_u1625692_0"><iframe id="cproIframe_u1625692_1" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/acom.htm" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="true" align="center,center" frameborder="0" height="60" width="468"></iframe></div><script charset="utf-8" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/acom_002"></script>
+            </div>
+            <div style="margin-left:10px;">
+            <script type="text/javascript">
+            var cpro_id = "u1625694";
+            </script>
+            <script src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/c.js" type="text/javascript"></script><div id="BAIDU_DUP_wrapper_u1625694_0"><iframe id="cproIframe_u1625694_2" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/acom_002.htm" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="true" align="center,center" frameborder="0" height="60" width="468"></iframe></div><script charset="utf-8" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/acom"></script>
+            </div>
+        </div>
+		
+        </div>
+      </div>
+    </div>
+  </div>
+  <input id="report_url" value="/blog/ViewReport.html" type="hidden">
+
+<script type="text/javascript">
+  	//测试字符串的长度 一个汉字算2个字节
+	function mb_strlen(str)
+	{
+		var len=str.length;
+		var totalCount=0;
+		for(var i=0;i<len;i++)
+		{
+			var c = str.charCodeAt(i);
+			if ((c >= 0x0001 && c <= 0x007e) || (0xff60<=c && c<=0xff9f)) {
+				totalCount++;
+			}else{
+				totalCount+=2;
+			}
+		}
+		return totalCount;
+	}
+	/*
+	var Util = {};
+	Util.calWbText = function (text, max){
+		if(max === undefined)
+			max = 500;
+		var cLen=0;
+		var matcher = text.match(/[^\x00-\xff]/g),
+			wlen  = (matcher && matcher.length) || 0;
+		//匹配url链接正则 http://***
+		var pattern = /http:\/\/([\w-]+\.)+[\w-]+(\/*[\w-\.\/\?%&=][^\s^\u4e00-\u9fa5]*)?/gi;
+		//匹配的数据存入数组
+		var arrPt = new Array();
+		var i = 0;
+		while((result = pattern.exec(text)) != null){
+			arrPt[i] = result[0];
+			i++;
+		}
+		//替换掉原文本中的链接
+		for(var j = 0;j<arrPt.length;j++){
+			text = text.replace(arrPt[j],"");
+		}
+		//减掉链接所占的长度
+		return Math.floor((max*2 - text.length - wlen)/2 - 12*i);
+	};
+	*/
+	var allowComment = '0';
+	
+	//举报弹出层
+	function showJuBao(url, cid){
+		
+			$.cover(false);
+			asyncbox.open({
+				id  : 'report_thickbox',
+				url : url,
+				title : '举报违规',
+				width : 378,
+				height : 240,
+				scroll : 'no',
+				data : {
+					'cid'	 : cid,
+					'idtype' : 2 ,
+                                        'blogurl' : window.location.href
+				},
+				callback : function(action){
+					if(action == 'close'){
+						$.cover(false);
+					}
+				}
+			});
+	}
+
+	$(function(){
+
+		//创建管理员删除的弹出层
+		$('#admin_article_del').click(function(){
+			$.cover(false);
+			asyncbox.open({
+				id : 'class_thickbox',
+				html : '<div class="HT_layer3_1"><ul><li class="HT_li1">操作原因：<select class="HT_sel7" id="del_type" name="del_type"><option value="广告文章">广告文章</option><option value="违规内容">违规内容</option><option value="标题不明">标题不明</option><option value="文不对题">文不对题</option></select></li><li class="HT_li1" ><input class="HT_btn4" id="admin_delete"  type="button" /></li></ul></div>',
+				title : '选择类型',
+				width : 300,
+				height : 150,
+				scroll : 'no',
+				callback : function(action){
+					if(action == 'close'){
+						$.cover(false);
+					}
+				}
+			});
+		});
+		$('#admin_delete').live('click' , function(){
+			///blog/logicdel/id/3480184/url/%252Fblog%252Findex.html.html
+			var type = $('#del_type').val();
+			var url = '/blog/logicdel/id/3416832/url/%252Fuid%252F26921272.html.html';
+			window.location.href= url + '?type=' + type;
+		});
+
+
+		//顶  js中暂未添加&过滤 
+		$('#digg').live('click' , function(){
+
+			if(isOnLine == '' )
+			{
+				//showErrorMsg('登录之后才能进行此操作' , '消息提示');
+				showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+				return false;
+			}
+
+			var bid = $('#digg').attr('bid');
+			var url = $('#digg').attr('url');
+
+			var digg_str = $.cookie('digg_id');
+			if(digg_str != null)
+			{
+				var arr= new Array(); //定义一数组
+
+				arr = digg_str.split(","); //字符分割     
+				for( i=0 ; i < arr.length ; i++ )   
+				{   
+					if(bid == arr[i])
+					{
+						showErrorMsg('已经赞过该文章', '消息提示'); 
+						return false;
+					}
+				} 
+			}
+			$.ajax({
+				type:"POST",
+				url:url,	
+				data: {
+					'bid' : bid 
+				},
+				dataType: 'json',
+				success:function(msg){
+					if(msg.error == 0)
+					{
+						var num = parseInt($('#digg_num').html(),10);
+						num += 1;
+						$('#digg_num').html(num);
+						$('#digg').die();
+
+						if(digg_str == null)
+						{
+							$.cookie('digg_id', bid, {expires: 30 , path: '/'});
+						}
+						else
+						{
+							$.cookie('digg_id', digg_str + ',' + bid, {expires: 30 , path: '/'});
+						}
+						showSucceedMsg('谢谢' , '消息提示');
+					}
+					else if(msg.error == 1)
+					{
+						//showErrorMsg(msg.error_content , '消息提示'); 
+						showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+					}
+					else if(msg.error == 2)
+					{
+						showErrorMsg(msg.error_content , '消息提示'); 
+					}
+				}
+			});
+		});
+		//举报弹出层
+		/*$('.box_report').live('click' , function(){
+			if(isOnLine == '' )
+			{
+				//showErrorMsg('登录之后才能进行此操作' , '消息提示');
+				showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+				return false;
+			}
+			var url = $('#report_url').val();
+			var cid = $(this).attr('cid');
+			$.cover(false);
+			asyncbox.open({
+				id  : 'report_thickbox',
+				url : url,
+				title : '举报违规',
+				width : 378,
+				height : 240,
+				scroll : 'no',
+				data : {
+					'cid'	 : cid,
+					'idtype' : 2 
+				},
+				callback : function(action){
+					if(action == 'close'){
+						$.cover(false);
+					}
+				}
+			});
+		});*/
+
+
+		//评论相关代码
+		
+		//点击回复显示评论框
+		$('.Blog_a10').live('click' , function(){
+			if(isOnLine == '' )
+			{
+				//showErrorMsg('登录之后才能进行此操作' , '消息提示');
+				showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+				return false;
+			}
+
+			if(allowComment == 1)
+			{
+				showErrorMsg('该博文不允许评论' , '消息提示'); 
+				return false;
+			}
+			var tid = $(this).attr('toid');//留言作者id
+			var bid = $(this).attr('bid');//blogid
+			var cid = $(this).attr('cid');//留言id
+			var tname = $(this).attr('tname');
+                         			var tpl  = '<div class="Blog_right1_9">';
+				tpl +=	 '<div class="div2">';
+				tpl +=     '<textarea name="" cols="" rows="" class="Blog_ar1_1" id="rmsg">文明上网，理性发言...</textarea>';
+				tpl +=	 '</div>';
+				tpl +=   '<div class="div3">';
+				tpl +=		'<div class="div3_2"><a href="javascript:void(0);" class="Blog_a11" id="quota_sbumit" url="/Comment/PostComment.html" tid="'+tid+'" bid="'+bid+'" cid="'+cid+'" tname="'+tname+'" ></a><a href="javascript:void(0)" id="qx_comment" class="Blog_a12"></a></div>';
+				tpl +=		'<div class="div3_1"><a href="javascript:void(0);" id="mface"><span></span>表情</a></div>';
+				tpl +=		'<div class="clear"></div>';
+				tpl +=	 '</div>';
+				tpl +=  '</div>';
+                                 			$('.z_move_comment').html('');
+			$(this).parents('.Blog_right1_8').find('.z_move_comment').html(tpl).show();
+		});
+		//引用的评论提交
+		$('#quota_sbumit').live('click' , function(){
+
+			if(isOnLine == '' )
+			{
+				//showErrorMsg('登录之后才能进行此操作' , '消息提示');
+				showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+				return false;
+			}
+
+			var bid   = $(this).attr('bid');
+			var tid   = $(this).attr('tid');//被引用人的id
+			var qid   = $(this).attr('cid');//引用的id
+			var url = $(this).attr('url');
+			var text = $('#rmsg').val();
+			var tname = $(this).attr('tname');
+			if(text == '' || text=='文明上网，理性发言...')
+			{
+				showErrorMsg('评论内容不能为空！' , '消息提示'); 
+				return false;
+			}
+			else
+			{
+				if(mb_strlen(text) > 1000){
+					showErrorMsg('评论内容不能超过500个汉字' , '消息提示'); 
+					return false;
+				}
+			}
+		    $.ajax({
+		        type: "post",
+			    url: url ,
+			    data: {'bid': bid , 'to' : tid , 'qid' : qid , 'text': text , 'tname' : tname },
+				dataType: 'json',
+			    success: function(data){
+				    if(data.code == 1){
+						var tpl =  '<div class="Blog_right1_8">';
+							tpl+=     '<div class="Blog_right_img1"><a href="' +data.info.url+ '" >' + data.info.header + '</a></div>';
+							tpl+=     '<div class="Blog_right_font1">';
+							tpl+=         '<p class="Blog_p5"><span><a href="' +data.info.url+ '" >' + data.info.username + '</a></span>' + data.info.dateline + '</p>';
+							tpl+=         '<p class="Blog_p7"><a href="' + data.info.quota.url + '">' + data.info.quota.username + '</a>：'+ data.info.quota.content + '</p>';
+							tpl+=         '<p class="Blog_p8">' + data.info.content + '</p><span class="span_text1"><a href="javascript:void(0);" class="Blog_a10" toid=' + data.info.fuid + ' bid=' + data.info.bid + ' cid=' + data.info.cid + '  tname = ' + data.info.username + ' >回复</a> | 　<a class="comment_del_mark" style="cursor:pointer" url="' + data.info.delurl + '" >删除</a>　| 　<a href="javascript:showJuBao(\'/blog/ViewReport.html\','+data.info.cid+')" class="box_report" cid="' + data.info.cid + '" >举报</a></span></div>';
+							tpl+=         '<div class="z_move_comment" style="display:none"></div>';
+							tpl+=	      '<div class="Blog_line1"></div></div>';
+							$('#replyList .Blog_right1_8:first').before(tpl);
+							$('.z_move_comment').html('').hide();
+				    }
+					else if(data.code == -1){
+						//showErrorMsg(data.info , '消息提示'); 
+						showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+			        }
+                },
+			    error: function(){//请求出错处理
+                        
+                }
+			});
+		});
+		//底部发表评论
+		$('#submitmsg').click(function(){
+			if(allowComment == 1)
+			{
+				showErrorMsg('该博文不允许评论' , '消息提示'); 
+				return false;
+			}
+			var bid   = $(this).attr('bid');
+			var toid  = $(this).attr('toid');
+			var text = $('#reply').val();
+			var url = $(this).attr('url');
+			if(text == '' || text=='文明上网，理性发言...')
+			{
+				showErrorMsg('评论内容不能为空！' , '消息提示'); 
+				return false;
+			}
+			else
+			{
+				if(mb_strlen(text) > 1000){
+					showErrorMsg('评论内容不能超过500个汉字' , '消息提示'); 
+					return false;
+				}
+			}
+		    $.ajax({
+		        type: "post",
+			    url: url ,
+			    data: {'bid': bid , 'to' : toid ,'text': text},
+				dataType: 'json',
+			    success: function(data){
+				    if(data.code == 1)
+					{
+						var tpl   = '<div class="Blog_right1_8">';
+							tpl  +=   '<div class="Blog_right_img1"><a href="' +data.info.url+ '" >' + data.info.header + '</a></div>';
+							tpl  +=	  '<div class="Blog_right_font1">';
+							tpl  +=       '<p class="Blog_p5"><span><a href="' +data.info.url+ '" >' + data.info.username + '</a></span>' + data.info.dateline + '</p>';
+							tpl  +=       '<p class="Blog_p6">' + data.info.content + '</p>';
+							tpl  +=		  '<div class="div1"><a href="javascript:void(0);" class="Blog_a10"  toid=' + data.info.fuid + ' bid=' + data.info.bid + ' cid=' + data.info.cid + '>回复</a> | 　<a class="comment_del_mark" style="cursor:pointer" url="' + data.info.delurl + '">删除</a>　| 　<a href="javascript:showJuBao(\'/blog/ViewReport.html\','+data.info.cid+')" class="box_report" cid="' + data.info.cid + '">举报</a></div>';
+							tpl  +=		  '<div class="z_move_comment" style="display:none"></div>';
+							tpl  +=    '</div><div class="Blog_line1"></div></div>';
+							$('.Blog_tit3:first').after(tpl);
+							$('#reply').val('文明上网，理性发言...');
+					}
+					else if(data.code == -1)
+					{
+						showErrorMsg(data.info , '消息提示'); 
+			        }
+                },
+			    error: function(){//请求出错处理
+                        
+                }
+		    });
+			
+		});
+		//底部评论重置
+		$('#reset_comment').click(function(){
+			$('#reply').val('文明上网，理性发言...');
+		});
+		//取消回复
+		$('#qx_comment').live('click' , function(){
+			$('.z_move_comment').html('').hide();
+		});
+
+
+		$('#rmsg, #reply').live({
+		    focus:function(){
+			    if($(this).val() == '文明上网，理性发言...'){
+			        $(this).val('');
+			    }
+			},
+			blur:function(){
+		        if($(this).val() == ''){
+			        $(this).val('文明上网，理性发言...');
+			    }
+			}
+		});
+		//删除留言确认
+		$('.comment_del_mark').live('click' , function(){
+			var url = $(this).attr('url');
+			asyncbox.confirm('删除留言','确认', function(action){
+				if(action == 'ok')
+				{
+					location.href = url;
+				}
+			});
+		});
+		//删除时间确认
+		$('.del_article_id').click(function(){
+			var delurl = $(this).attr('delurl');
+			asyncbox.confirm('删除文章','确认', function(action){
+				if(action == 'ok')
+				{
+					location.href = delurl;
+				}
+			});
+		});
+		/*
+		//字数限制
+		$('#rmsg, #reply').live('keyup', function(){
+			var id = $(this).attr('id');
+			var left = Util.calWbText($(this).val(), 500);
+			var eid = '#errmsg';
+			
+			if(id == 'reply') eid =  '#rerrmsg';
+			if (left >= 0)
+		        $(eid).html('您还可以输入<span>' + left + '</span>字');
+		    else
+		        $(eid).html('<font color="red">您已超出<span>' + Math.abs(left) + '</span>字 </font>');
+		});
+		*/
+		//加载表情
+	    $('#face').qqFace({id : 'facebox1', assign : 'reply', path : '/image/qqface/'});
+	    $('#mface').qqFace({id : 'facebox', assign : 'rmsg', path:'/image/qqface/'});
+	    
+		/*
+		$('#class_one_id').change(function(){
+			alert(123213);
+			var id = parseInt($(this).val() , 10);
+			if(id == 0) return false;
+			$('.hidden_son_class span').each(function( index , dom ){
+				if( dom.attr('cid')  == id )
+				{
+				}
+			});
+		});
+		*/
+		//转载文章
+		var turn_url = "/blog/viewClassPart.html";
+		$('#repost_bar').click(function(){
+			if(isOnLine == '' )
+			{
+				//showErrorMsg('登录之后才能进行此操作' , '消息提示');
+				showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+				return false;
+			}
+			var id = $(this).attr('bid');
+			asyncbox.open({
+				id  : 'turn_class_thickbox',
+				url : turn_url,
+				title : '转载文章',
+				width : 330,
+				height : 131,
+				scroll : 'no',
+				data : {
+					'id'	 : id
+				},
+				callback : function(action){
+					if(action == 'close'){
+						$.cover(false);
+					}
+				}
+			});
+		});
+		/*
+	    //转发文章
+	    $('#repost_bar').live('click' , function(){
+			if(isOnLine == '' )
+			{
+				//showErrorMsg('登录之后才能进行此操作' , '消息提示');
+				showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+				return false;
+			}
+	    	var bid  = $(this).attr('bid');
+	    	var url  = $(this).attr('url');
+	    	asyncbox.confirm('转载文章','确认', function(action){
+	    	  if(action == 'ok'){
+	    	    $.ajax({
+				type:"POST",
+				url:url,	
+				data: {
+					'bid' : bid 
+				},
+				dataType: 'json',
+				success:function(msg){
+				  if(msg.error == 0){
+				    showSucceedMsg('转发成功！', '消息提示');
+				  }else if(msg.error == 1){
+				    //location.href = '/index.php?r=site/login';
+					showErrorMsg('操作失败,您需要先登录!', '消息提示', '/site/login.html');
+				  }else{
+				    showErrorMsg(msg.error_content, '消息提示');
+			      }
+				}
+			  });
+	    	  }
+	    	});
+
+		});
+		*/
+
+	});
+</script>
+<!--该部分应该放在输出代码块的后面才起作用 -->
+<script type="text/javascript">
+
+SyntaxHighlighter.autoloader(
+	'applescript			/highlight/scripts/shBrushAppleScript.js',
+	'actionscript3 as3		/highlight/scripts/shBrushAS3.js',
+	'bash shell				/highlight/scripts/shBrushBash.js',
+	'coldfusion cf			/highlight/scripts/shBrushColdFusion.js',
+	'cpp c					/highlight/scripts/shBrushCpp.js',
+	'c# c-sharp csharp		/highlight/scripts/shBrushCSharp.js',
+	'css					/highlight/scripts/shBrushCss.js',
+	'delphi pascal			/highlight/scripts/shBrushDelphi.js',
+	'diff patch pas			/highlight/scripts/shBrushDiff.js',
+	'erl erlang				/highlight/scripts/shBrushErlang.js',
+	'groovy					/highlight/scripts/shBrushGroovy.js',
+	'java					/highlight/scripts/shBrushJava.js',
+	'jfx javafx				/highlight/scripts/shBrushJavaFX.js',
+	'js jscript javascript	/highlight/scripts/shBrushJScript.js',
+	'perl pl				/highlight/scripts/shBrushPerl.js',
+	'php					/highlight/scripts/shBrushPhp.js',
+	'text plain				/highlight/scripts/shBrushPlain.js',
+	'py python				/highlight/scripts/shBrushPython.js',
+	'ruby rails ror rb		/highlight/scripts/shBrushRuby.js',
+	'scala					/highlight/scripts/shBrushScala.js',
+	'sql					/highlight/scripts/shBrushSql.js',
+	'vb vbnet				/highlight/scripts/shBrushVb.js',
+	'xml xhtml xslt html	/highlight/scripts/shBrushXml.js'
+);
+SyntaxHighlighter.all();
+
+
+function code_hide(id){
+	var code = document.getElementById(id).style.display;
+	if(code == 'none'){
+		document.getElementById(id).style.display = 'block';
+	}else{
+		document.getElementById(id).style.display = 'none';
+	}
+}
+</script>
+<!--回顶部js2011.12.30-->
+<script language="javascript">
+ lastScrollY=0;
+ function heartBeat(){
+ var diffY;
+ if (document.documentElement && document.documentElement.scrollTop)
+     diffY = document.documentElement.scrollTop;
+ else if (document.body)
+     diffY = document.body.scrollTop
+ else
+     {/*Netscape stuff*/}
+ percent=.1*(diffY-lastScrollY);
+ if(percent>0)percent=Math.ceil(percent);
+ else percent=Math.floor(percent);
+ document.getElementById("full").style.top=parseInt(document.getElementById("full").style.top)+percent+"px";
+ lastScrollY=lastScrollY+percent;
+ if(lastScrollY<200)
+ {
+ document.getElementById("full").style.display="none";
+ }
+ else
+ {
+ document.getElementById("full").style.display="block";
+ }
+ }
+ var gkuan=document.body.clientWidth;
+ var ks=(gkuan-960)/2-30;
+ suspendcode="<div id=\"full\" style='right:4px;POSITION:absolute;TOP:500px;z-index:100;width:20px; height:50px;cursor:pointer;'><a href=\"javascript:void(0)\" onclick=\"window.scrollTo(0,0);\"><img src=\"\/image\/top.png\" /></a></div>"
+ document.write(suspendcode);
+ window.setInterval("heartBeat()",1);
+ </script><div id="full" style="right: 4px; position: absolute; top: 1256px; z-index: 100; width: 20px; height: 50px; cursor: pointer; display: block;"><a href="javascript:void(0)" onclick="window.scrollTo(0,0);"><img src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/top.png"></a></div>  <!-- footer -->
+  <div class="Blog_footer" style="clear:both">
+    <div><a href="http://www.chinaunix.net/about/index.shtml" target="_blank" rel="nofollow">关于我们</a> | <a href="http://www.it168.com/bottomfile/it168.shtml" target="_blank" rel="nofollow">关于IT168</a> | <a href="http://www.chinaunix.net/about/connect.html" target="_blank" rel="nofollow">联系方式</a> | <a href="http://www.chinaunix.net/about/service.html" target="_blank" rel="nofollow">广告合作</a> | <a href="http://www.it168.com//bottomfile/flgw/fl.htm" target="_blank" rel="nofollow">法律声明</a> | <a href="http://sso.chinaunix.net/Register?return_url=http%3A%2F%2Fblog.chinaunix.net%2F" target="_blank" rel="nofollow">免费注册</a>
+      <p>Copyright  2001-2010 ChinaUnix.net All Rights Reserved 北京皓辰网域网络信息技术有限公司. 版权所有 </p>
+      <div>感谢所有关心和支持过ChinaUnix的朋友们
+        <p>京ICP证041476号 京ICP证060528号</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script language="javascript">
+
+//全局错误提示弹出框
+function showErrorMsg(content, title, url){
+	var url = url || '';
+	var title = title || '消息提示';
+	var html = '';
+	html += '<div class="HT_layer3_1 HT_layer3_2"><ul><li><p><span class="login_span1"></span>' + content + '</p></li>';
+	if(url == '' || url.length == 0){
+		html += '<li class="HT_li1"><input type="button" class="HT_btn2"  onclick=\'close_windows("error_msg")\'></li>';	
+	} else {
+		html += '<li class="HT_li1"><input type="button" class="login_btn1" onclick="location.href=\'' + url + '\'"></li>';
+	}
+	html += '</ul></div>';
+	$.cover(true);
+	   asyncbox.open({
+		 id: 'error_msg',
+		 title : title,
+		 html : html,
+		 'callback' : function(action){
+			 if(action == 'close'){
+				 $.cover(false);
+			 }
+		 }
+	});
+}
+
+//全局正确提示
+function showSucceedMsg(content, title , url ){
+	var url = url || '';
+	var title = title || '消息提示';
+	var html = '';
+	html += '<div class="HT_layer3_1 HT_layer3_2"><ul><li><p><span class="login_span2"></span>' + content + '</p></li>';
+	if(url == '' || url.length == 0){
+		html += '<li class="HT_li1"><input type="button" class="HT_btn2"  onclick=\'close_windows("error_msg")\'></li>';	
+	} else {
+		html += '<li class="HT_li1"><input type="button" class="HT_btn2" onclick="location.href=\'' + url + '\'"></li>';
+	}
+	html += '</ul></div>';
+	$.cover(true);
+	asyncbox.open({
+		 id: 'error_msg',
+		 title : title,
+		 html : html,
+		 'callback' : function(action){
+			 if(action == 'close'){
+				 $.cover(false);
+			 }
+		 }
+	});
+}
+
+//关闭指定id的窗口
+function close_windows(id){
+	$.cover(false);
+	$.close(id);
+}
+
+
+//公告
+var tID;
+var tn;                        // 高度
+var nStopTime = 5000;        // 不同行间滚动时间隔的时间，值越小，移动越快
+var nSpeed = 50;            // 滚动时，向上移动一像素间隔的时间，值越小，移动越快
+var isMove = true;
+var nHeight = 25;
+var nS = 0;
+var nNewsCount = 3;
+
+/**
+ * n 用于表示是否为第一次运行
+ **/
+function moveT(n)
+{
+    clearTimeout(tID)
+    var noticev2 = document.getElementById("noticev2")
+    nS = nSpeed;
+    
+    // 只在第一次调用时运行，初始化环境（有没有参数）
+    if (n)
+    {
+        // 设置行高
+        noticev2.style.lineHeight = nHeight + "px";
+        // 初始化显示位置
+        tn = 0;
+        // 刚进入时在第一行停止时间
+        nS = nStopTime;
+    }
+    
+    // 判断鼠标是否指向层
+    if (isMove)
+    {
+        // 向上移动一像素
+        tn--;
+        // 如果移动到最下面一行了，则移到顶行
+        if (Math.abs(tn) == nNewsCount * nHeight)
+        {
+            tn = 0;
+        }
+        // 设置位置
+        noticev2.style.marginTop = tn + "px";
+        // 完整显示一行时，停止一段时间
+        if (tn % nHeight == 0)
+        {
+            nS = nStopTime;
+        }
+    }
+
+    tID = setTimeout("moveT()", nS);
+}
+moveT(1);    // 此处可以传入任何参数
+</script>
+<script language="javascript" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/pv.js"></script>
+<script>
+function sendPV(){
+    var pvTrack = new PvTrack();
+    pvTrack.type = 35; // 频道类别ID
+    pvTrack.channel = 189; // 频道ID
+    pvTrack.pageType = 0;
+    pvTrack.track();
+}
+window.setTimeout("sendPV()", 1000);
+</script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20237423-2']);
+  _gaq.push(['_setDomainName', '.chinaunix.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F0ee5e8cdc4d43389b3d1bfd76e83216b' type='text/javascript'%3E%3C/script%3E"));
+
+function linkto(){
+    setCookie("returnUrl", location.href, 1450506278, "/");
+}
+function linktoOut(){
+    setCookie("returnOutUrl", location.href, 1450506278, "/");
+}
+//JS写COOKIE
+function setCookie(name, value, expires, path, domain){
+	if(!arguments[2]) expires = 3600 * 24;
+	if(!arguments[3]) path = "";
+	if(!arguments[4]) domain = "";
+	var str=name+"="+escape(value);
+	if(expires!=""){
+		var date=new Date();
+		date.setTime(date.getTime()+expires*1000);
+		str+=";expires="+date.toGMTString();
+	}
+	if(path!=""){
+		str+=";path="+path;//指定可访问cookie的目录
+	}
+	if(domain!=""){
+		str+=";domain="+domain;//指定可访问cookie的域
+	}
+	document.cookie = str;
+}
+
+</script><script src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/h.js" type="text/javascript"></script>
+<script type="text/javascript" src="wpa_supplicant%E7%A7%BB%E6%A4%8D%E2%80%94%E2%80%94futter-futter521-ChinaUnix%E5%8D%9A%E5%AE%A2_files/jquery_002.js"></script>
+
+
+<div id="asyncbox_cover" unselectable="on" style="opacity:0.1;filter:alpha(opacity=10);background:#000"></div><div id="asyncbox_clone"></div><div id="asyncbox_focus"></div><div id="asyncbox_load"><div><span></span></div></div></body></html>

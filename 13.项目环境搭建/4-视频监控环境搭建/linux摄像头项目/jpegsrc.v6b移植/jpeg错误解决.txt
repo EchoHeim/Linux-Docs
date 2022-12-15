@@ -1,0 +1,17 @@
+安装libjpeg
+wget ftp://ftp.uu.net/graphics/jpeg/jpegsrc.v6b.tar.gz
+tar zxvf jpegsrc.v6b.tar.gz
+cd jpegsrc.v6b
+./configure
+编译时可能会出现错误提示：
+configure: error: libjpeg.(a|so) not found.
+解决办法：
+vi Makefile
+找到 CFLAGS= -O2 -I$(srcdir) 
+在后面加入-fPIC，即变成CFLAGS= -O2 -I$(srcdir) -fPIC
+make
+make install-lib  ****重要！
+make install
+/usr/bin/install: cannot create regular file `/usr/local/man/man1/cjpeg.1': No such file or directory
+make: *** [install] Error 1
+ mkdir -p /usr/local/man/man1/cjpeg.1

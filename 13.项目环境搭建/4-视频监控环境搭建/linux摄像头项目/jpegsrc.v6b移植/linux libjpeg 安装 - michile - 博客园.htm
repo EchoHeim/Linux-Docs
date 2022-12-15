@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>linux libjpeg 安装 - michile - 博客园</title>
+<link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=VDh8zSH1vx51MDqRT7hK220akQ58FjlaaeGuWBPhfOA1"/>
+<link id="MainCss" type="text/css" rel="stylesheet" href="/skins/GreenField/bundle-GreenField.css?v=6ZTmCK2UQBcYKx0LKangs_5NFbyEWsclPOj58J3WEg81"/>
+<link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/michile/rss"/>
+<link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/michile/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/michile/wlwmanifest.xml"/>
+<script src="http://common.cnblogs.com/script/jquery.js" type="text/javascript"></script>  
+<script type="text/javascript">var currentBlogApp = 'michile', cb_enable_mathjax=false;</script>
+<script src="/bundles/blog-common.js?v=FPlxjK7DBkhdjUge-xvpcctYZfiyO32cepQZO-j3WJk1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+
+<div id="top">
+	
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/michile/">michile</a></h1>
+<p id="tagline"></p>
+</div>
+<div id="leftmenu">
+	
+		
+<h3>导航</h3>
+<ul>
+			<li><a id="MyLinks1_HomeLink" href="http://www.cnblogs.com/">博客园</a></li>
+			<li><a id="MyLinks1_MyHomeLink" href="http://www.cnblogs.com/michile/">首页</a></li>
+			<li><a id="MyLinks1_NewPostLink" rel="nofollow" href="http://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+			<li><a id="MyLinks1_ContactLink" accesskey="9" rel="nofollow" href="http://msg.cnblogs.com/send/michile">联系</a></li>
+			<li><a id="MyLinks1_Syndication" href="http://www.cnblogs.com/michile/rss">订阅</a><a id="MyLinks1_XMLLink" href="http://www.cnblogs.com/michile/rss"><img src="http://www.cnblogs.com/images/xml.gif" alt="订阅" /></a>
+			<li><a id="MyLinks1_Admin" rel="nofollow" href="http://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+		
+<h3>公告</h3>
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+
+        
+<h3>统计</h3>
+	<ul>
+		<li>随笔 - 60
+		<li>文章 - 1
+		<li>评论 - 2
+		<li>引用 - 0
+	</li>
+</ul>	
+        <div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script>		
+	
+</div>
+
+<div id="main">
+	
+<div id="post_detail">
+	<div class="post">
+		<h2>
+			<a id="cb_post_title_url" href="http://www.cnblogs.com/michile/archive/2013/02/19/2917027.html">linux libjpeg 安装</a>
+		</h2>
+		<div id="cnblogs_post_body"><p>主要参考http://blog.csdn.net/wwwxxlby520/article/details/4384224</p>
+<p>现在自己把自己的工作重复一遍吧！</p>
+<p>linux host：ubuntu 12.10</p>
+<p>cross-compile: arm-none-linux-gnueabi-gcc (4.5.2)</p>
+<p>src 下载地址为：<a href="ftp://ftp.gnu.org/gnu/libtool/" target="_top">ftp://ftp.gnu.org/gnu/libtool/</a>&nbsp; &nbsp; 下载libtool-15.6</p>
+<p>还需要下载jpegsrc.v6b</p>
+<p>说明 我把这两个压缩文件放在同一目录下：/libjpeg &nbsp; 另外安装目录设置为： /test/jpeg6</p>
+<p>在/test/jpeg6 下面建立目录：</p>
+<p>mkdir &nbsp;bin</p>
+<p>mkdir &nbsp;include&nbsp;</p>
+<p>mkdir &nbsp;lib&nbsp;</p>
+<p>mkdir man</p>
+<p>cd man</p>
+<p>mkdir man1</p>
+<p>说明：只有在最后安装成功后这几个目录中才会有文档，如果中间出现失败，不需要删除这些目录</p>
+<p>cd &nbsp;/libjpeg</p>
+<p>解压两个压缩文件包</p>
+<p>cd lib~</p>
+<p>./configure &nbsp; 执行这一步是保证可以先echo $CC &nbsp;确认输出为gcc</p>
+<p>make&nbsp;</p>
+<p>make install&nbsp;</p>
+<p>cd &nbsp;../jpeg-6b</p>
+<p>cp /usr/share/libtool/config.sub .<br />cp /usr/share/libtool/config.guess .</p>
+<p>cp &nbsp;../libtool~/libtool .</p>
+<p>准备工作完成，开始配置libgpeg&nbsp;</p>
+<p>./configure &nbsp;--prefix=/test/jpeg6 &nbsp;&nbsp;<span>--host=arm-unknown-linux --prefix=/home/zz/jpeg-6b/jpeg&nbsp;&nbsp; --enable-shared&nbsp; --enable-static</span></p>
+<p><span>这一步会生成makefile&nbsp;</span></p>
+<p><span>vim Makefile &nbsp;</span></p>
+<p><span>在23行会发现CC=gcc&nbsp;</span></p>
+<p><span>comment 这一行后另加一行 CC= arm-none-linux-gnueabi-gcc&nbsp;</span></p>
+<p><span>:wq</span></p>
+<p><span>make&nbsp;</span></p>
+<p><span>之前一直在这里出错 ： 原因应该是因为libtools 版本太低造成的吧</span></p>
+<p><span>换成.6的就通过了</span></p>
+<p><span>make install&nbsp;</span></p>
+<p><span>可以再/test/jpeg6 下面看到生成有文件了，现在还没有放进子板中实验是否能够使用，马上放进行nfs看看是否真的能用。</span></p>
+<p><span>后记1：nfs 把生成的库导入到pandaboard 上面后，开始试着编写应用程序，调用libjpeg的函数，刚开始编译不通过，折腾发现没有搞清楚linux 的库的原理，参考了http://www.cnblogs.com/hzh1024n/archive/2009/09/17/1568357.html 这篇博客发现在编译时应该要加上 -ljpeg 的内容，编译倒是通过了，但是编译过的程序根本不执行了，这下又不知道什么原因了，继续吧。。。</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+		<p class="postfoot">
+			posted on <span id="post-date">2013-02-19 14:25</span> <a href='http://www.cnblogs.com/michile/'>michile</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="http://i.cnblogs.com/EditPosts.aspx?postid=2917027" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(2917027);return false;">收藏</a>
+		</p>
+	</div>
+	<script type="text/javascript">var allowComments=true,isLogined=false,cb_blogId=102243,cb_entryId=2917027,cb_blogApp=currentBlogApp,cb_blogUserGuid='c74c2751-9a12-e111-b422-842b2b196315',cb_entryCreatedDate='2013/2/19 14:25:00';loadViewCount(cb_entryId);</script>
+	
+	</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" id="lnk_RefreshComments" onclick="return RefreshCommentList();">刷新评论</a><a href="#" onclick="return RefreshPage();">刷新页面</a><a href="#top">返回顶部</a></div>
+<div id="comment_form_container"></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="site_nav_under"><a href="http://www.cnblogs.com/" target="_blank" title="开发者的网上家园">博客园首页</a><a href="http://q.cnblogs.com/" target="_blank" title="程序员问答社区">博问</a><a href="http://news.cnblogs.com/" target="_blank" title="IT新闻">新闻</a><a href="http://home.cnblogs.com/ing/" target="_blank">闪存</a><a href="http://job.cnblogs.com/" target="_blank">程序员招聘</a><a href="http://kb.cnblogs.com/" target="_blank">知识库</a></div>
+<div id="opt_under_post"></div>
+<script type="text/javascript">
+    var enableGoogleAd = canShowAdsense(); 
+    fixPostBodyFormat();
+</script>
+<script type='text/javascript'>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+    (function () {
+        if (enableGoogleAd) {
+            var gads = document.createElement('script');
+            gads.async = true;
+            gads.type = 'text/javascript';
+            var useSSL = 'https:' == document.location.protocol;
+            gads.src = (useSSL ? 'https:' : 'http:') +
+              '//www.googletagservices.com/tag/js/gpt.js';
+            var node = document.getElementsByTagName('script')[0];
+            node.parentNode.insertBefore(gads, node);
+        }
+  })();
+</script>
+<script type='text/javascript'>
+    try {
+        if (enableGoogleAd) {
+            googletag.cmd.push(function() {
+            googletag.defineSlot('/1090369/cnblogs_blogpost_C2', [468, 60], 'div-gpt-ad-1433581717989-0').addService(googletag.pubads());
+            googletag.defineSlot('/1090369/cnblogs_blogpost_C1_sitehome', [300, 250], 'div-gpt-ad-1433581717989-1').addService(googletag.pubads());
+            googletag.pubads().enableSingleRequest();
+            googletag.pubads().collapseEmptyDivs();
+            googletag.enableServices();
+            });
+        };
+    } catch (e) { }
+</script>
+<div id="google_ad_c1" class="c_ad_block">
+    <div id='div-gpt-ad-1433581717989-1' style='height:250px; width:300px;'>
+    <script type='text/javascript'>
+        try {
+            if (enableGoogleAd) {
+                googletag.cmd.push(function () { googletag.display('div-gpt-ad-1433581717989-1'); });
+            } else {
+                $('#div-gpt-ad-1433581717989-1').hide();
+            }
+    } catch (e) { }
+    </script>
+    </div>
+</div>
+<div id="under_post_news"></div>
+<div id="google_ad_c2" class="c_ad_block">
+<div id='div-gpt-ad-1433581717989-0' style='height:60px; width:468px;'>
+<script type='text/javascript'>
+try {
+    if (enableGoogleAd) {
+        googletag.cmd.push(function () { googletag.display('div-gpt-ad-1433581717989-0'); });
+    } else {
+        $('#div-gpt-ad-1433581717989-0').hide();
+    }
+} catch (e) { }
+</script>
+</div>
+</div>
+<div id="under_post_kb"></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+$(function () {
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 200);
+});
+</script>
+</div>
+
+</div>
+
+<p id="footer">
+	Powered by: 
+	<br />
+	
+	<a id="Footer1_Hyperlink3" NAME="Hyperlink1" href="http://www.cnblogs.com/" style="font-family:Verdana;font-size:12px;">博客园</a>
+	<br />
+	Copyright &copy; michile
+</p>
+
+
+</body>
+</html>

@@ -1,0 +1,964 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+     
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    
+<head>   
+    
+     
+    <script type="text/javascript" src="http://c.csdnimg.cn/pubfooter/js/tracking.js" charset="utf-8"></script>  
+
+    <script type="text/javascript">
+        var protocol = window.location.protocol;
+        document.write('<script type="text/javascript" src="' + protocol + '//csdnimg.cn/pubfooter/js/repoAddr2.js?v=' + Math.random() + '"></' + 'script>');
+    </script>
+
+     <script id="allmobilize" charset="utf-8" src="http://a.yunshipei.com/46aae4d1e2371e4aa769798941cef698/allmobilize.min.js"></script>
+ <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+
+    <title>wpa_supplicant移植与使用 - haomcu的专栏
+        - 博客频道 - CSDN.NET</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="数组的动态分配(new)、初始化(memset)和撤销(delete)&#160;一维数组的动态分配，初始化和撤销都好说，几乎每一本C++教材都会做出详细的说明。具体如下：&#160;动态分配(例如分配10个单元的)：&#160;int *array=newint [10]；&#160;初始化：memset(array,0,sizeof(array));&#160;&#160;&#160;&#160;&#160;&#160;&#160;(也可以利用一个for循环对其赋值初始化)" />
+    <script src="http://static.blog.csdn.net/scripts/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://static.blog.csdn.net/scripts/ad.js?v=1.1"></script>
+        <!--new top-->
+               <link rel="stylesheet" href="http://c.csdnimg.cn/public/common/toolbar/css/index.css">        <!--new top-->
+
+    <link rel="Stylesheet" type="text/css" href="http://static.blog.csdn.net/skin/default/css/style.css?v=1.1" />
+    <link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="/HAOMCU/rss/list" />
+    <link rel="shortcut icon" href="http://c.csdnimg.cn/public/favicon.ico" />
+    <link type="text/css" rel="stylesheet" href="http://static.blog.csdn.net/scripts/SyntaxHighlighter/styles/default.css" />
+ 
+
+
+</head>
+<body>
+    
+   
+      <!--new top-->
+    <script id="toolbar-tpl-scriptId" fixed="true" prod="blog" skin="black" src="http://c.csdnimg.cn/public/common/toolbar/js/html.js" type="text/javascript"></script>
+     <!--new top-->
+    <div id="container">
+        <div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h2>
+                <a href="http://blog.csdn.net/haomcu">haomcu的专栏</a></h2>
+            <h3>Linux Study</h3>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg">
+    </div>
+    <div class="navigator">
+        <ul>
+            
+                <li id="btnContents"><a href="http://blog.csdn.net/haomcu?viewmode=contents"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_mulu'])">
+                    <img src="http://static.blog.csdn.net/images/ico_list.gif">目录视图</span></a></li>
+                <li id="btnView"><a href="http://blog.csdn.net/haomcu?viewmode=list"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_zhaiyao'])">
+                    <img src="http://static.blog.csdn.net/images/ico_summary.gif">摘要视图</span></a></li>
+                <li id="btnRss"><a href="http://blog.csdn.net/haomcu/rss/list"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_RSS'])">
+                    <img src="http://static.blog.csdn.net/images/ico_rss.gif">订阅</span></a></li>                
+
+            </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "HAOMCU";
+    var _blogger = username;
+    var blog_address = "http://blog.csdn.net/haomcu";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "";  
+</script>
+
+        <div id="body">
+            <div id="main">
+                <div class="main">
+                        <div class="ad_class">
+<div class="notice tracking-ad" data-mod='popu_3' > 
+
+<a href="http://edu.csdn.net/app">
+<font color=red>学院APP首次下载，可得50C币！
+</font></a>
+&nbsp;&nbsp;&nbsp;
+
+<a href="http://bbs.csdn.net/topics/391876796">
+<font color=blue>欢迎来帮助开源“进步”
+</font></a>
+&nbsp;&nbsp;&nbsp;
+<a href="http://bss.csdn.net/m/topic/cuanke_vote">
+<font color=red>当讲师？爱学习？投票攒课吧
+</font></a>
+&nbsp;&nbsp;&nbsp;
+<a href="http://blog.csdn.net/atlassian2013/article/details/50291561">
+<font color=blue>认识Atlassian Datacenter产品
+</font></a>
+&nbsp;&nbsp;&nbsp;
+<a href="http://blog.csdn.net/blogdevteam/article/details/49758609">
+<font color=red>【获奖公告】有奖试读—增长黑客
+</font></a>
+</div>                        </div>
+                        
+
+<!--AdForward Begin:-->
+<script type="text/javascript" ads-src="http://csdnim.qtmojo.com/main/s?user=csdn|blog|fumeiti&db=csdnim&border=0&local=yes&js=ie" src="http://creatim.qtmojo.cn/td/AllyesDeliver.min.js" charset="gbk"></script>
+<!--AdForward End-->
+
+  
+<link href="http://static.blog.csdn.net/css/comment1.css" type="text/css" rel="stylesheet" />
+<link href="http://static.blog.csdn.net/css/style1.css" type="text/css" rel="stylesheet" />
+<script language='JavaScript' type='text/javascript' src='http://download.csdn.net/js/jquery.cookie.js'></script>
+<script type="text/javascript" src="http://c.csdnimg.cn/rabbit/search-service/main.js"></script>
+<link rel="stylesheet" href="http://static.blog.csdn.net/public/res-min/markdown_views.css?v=1.0" />
+<link rel="stylesheet" href="http://static.blog.csdn.net/css/category.css?v=1.0" />
+<script type="text/javascript" src="http://static.blog.csdn.net/public/res/bower-libs/MathJax/MathJax.js?config=TeX-AMS_HTML"></script>
+
+  <script type="text/ecmascript">
+      window.quickReplyflag = true;
+           
+            var isBole = false;
+            
+          
+    </script>
+<div id="article_details" class="details">
+    <div class="article_title">   
+         <span class="ico ico_type_Original"></span>
+
+
+    <h1>
+        <span class="link_title"><a href="/haomcu/article/details/7267672">
+        wpa_supplicant移植与使用            
+        </a></span>
+    </h1>
+</div>
+
+   
+
+        <div class="article_manage clearfix">
+        <div class="article_l">
+            <span class="link_categories">
+            标签：
+              <a href='http://www.csdn.net/tag/interface' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">interface</a><a href='http://www.csdn.net/tag/makefile' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">makefile</a><a href='http://www.csdn.net/tag/network' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">network</a><a href='http://www.csdn.net/tag/%e5%b5%8c%e5%85%a5%e5%bc%8f' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">嵌入式</a><a href='http://www.csdn.net/tag/%e5%b7%a5%e4%bd%9c' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">工作</a><a href='http://www.csdn.net/tag/%e7%bd%91%e7%bb%9c' target=_blank onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">网络</a>
+            </span>
+        </div>
+        <div class="article_r">
+            <span class="link_postdate">2012-02-17 13:56</span>
+            <span class="link_view" title="阅读次数">5739人阅读</span>
+            <span class="link_comments" title="评论次数"> <a href="#comments" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_pinglun'])">评论</a>(1)</span>
+            <span class="link_collect"> <a href="javascript:void(0);" onclick="javascript:collectArticle('wpa_supplicant移植与使用','7267672');return false;" title="收藏">收藏</a></span>
+             <span class="link_report"> <a href="#report" onclick="javascript:report(7267672,2);return false;" title="举报">举报</a></span>
+
+        </div>
+    </div>
+      <div class="category clearfix">
+        <div class="category_l">
+           <img src="http://static.blog.csdn.net/images/category_icon.jpg">
+            <span>分类：</span>
+        </div>
+        <div class="category_r">
+                    <label  onclick="GetCategoryArticles('642305','HAOMCU','top','7267672');">
+                        <span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_fenlei']);">Linux应用、移植<em>（13）</em></span>
+                      <img class="arrow-down" src="http://static.blog.csdn.net/images/arrow_triangle _down.jpg" style="display:inline;">
+                      <img class="arrow-up" src="http://static.blog.csdn.net/images/arrow_triangle_up.jpg" style="display:none;">
+                        <div class="subItem">
+                            <div class="subItem_t"><a  href="http://blog.csdn.net/HAOMCU/article/category/642305">作者同类文章</a><i class="J_close">X</i></div>
+                            <ul class="subItem_l" id="top_642305">                            
+                            </ul>
+                        </div>
+                    </label>                    
+        </div>
+    </div>
+    <script   type="text/javascript" src="http://static.blog.csdn.net/scripts/category.js"></script>  
+        <div   class="bog_copyright">         
+            <p  class="copyright_p" >版权声明：本文为博主原创文章，未经博主允许不得转载。</p>
+        </div>
+
+  
+
+  
+  
+     
+
+<div id="article_content" class="article_content">
+
+<p style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">下载wpa_supplicant最新版和openssl（编译wpa_supplicant需要openssl的库）</span></span></p>
+<p style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">我这里使用的是wpa_supplicant-0.7.3.tar.gz和openssl-0.9.8e.tar.gz。</span></span></p>
+<p style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">分别解压wpa_supplicant-0.7.3.tar.gz和openssl-0.9.8e.tar.gz，把wpa_supplicant-0.7.3里面的patches文件夹下的openssl-0.9.8e-tls-extensions.patch文件拷贝到openssl-0.9.8e目录下，运行：</span></span></p>
+<p style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">pathc–p1&lt;openssl-0.9.8e-tls-extensions.patch</span></span></p>
+<p style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">然后建立openssl的安装目录，建议安装在openssl-0.9.8e目录下，因为生成的库等只在交叉编译wpa_supplicant时使用，这样可以保持系统干净。</span></span></p>
+<p style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">进入openssl-0.9.8e目录修改Makefile，修改如下：</span></span></p>
+<p style="margin-bottom:0in"></p>
+<p style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">CC=arm-linux-uclibcgnueabi-gcc<br>
+AR=arm-linux-uclibcgnueabi-ar$(ARFLAGS) r</span></span></p>
+<p style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">RANLIB=arm-linux-uclibcgnueabi-ranlib<br>
+INSTALLTOP=刚才你建立的安装目录，要使用绝对路径，不然在make install的时候会出错<br>
+OPENSSLDIR=刚才你建立的安装目录，要使用绝对路径，不然在make install的时候会出错</span></span></p>
+<p style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">然后，执行make&amp;&amp;make install。</span></span></p>
+<p style="margin-bottom:0in"><span style="font-size:16px"><span style="font-family:SimSun"></span></span></p>
+<p align="LEFT" style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">编译wpa_supplicant：</span></span></p>
+<span style="font-family:SimSun"><span style="font-size:16px">首先建立配置文件：</span></span>
+<p></p>
+<p style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">cp defconfig .config</span></span></p>
+<p style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">然后修改.config，增加以下内容：</span></span></p>
+<p style="margin-bottom:0in"><span style="font-size:16px"><span style="font-family:SimSun"></span></span></p>
+<p align="LEFT" style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">CC=arm-linux-uclibcgnueabi-gcc-L/home/gu/ssl/lib&nbsp;</span></span></p>
+<p align="LEFT" style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">CFLAGS&#43;=-I openssl安装目录/include</span></span></p>
+<p align="LEFT" style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">LIBS&#43;=-Lopenssl安装目录/lib</span></span></p>
+<p align="LEFT" style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">make；</span></span></p>
+<p align="LEFT" style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">最后，生成所需要的可执行程序。</span></span></p>
+<span style="font-family:SimSun"><span style="font-size:16px"><br>
+</span></span>
+<p></p>
+<p style="margin-bottom:0in"><span style="font-family:SimSun"><span style="font-size:16px">wpa_supplicant的使用主要是配置<span style="font-family:arial; line-height:13px">wpa_supplicant.conf，以下是一个配置文件的例子：</span></span></span></p>
+<p style="margin-bottom:0in"><span style="color:rgb(0,0,255); font-size:16px; font-family:SimSun; line-height:13px">#可有可无，没有的话无法用wpa_cli terminate来关闭wpa_supplicant</span></p>
+<p style="margin-bottom:0in"><span style="color:rgb(0,0,255); font-size:16px; font-family:SimSun; line-height:13px">ctrl_interface=/var/run/wpa_supplicant</span></p>
+<p style="margin-bottom:0in"><span style="color:rgb(0,0,255); font-size:16px; font-family:SimSun; line-height:13px"># 确保只有root用户能读取WPA的配置，可有可无，尤其是在嵌入式设备上</span></p>
+<pre style="background-color:rgb(255,255,255); color:rgb(154,154,154); line-height:13px"><span style="font-family:SimSun"><span style="font-size:16px"><span style="color:rgb(0,0,255)">ctrl_interface_group=0
+<span class="code-comment">
+</span></span></span></span></pre>
+<pre style="background-color:rgb(255,255,255); color:rgb(154,154,154); line-height:13px"><span style="font-family:SimSun"><span style="font-size:16px"><span style="color:rgb(0,0,255)"><span class="code-comment"># 使用wpa_supplicant来扫描和选择AP，也可以设置成0或2，但只有1才能正确工作</span>
+
+</span></span></span></pre>
+<pre style="background-color:rgb(255,255,255); color:rgb(154,154,154); line-height:13px"><span style="font-family:SimSun"><span style="font-size:16px"><span style="color:rgb(0,0,255)">ap_scan=1</span>
+<span style="color:rgb(0,0,255)">
+</span></span></span></pre>
+<pre style="background-color:rgb(255,255,255); color:rgb(154,154,154); line-height:13px"><span style="font-family:SimSun"><span style="font-size:16px"><span style="color:rgb(0,0,255)">network={</span></span></span></pre>
+<pre style="background-color:rgb(255,255,255); color:rgb(154,154,154); line-height:13px"><span style="color:rgb(0,0,255); font-size:16px; font-family:SimSun">#AP的名字</span></pre>
+<pre style="background-color:rgb(255,255,255); color:rgb(154,154,154); line-height:13px"><span style="color:rgb(0,0,255); font-size:16px; font-family:SimSun">    ssid=&quot;my_network&quot;</span></pre>
+<pre style="background-color:rgb(255,255,255); color:rgb(154,154,154); line-height:13px"><span style="font-family:SimSun"><span style="font-size:16px"><span style="color:rgb(0,0,255)">#AP的key</span></span></span></pre>
+<pre style="background-color:rgb(255,255,255); color:rgb(154,154,154); line-height:13px"><span style="font-family:SimSun"><span style="font-size:16px"><span style="color:rgb(0,0,255)">    psk=&quot;my_key&quot;</span></span></span></pre>
+<pre style="background-color:rgb(255,255,255); color:rgb(154,154,154); line-height:13px"><span style="font-family:SimSun"><span style="font-size:16px"><span style="color:rgb(0,0,255)">}</span></span></span></pre>
+<pre style="background-color:rgb(255,255,255); line-height:13px"><span style="font-family:arial; font-size:16px">配置文件弄好后就可以运行wpa_supplicant了：</span></pre>
+<p style="margin-bottom:0in"><span style="font-size:16px"><span style="font-family:'AR PL UMing HK',serif"><span style="font-family:ˎ̥,'Times New Roman',serif">&nbsp;</span></span><span style="font-family:'AR PL UMing HK',serif"><span style="font-family:ˎ̥,'Times New Roman',serif">wpa_supplicant–B
+ –iwlan0 –c /etc/tkip.conf&nbsp;</span></span></span></p>
+<p style="margin-bottom:0in"><span style="font-size:16px">后台运行<span style="font-family:'AR PL UMing HK',serif"><span style="font-family:ˎ̥,'Times New Roman',serif">wpa_supplicant</span></span>（自动打开<span style="font-family:'AR PL UMing HK',serif"><span style="font-family:ˎ̥,'Times New Roman',serif">wifi</span></span>模块<span style="font-family:'AR PL UMing HK',serif"><span style="font-family:ˎ̥,'Times New Roman',serif">wlan0</span></span>，自动搜索<span style="font-family:'AR PL UMing HK',serif"><span style="font-family:ˎ̥,'Times New Roman',serif">AP</span></span>并连接），参数<span style="font-family:'AR PL UMing HK',serif"><span style="font-family:ˎ̥,'Times New Roman',serif">-B</span></span>为后台运行，<span style="font-family:'AR PL UMing HK',serif"><span style="font-family:ˎ̥,'Times New Roman',serif">-i</span></span>为<span style="font-family:'AR PL UMing HK',serif"><span style="font-family:ˎ̥,'Times New Roman',serif">wifi</span></span>设备，<span style="font-family:'AR PL UMing HK',serif"><span style="font-family:ˎ̥,'Times New Roman',serif">-c</span></span>指定<span style="font-family:'AR PL UMing HK',serif"><span style="font-family:ˎ̥,'Times New Roman',serif">wpa_supplicant</span></span>配置文件</span></p>
+<p style="margin-bottom:0in"><span style="font-size:16px"><span style="font-family:arial; line-height:13px"><span style="font-family:ˎ̥,'Times New Roman',serif">&nbsp;wlan0</span>自动获取</span><span style="line-height:13px; font-family:'AR PL UMing HK',serif"><span style="font-family:ˎ̥,'Times New Roman',serif">IP：</span></span><br>
+</span></p>
+<p style="margin-bottom:0in"><span style="font-family:'AR PL UMing HK',serif"><span style="font-family:ˎ̥,'Times New Roman',serif"><span style="font-size:16px">udhcpc–i wlan0</span></span></span></p>
+<p style="margin-bottom:0in"><span style="font-size:16px">&nbsp;接下来就可以看下网络是否连通了：</span></p>
+<span style="font-size:16px">iwconfig<br>
+udhcpc -i wlan0 -n<br>
+</span>
+<p></p>
+<p></p>
+<p></p>
+   
+</div>
+
+
+
+
+<!-- Baidu Button BEGIN -->
+
+
+
+
+<div class="bdsharebuttonbox" style="float: right;">
+<a href="#" class="bds_more" data-cmd="more" style="background-position:0 0 !important; background-image: url(http://bdimg.share.baidu.com/static/api/img/share/icons_0_16.png?v=d754dcc0.png) !important"></a>
+<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"  style="background-position:0 -52px !important"></a>
+<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"style="background-position:0 -104px !important"></a>
+<a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"style="background-position:0 -260px !important"></a>
+<a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"style="background-position:0 -208px !important"></a>
+<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"style="background-position:0 -1612px !important" ></a>
+</div>
+<script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+<!-- Baidu Button END -->
+
+   <link rel="stylesheet" href="http://static.blog.csdn.net/css/blog_detail.css" />
+
+    
+<!--172.16.140.14-->
+<ul class="article_next_prev">
+            <li class="prev_article"><span  onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shangyipian']);location.href='/haomcu/article/details/7267105';">上一篇</span><a href="/haomcu/article/details/7267105" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shangyipian'])">嵌入式Linux USB WIFI驱动的移植</a></li>
+            <li class="next_article"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_xiayipian']);location.href='/haomcu/article/details/7268687';">下一篇</span><a href="/haomcu/article/details/7268687" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_xiayipian'])">使用apt-file查询某个头文件所在的包</a></li>
+</ul>
+
+<!-- Baidu Button BEGIN -->
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=1536434" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+    document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<!-- Baidu Button END -->
+
+ 
+
+        <div id="digg" ArticleId="7267672">
+            <dl id="btnDigg" class="digg digg_disable">
+               
+                 <dt>顶</dt>
+                <dd>0</dd>
+            </dl>
+            <dl id="btnBury" class="digg digg_disable">
+              
+                  <dt>踩</dt>
+                <dd>0</dd>
+            </dl>
+        </div>
+
+
+        <div class="similar_article"  style="display:none">
+                <h4>我的同类文章</h4>
+                <div class="similar_c"style="margin:20px 0px 0px 0px">
+                    <div class="similar_c_t">
+                                <label class="similar_cur">
+                                    <span  style="cursor:pointer"  onclick="GetCategoryArticles('642305','HAOMCU','foot','7267672');">Linux应用、移植<em>（13）</em></span>
+                                </label>
+                    </div>
+                   
+                    <div class="similar_wrap tracking-ad" data-mod="popu_141">
+                        <a href="http://blog.csdn.net" style="display:none">http://blog.csdn.net</a>
+                        <ul class="similar_list fl">                          
+                        </ul>
+
+                        <ul class="similar_list fr">                           
+                        </ul>
+                    </div>
+                </div>
+            </div>    
+    <script  type="text/javascript">
+        $(function () {
+            GetCategoryArticles('642305', 'HAOMCU','foot','7267672');
+        });
+    </script>
+      
+</div>
+<div id="suggest"></div>
+         <script  language="javascript" type='text/javascript'>     
+             $(function(){
+                 $.get("/HAOMCU/svc/GetSuggestContent/7267672",function(data){
+                     $("#suggest").html(data);
+                 });     
+             });             
+         </script>  
+
+
+<style>
+.blog-ass-articl dd {
+color: #369;
+width: 99%; /*修改行*/
+float: left;
+overflow: hidden;
+font: normal normal 12px/23px "SimSun";
+height: 23px;
+margin: 0;
+padding: 0 0 0 10px;
+margin-right: 30px;
+background: url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;
+}
+</style>
+
+<dl class="blog-ass-articl" id="res-relatived" > 
+     <dt><span>猜你在找</span></dt>    
+
+
+   
+
+
+    <div id="adCollege" style="width: 42%;float: left;"> 
+        <script src="http://csdnimg.cn/jobreco/job_reco.js" type="text/javascript"></script> 
+        <script type="text/javascript">
+            csdn.position.showEdu({
+                sourceType: "blog",
+                searchType: "detail",
+                searchKey: "7267672",
+                username: "",
+                recordcount: "5",
+                containerId: "adCollege" //容器DIV的id。 
+            });
+        </script> 
+    </div>  
+
+    
+     <div id="res"  data-mod="popu_36"  class="tracking-ad" style="width: 42%;float: left;margin-right: 30px;"></div>
+   
+</dl>
+
+
+
+<script type="text/javascript">
+    $(function () {
+        setTimeout(function () {
+            var searchtitletags = 'wpa_supplicant移植与使用' + ',' + $("#tags").html();
+            searchService({
+                index: 'blog',
+                query: searchtitletags,
+                from: 5,
+                size: 5,
+                appendTo: '#res',
+                url: 'recommend',
+                his: 2,
+                client: "blog_cf_enhance",
+                tmpl: '<dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="#{ url }" title="#{ title }" strategy="#{ strategy }">#{ title }</a></dd>'
+            });
+        }, 500);
+    });    
+
+ </script>   
+
+    <div id="ad_cen">        
+<!--AdForward Begin:-->
+<script type="text/javascript" src="http://csdnim.qtmojo.com/main/s?user=csdn|blog|banner2&db=csdnim&border=0&local=yes&js=ie" charset="gbk"></script>
+<!--AdForward End-->    </div>  
+
+<div class="comment_class">
+    <div id="comment_title" class="panel_head">
+        <span class="see_comment">查看评论</span><a name="comments"></a></div>
+    <div id="comment_list">
+    </div>
+    <div id="comment_bar">
+    </div>
+    <div id="comment_form">
+    </div>
+
+    <div class="announce">
+        * 以上用户言论只代表其个人观点，不代表CSDN网站的观点或立场<a name="reply"></a><a name="quote"></a></div>
+</div>
+
+<script type="text/javascript">
+    var fileName = '7267672';
+    var commentscount = 1;
+    var islock = false
+</script>
+<script type="text/javascript" src="http://static.blog.csdn.net/scripts/comment.js"></script>
+    <div id="ad_bot">
+    </div>
+<div id="report_dialog">
+</div>
+
+<div id="d-top"  style="bottom:60px;">
+        <a id="quick-reply" class="btn btn-top q-reply" title="快速回复" style="display:none;">
+            <img src="http://static.blog.csdn.net/images/blog-icon-reply.png" alt="快速回复">
+        </a>    
+
+    <a id="d-top-a" class="btn btn-top backtop"  style="display: none;" title="返回顶部" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_huidaodingbu'])" style="">         
+         <img src="http://static.blog.csdn.net/images/top.png" alt="TOP">
+    </a>
+</div>
+<script type="text/javascript">
+    $(function ()
+    {
+        $("#ad_frm_0").height("90px");
+        
+        setTimeout(function(){
+            $("#ad_frm_2").height("200px");
+        },1000);    
+    });
+  
+</script>
+<style type="text/css">
+    .tag_list
+    {
+        background: none repeat scroll 0 0 #FFFFFF;
+        border: 1px solid #D7CBC1;
+        color: #000000;
+        font-size: 12px;
+        line-height: 20px;
+        list-style: none outside none;
+        margin: 10px 2% 0 1%;
+        padding: 1px;
+    }
+    .tag_list h5
+    {
+        background: none repeat scroll 0 0 #E0DBD3;
+        color: #47381C;
+        font-size: 12px;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 5px;
+        margin: 0;
+    }
+    .tag_list h5 a
+    {
+        color: #47381C;
+    }
+    .classify
+    {
+        margin: 10px 0;
+        padding: 4px 12px 8px;
+    }
+    .classify a
+    {
+        margin-right: 20px;
+        white-space: nowrap;
+    }
+</style>
+
+
+<div class="tag_list" style="display:none"></div>
+  <script  language="javascript" type='text/javascript'>     
+      $(function(){
+              setTimeout(function(){
+                  $.get("/HAOMCU/svc/GetTagContent",function(data){
+                      $(".tag_list").html(data).show();
+                  });     
+              });
+          },500);                       
+ </script> 
+
+
+<div id="pop_win" style="display:none ;position: absolute; z-index: 10000; border: 1px solid rgb(220, 220, 220); top: 222.5px; left: 630px; opacity: 1; background: none 0px 0px repeat scroll rgb(255, 255, 255);">
+    
+</div>
+<div id="popup_mask"></div>
+<style>
+    #popup_mask
+    {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        z-index: 9999;
+        left: 0px;
+        top: 0px;
+        opacity: 0.3;
+        filter: alpha(opacity=30);
+        display: none;
+    }
+
+</style>
+
+
+
+
+<script type="text/javascript">
+    $(function(){
+        setTimeout(function(){
+            $(".comment_body:contains('回复')").each(function(index,item){
+                var u=$(this).text().split('：')[0].toString().replace("回复","")
+                var thisComment=$(this);
+                if(u)
+                {
+                    $.getJSON("https://passport.csdn.net/get/nick?callback=?", {users: u}, function(a) {
+                        if(a!=null&&a.data!=null&&a.data.length>0)
+                        {
+                            nick=a.data[0].n; 
+                            if(u!=nick)
+                            {
+                                thisComment.text(thisComment.text().replace(u,nick));  
+                            }
+                        }       
+                    });  
+                }
+            });
+        },200);  
+        
+        setTimeout(function(){
+            $("a img[src='http://js.tongji.linezing.com/stats.gif']").parent().css({"position":"absolute","left":"50%"});
+        },300);
+    });
+
+    function loginbox(){
+        var $logpop=$("#pop_win");
+        $logpop.html('<iframe src="https://passport.csdn.net/account/loginbox?service=http://static.blog.csdn.net/callback.htm" frameborder="0" height="600" width="400" scrolling="no"></iframe>');
+
+        $('#popup_mask').css({
+            opacity: 0.5,
+            width: $( document ).width() + 'px',
+            height:  $( document ).height() + 'px'
+        });
+        $('#popup_mask').css("display","block");
+ 
+        $logpop.css( {
+            top: ($( window ).height() - $logpop.height())/ 2  + $( window 
+       ).scrollTop() + 'px',
+            left:($( window ).width() - $logpop.width())/ 2
+        } );
+ 
+        setTimeout( function () {
+            $logpop.show();
+            $logpop.css( {
+                opacity: 1
+            } );
+        }, 200 );
+ 
+        $('#popup_mask').unbind("click");
+        $('#popup_mask').bind("click", function(){
+            $('#popup_mask').hide();
+            var $clopop = $("#pop_win");
+            $("#common_ask_div_sc").css("display","none");
+            $clopop.css( {
+                opacity: 0
+            } );
+            setTimeout( function () {
+                $clopop.hide();
+            }, 350 );
+            return false;
+        });
+    }    
+
+</script>
+                        <div class="clear">
+                        </div>
+                    </div>                   
+                
+            </div>
+                   
+           <div id="side">
+    <div class="side">
+<div id="panel_Profile" class="panel">
+<ul class="panel_head"><span>个人资料</span></ul>
+<ul class="panel_body profile">
+<div id="blog_userface">
+    <a href="http://my.csdn.net/HAOMCU" target="_blank">
+    <img src="http://avatar.csdn.net/3/7/7/1_haomcu.jpg" title="访问我的空间" style="max-width:90%"/>
+    </a>
+    <br />
+    <span><a href="http://my.csdn.net/HAOMCU" class="user_name" target="_blank">HAOMCU</a></span>
+</div>
+<div class="interact">
+
+    <a href="javascript:void(0);" class="attent" id="span_add_follow" title="[加关注]"></a>
+
+ <a href="javascript:void(0);" class="letter"  title="[发私信]" onclick="window.open('http://msg.csdn.net/letters/model?receiver=HAOMCU','_blank','height=350,width=700');_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_sixin'])"></a>  
+</div>
+<div id="blog_medal">
+                         <div class="ico_expert" title="CSDN博客准专家"  onclick="javascript:location='http://blog.csdn.net/experts/rule.html'" style=" cursor:pointer;width:54px;height:60px;background:url('http://c.csdnimg.cn/jifen/images/xunzhang/xunzhang/bokezhunzhuanjiamiddle.png') no-repeat" ></div>
+                <div id="bms_box">
+                                            <a  target="_blank">
+                                                    <img src="http://c.csdnimg.cn/jifen/images/xunzhang/xunzhang/chizhiyiheng.png" onmouseover="m_over_m(this,4)" onmouseout="m_out_m()" alt="1" >
+                                            </a>
+               </div>
+</div>
+<ul id="blog_rank">
+    <li>访问：<span>197936次</span></li>
+    <li>积分：<span>2555</span> </li>    
+    <li >等级： <span style="position:relative;display:inline-block;z-index:1" >
+            <img src="http://c.csdnimg.cn/jifen/images/xunzhang/jianzhang/blog5.png" alt="" style="vertical-align: middle;" id="leveImg">
+            <div id="smallTittle" style=" position: absolute;  left: -24px;  top: 25px;  text-align: center;  width: 101px;  height: 32px;  background-color: #fff;  line-height: 32px;  border: 2px #DDDDDD solid;  box-shadow: 0px 2px 2px rgba (0,0,0,0.1);  display: none;   z-index: 999;">
+            <div style="left: 42%;  top: -8px;  position: absolute;  width: 0;  height: 0;  border-left: 10px solid transparent;  border-right: 10px solid transparent;  border-bottom: 8px solid #EAEAEA;"></div>
+            积分：2555 </div>
+        </span>  </li>
+    <li>排名：<span>第8171名</span></li>
+</ul>
+<ul id="blog_statistics">
+    <li>原创：<span>53篇</span></li>
+    <li>转载：<span>55篇</span></li>
+    <li>译文：<span>0篇</span></li>
+    <li>评论：<span>29条</span></li>
+</ul>
+</ul>
+</div>
+
+
+<div class="panel" id="panel_Search">
+    <ul class="panel_head"><span>文章搜索</span></ul>
+    <ul class="panel_body">
+        <form id="frmSearch" action="http://so.csdn.net/search" class="form_search" target="_blank">
+        <span><input id="inputSearch" type="text" class="blogsearch" title="请输入关键字" /></span>
+        <input id="btnSubmit" type="button" value="搜索" title="search in blog" />
+        <input type="hidden" name="q" id="inputQ" />
+        <input type="hidden" name="t" value="blog" />
+        <a id="btnSearchBlog" target="_blank"></a>
+        </form>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnSubmit").click(function () {           
+            search();
+        });
+
+        $("#frmSearch").submit(function () {
+            search();
+            return false;
+        });
+
+        function search()
+        {
+            var url = "http://so.csdn.net/so/search/s.do?q=" + encodeURIComponent($("#inputSearch").val()) + "&u=" + username + "&t=blog";
+            window.location.href = url;
+        }   
+    });
+</script><div id="panel_Category" class="panel">
+<ul class="panel_head"><span>文章分类</span></ul>
+<ul class="panel_body">    
+                 <li>
+                    <a href="/HAOMCU/article/category/642305" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Linux应用、移植</a><span>(14)</span>
+                </li>
+                 <li>
+                    <a href="/HAOMCU/article/category/874603" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">硬件模块</a><span>(9)</span>
+                </li>
+                 <li>
+                    <a href="/HAOMCU/article/category/906256" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">工作</a><span>(19)</span>
+                </li>
+                 <li>
+                    <a href="/HAOMCU/article/category/951176" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">linux内核驱动</a><span>(41)</span>
+                </li>
+                 <li>
+                    <a href="/HAOMCU/article/category/1084414" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">android学习</a><span>(28)</span>
+                </li>
+                 <li>
+                    <a href="/HAOMCU/article/category/1084415" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">bootloader</a><span>(2)</span>
+                </li>
+                 <li>
+                    <a href="/HAOMCU/article/category/1084418" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">linux使用技巧</a><span>(2)</span>
+                </li>
+                 <li>
+                    <a href="/HAOMCU/article/category/1084455" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">C语言</a><span>(8)</span>
+                </li>
+                 <li>
+                    <a href="/HAOMCU/article/category/1084654" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">学习笔记</a><span>(9)</span>
+                </li>
+                 <li>
+                    <a href="/HAOMCU/article/category/1587455" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">LDD</a><span>(3)</span>
+                </li>
+                 <li>
+                    <a href="/HAOMCU/article/category/3055229" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">浏览器</a><span>(1)</span>
+                </li>
+</ul>
+</div><div id="panel_Archive" class="panel">
+<ul class="panel_head"><span>文章存档</span></ul>
+<ul class="panel_body">
+<div id="archive_list">
+<!--归档统计-->
+<li><a href="/HAOMCU/article/month/2015/07">2015年07月</a><span>(5)</span></li><li><a href="/HAOMCU/article/month/2015/06">2015年06月</a><span>(2)</span></li><li><a href="/HAOMCU/article/month/2015/04">2015年04月</a><span>(6)</span></li><li><a href="/HAOMCU/article/month/2015/03">2015年03月</a><span>(3)</span></li><li><a href="/HAOMCU/article/month/2013/08">2013年08月</a><span>(3)</span></li><li><a href="/HAOMCU/article/month/2013/05">2013年05月</a><span>(1)</span></li><li><a href="/HAOMCU/article/month/2013/04">2013年04月</a><span>(3)</span></li><li><a href="/HAOMCU/article/month/2013/03">2013年03月</a><span>(3)</span></li><li><a href="/HAOMCU/article/month/2013/01">2013年01月</a><span>(1)</span></li><li><a href="/HAOMCU/article/month/2012/12">2012年12月</a><span>(5)</span></li><li><a href="/HAOMCU/article/month/2012/11">2012年11月</a><span>(6)</span></li><li><a href="/HAOMCU/article/month/2012/10">2012年10月</a><span>(3)</span></li><li><a href="/HAOMCU/article/month/2012/09">2012年09月</a><span>(2)</span></li><li><a href="/HAOMCU/article/month/2012/07">2012年07月</a><span>(9)</span></li><li><a href="/HAOMCU/article/month/2012/06">2012年06月</a><span>(1)</span></li><li><a href="/HAOMCU/article/month/2012/05">2012年05月</a><span>(1)</span></li><li><a href="/HAOMCU/article/month/2012/03">2012年03月</a><span>(17)</span></li><li><a href="/HAOMCU/article/month/2012/02">2012年02月</a><span>(15)</span></li><li><a href="/HAOMCU/article/month/2011/12">2011年12月</a><span>(9)</span></li><li><a href="/HAOMCU/article/month/2011/11">2011年11月</a><span>(5)</span></li><li><a href="/HAOMCU/article/month/2011/10">2011年10月</a><span>(3)</span></li><li><a href="/HAOMCU/article/month/2011/09">2011年09月</a><span>(2)</span></li><li><a href="/HAOMCU/article/month/2011/08">2011年08月</a><span>(2)</span></li><li><a href="/HAOMCU/article/month/2011/04">2011年04月</a><span>(1)</span></li>
+</div>
+</ul>
+</div>
+<div id="hotarticls" class="panel">
+<ul class="panel_head">
+    <span>       
+阅读排行    </span>
+</ul>
+
+<ul class="panel_body itemlist">
+<li>
+<a href="/haomcu/article/details/8174805" title="git 创建远程仓库">git 创建远程仓库</a><span>(19613)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/7285891" title="linux下使用3G拨号上网">linux下使用3G拨号上网</a><span>(8802)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/8446109" title="dhcpcd参数详解与总结">dhcpcd参数详解与总结</a><span>(8297)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/7371835" title="linux 内核与用户空间通信之netlink使用方法">linux 内核与用户空间通信之netlink使用方法</a><span>(7123)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/8313926" title="DHCP协议、报文，dhcpcd分析">DHCP协议、报文，dhcpcd分析</a><span>(6164)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/7267672" title="wpa_supplicant移植与使用">wpa_supplicant移植与使用</a><span>(5725)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/8189760" title="recovery汉化实现">recovery汉化实现</a><span>(5105)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/7781944" title="android usb挂载分析---MountService启动">android usb挂载分析---MountService启动</a><span>(4797)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/7267090" title="android 平台USB wifi驱动移植及使用">android 平台USB wifi驱动移植及使用</a><span>(4794)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/7162012" title="什么是DVB-SI?对PSI(PAT,PMT,CAT,NIT,SDT,EIT)的理解">什么是DVB-SI?对PSI(PAT,PMT,CAT,NIT,SDT,EIT)的理解</a><span>(4247)</span>
+</li>
+</ul>
+</div>
+<div id="hotarticls2" class="panel">
+<ul class="panel_head"><span>评论排行</span></ul>
+<ul class="panel_body itemlist">
+<li>
+<a href="/haomcu/article/details/8189760" title="recovery汉化实现">recovery汉化实现</a><span>(8)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/8156006" title="linux中断处理------顶半部与底半部">linux中断处理------顶半部与底半部</a><span>(3)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/7035486" title="Makefile与Shell脚本">Makefile与Shell脚本</a><span>(2)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/7267105" title="嵌入式Linux USB WIFI驱动的移植">嵌入式Linux USB WIFI驱动的移植</a><span>(2)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/8668188" title="创建linux内核git仓库">创建linux内核git仓库</a><span>(2)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/7076161" title="TS流的解码过程-ES-PES-DTS-PTS-PCR">TS流的解码过程-ES-PES-DTS-PTS-PCR</a><span>(2)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/8174805" title="git 创建远程仓库">git 创建远程仓库</a><span>(1)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/44654747" title="chromium浏览器开发系列第一篇：如何获取最新chromium源码">chromium浏览器开发系列第一篇：如何获取最新chromium源码</a><span>(1)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/7783171" title="android usb挂载分析---vold处理内核消息">android usb挂载分析---vold处理内核消息</a><span>(1)</span>
+</li>
+<li>
+<a href="/haomcu/article/details/7267672" title="wpa_supplicant移植与使用">wpa_supplicant移植与使用</a><span>(1)</span>
+</li>
+</ul>
+</div>
+<div id="homepageArticles" class="panel tracking-ad" data-mod="popu_4">
+<ul class="panel_head"><span>推荐文章</span></ul>
+<ul class="panel_body" id="ad_commend">
+<ul>
+<li><a href="http://blog.csdn.net/androidlushangderen/article/details/50195481"  
+
+target="_blank">*Hadoop节点"慢磁盘"监控</a></li>
+
+
+<li><a href="http://blog.csdn.net/foruok/article/details/50201563" 
+
+target="_blank">*假如你想成为全栈工程师…</a></li>
+<li><a href="http://blog.csdn.net/wangshubo1989/article/details/50001805" 
+
+target="_blank">*没有躲过的坑--正则表达式截取字符串</a></li>
+<li><a href="http://blog.csdn.net/developer_jiangqq/article/details/50000733" 
+
+target="_blank">*CardView完全解析与RecyclerView结合使用(三十二)</a></li>
+<li><a 
+
+href="http://blog.csdn.net/lyhhj/article/details/50002005"target="_blank">*And
+
+roid 高仿微信发朋友圈浏览图片效果</a></li>
+<li><a href="http://blog.csdn.net/gisshixisheng/article/details/49922677" 
+
+target="_blank">*通过Ajax的方式执行GP服务</a></li>
+
+</ul></ul>
+</div>
+
+
+<div id="newcomments" class="panel">
+<ul class="panel_head"><span>最新评论</span></ul>
+<ul class="panel_body itemlist">
+    <li>
+   
+         <a href="/haomcu/article/details/8668188#comments">创建linux内核git仓库</a>
+    <p style="margin:0px;"><a href="/yilonglucky" class="user_name">yilonglucky</a>:
+公司内部开发时同事之间共享模块时由于这个版本号不一致无法通用。找到一个杀手锏：直接在在主Makefi...
+    </p>
+    </li>
+    <li>
+   
+         <a href="/haomcu/article/details/8668188#comments">创建linux内核git仓库</a>
+    <p style="margin:0px;"><a href="/yilonglucky" class="user_name">yilonglucky</a>:
+为什么不直接把CONFIG_LOCALVERSION_AUTO关掉
+    </p>
+    </li>
+    <li>
+   
+         <a href="/haomcu/article/details/7371835#comments">linux 内核与用户空间通信之netlink使用方法</a>
+    <p style="margin:0px;"><a href="/lesleylily" class="user_name">lesleylily</a>:
+可以看看楼主写的经验总结帖，希望对大家有所帮助http://blog.csdn.net/lesley...
+    </p>
+    </li>
+    <li>
+   
+         <a href="/haomcu/article/details/44654747#comments">chromium浏览器开发系列第一篇：如何获取最新chromium源码</a>
+    <p style="margin:0px;"><a href="/u013411888" class="user_name">u013411888</a>:
+你好！不知道博主有没有ppapi开发例子？新手入门表示压力山大。
+    </p>
+    </li>
+    <li>
+   
+         <a href="/haomcu/article/details/7781944#comments">android usb挂载分析---MountService启动</a>
+    <p style="margin:0px;"><a href="/gyfkyu" class="user_name">gyfkyu</a>:
+好文！！我目前需要在recovery里面监听热拔插时间，看来需要在recovery源码移植vold的...
+    </p>
+    </li>
+    <li>
+   
+         <a href="/haomcu/article/details/7076161#comments">TS流的解码过程-ES-PES-DTS-PTS-PCR</a>
+    <p style="margin:0px;"><a href="/yazhiye" class="user_name">yazhiye</a>:
+谢谢！
+    </p>
+    </li>
+    <li>
+   
+         <a href="/haomcu/article/details/7076161#comments">TS流的解码过程-ES-PES-DTS-PTS-PCR</a>
+    <p style="margin:0px;"><a href="/lu_anjie" class="user_name">lu_anjie</a>:
+搜藏
+    </p>
+    </li>
+    <li>
+   
+         <a href="/haomcu/article/details/7076167#comments">数字电视节目的接收，解码，播放，针对TS</a>
+    <p style="margin:0px;"><a href="/lu_anjie" class="user_name">lu_anjie</a>:
+good
+    </p>
+    </li>
+    <li>
+   
+         <a href="/haomcu/article/details/7267090#comments">android 平台USB wifi驱动移植及使用</a>
+    <p style="margin:0px;"><a href="/baikaishiuc" class="user_name">baikaishiuc</a>:
+你好，我想问下：&gt;&gt; 2.2   修改rt_main_dev.c，直接将MainVirtualIF_...
+    </p>
+    </li>
+    <li>
+   
+         <a href="/haomcu/article/details/7035486#comments">Makefile与Shell脚本</a>
+    <p style="margin:0px;"><a href="/cqyun123789" class="user_name">cqyun123789</a>:
+谢谢分享！！！
+    </p>
+    </li>
+</ul>
+</div>
+    </div>
+    <div class="clear">
+    </div>
+ </div>   
+            <div class="clear">
+            </div>
+        </div>
+        
+
+<script type="text/javascript" src="http://c.csdnimg.cn/rabbit/cnick/cnick.js"></script>
+<script type="text/javascript" src="http://static.blog.csdn.net/scripts/newblog.min.js"></script>
+
+
+<script type="text/javascript" src="http://medal.blog.csdn.net/showblogmedal.ashx?blogid=768076"></script>
+<script type="text/javascript" src="http://static.blog.csdn.net/scripts/JavaScript1.js"></script>
+
+    <script type="text/javascript" src="http://passport.csdn.net/content/loginbox/login.js"></script>
+<script type="text/javascript">document.write("<img src=http://counter.csdn.net/pv.aspx?id=24 border=0 width=0 height=0>");</script>
+<script type="text/javascript" src="http://www.csdn.net/ui/scripts/Csdn/counter.js"></script>
+<script type="text/javascript" src="http://ad.csdn.net/scripts/ad-blog.js"></script>
+<script type="text/javascript">
+    $(function () {
+        function __get_code_toolbar(snippet_id) {
+            return $("<a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "' target='_blank' title='在CODE上查看代码片' style='text-indent:0;'><img src='https://code.csdn.net/assets/CODE_ico.png' width=12 height=12 alt='在CODE上查看代码片' style='position:relative;top:1px;left:2px;'/></a>"
+                    + "<a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "/fork' target='_blank' title='派生到我的代码片'  style='text-indent:0;'><img src='https://code.csdn.net/assets/ico_fork.svg' width=12 height=12 alt='派生到我的代码片' style='position:relative;top:2px;left:2px;'/></a>");
+        }
+        
+        $("[code_snippet_id]").each(function () {
+            __s_id = $(this).attr("code_snippet_id");
+            if (__s_id != null && __s_id != "" && __s_id != 0 && parseInt(__s_id) > 70020) {
+                __code_tool = __get_code_toolbar(__s_id);
+                $(this).prev().find(".tools").append(__code_tool);
+            }
+        });
+
+        $(".bar").show();
+    });
+</script>
+
+
+
+
+    </div>
+      <!--new top-->
+    
+    <script id="csdn-toolbar-id" btnId="header_notice_num" wrapId="note1" count="5" subCount="5" type="text/javascript" src="http://c.csdnimg.cn/public/common/toolbar/js/toolbar.js"></script>     <!--new top-->
+   
+    <link href="http://c.csdnimg.cn/comm_ask/css/ask_float_block.css" type="text/css" rel="stylesheet" />
+    <script language='JavaScript' type='text/javascript' src='http://c.csdnimg.cn/comm_ask/js/libs/wmd.js'></script>
+    <script language='JavaScript' type='text/javascript' src='http://c.csdnimg.cn/comm_ask/js/libs/showdown.js'></script>
+    <script language='JavaScript' type='text/javascript' src='http://c.csdnimg.cn/comm_ask/js/libs/prettify.js'></script>
+    <script language='JavaScript' type='text/javascript' src='http://c.csdnimg.cn/comm_ask/js/apps/ask_float_block.js'></script>
+   
+</body>
+</html>   
+ 

@@ -1,0 +1,1 @@
+document.write('<p><a href="http://clouda.csdn.net/614" target="_blank"><font color="#000000"><strong>百度Clouda开发案例博文有奖征集</strong></font></a> </p>');
